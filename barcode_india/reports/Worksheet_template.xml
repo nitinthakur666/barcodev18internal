@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="bci_worksheet_custom_page" inherit_id="industry_fsm_report.worksheet_custom_page">
+            <xpath expr="/t/div/div[1]/div[1]/t/div/div[1]/strong" position="replace">
+                <strong>
+                <p style="margin-bottom: 0px;">Engineer: </p>
+                </strong>
+            </xpath>
+            <xpath expr="/t/div/div[1]" position="before">
+                <div class="row">
+                    <div class="col o_bold text-center">
+                        <span style="font-size:36px;">
+                            Engineer Service Report
+                        </span>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="/t[1]/div[1]/t[2]/div[1]/h2[1]" position="replace"/>
+            <xpath expr="/t[1]/div[1]/div[3]" position="replace"/>
+            <xpath expr="//div[@name='worksheet_map']" position="replace">
+              <div name="worksheet_map">
+                  <h2>Worksheet</h2>
+                  <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
+                  <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
+              </div>
+            </xpath>
+            <xpath expr="//div[@t-if='doc.worksheet_signature']/div[2]" position="replace"/>
+            <xpath expr="//t[@t-if='doc.partner_id']" position="replace">
+                <t t-if="doc.partner_id">
+                    <div><strong>Customer: </strong></div>
+                    <span t-field="doc.partner_id"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="bci_portal_my_task_page" inherit_id="industry_fsm.portal_my_task">
+            <xpath expr="//div[@t-if='task.worksheet_signature']" position="replace"/>
+            <xpath expr="//div[@t-if='timesheets and allow_timesheets']" position="replace">
+                <div class="container" t-if="timesheets and allow_timesheets">
+                </div>
+            </xpath>
+        </template>
+
+        <template id="barcode_india_worksheet_template" name="barcode_india_worksheet_template">
+            <div style="page-break-inside: avoid">
+                <table class="table table-sm table-bordered">
+                    <tr>
+                        <td colspan="4" style="background-color: #A9A9A9;"><h2 class="text-center">Customer Details</h2></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold" width="16%"><span>Location</span></td>
+                        <td class="text-wrap" width="38%">
+                            <t t-if="worksheet.x_project_task_id.bci_address">
+                                <span t-field="worksheet.x_project_task_id.bci_address"/>
+                            </t>
+                            <t t-else="worksheet.x_project_task_id.bci_site_id">
+                                <span t-field="worksheet.x_project_task_id.bci_site_id"/><br/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.street"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.street2"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.street3"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.street4"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.city"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.state_id"/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.zip"/><br/>
+                                <span t-field="worksheet.x_project_task_id.bci_site_id.country_id"/>
+                            </t>
+                        </td>
+                        <td class="font-weight-bold" width="16%"><span>Call No.</span></td>
+                        <td class="text-wrap" width="30%"><span t-field="worksheet.x_studio_bci_call_no"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Email</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_e_mail"/></td>
+                        <td class="font-weight-bold"><span>Case Type</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_call_type"/></td>
+                    </tr>
+                    <!-- <tr>
+                        <td class="font-weight-bold"><span>Location</span></td>
+                        <td colspan="3" class="text-wrap"><span t-field="worksheet.x_studio_bci_location"/></td>
+                    </tr> -->
+                    <tr>
+                        <td class="font-weight-bold"><span>Deptt.</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_deptt"/></td>
+                        <td class="font-weight-bold"><span>User Name</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_user_name"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Mob No.</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_mob_no"/></td>
+                        <td class="font-weight-bold"><span>Serial Number</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_project_task_id.bci_asset_id"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Product</span></td>
+                        <td colspan="3" class="text-wrap"><span t-field="worksheet.x_project_task_id.bci_product_id"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Problem Reported</span></td>
+                        <td colspan="3" class="text-wrap"><span t-field="worksheet.x_studio_bci_problem_reported"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Action Summary</span></td>
+                        <td colspan="3" class="text-wrap"><span t-field="worksheet.x_studio_bci_action_summary"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Call Received</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_call_received"/></td>
+                        <td class="font-weight-bold"><span>Device Type</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_device_type"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Call Attended</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_call_attended"/></td>
+                        <td class="font-weight-bold"><span>Satisfaction Level</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_satisfaction_level"/></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"><span>Call Completed</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_call_completed"/></td>
+                        <td class="font-weight-bold"><span>Response Level</span></td>
+                        <td class="text-wrap"><span t-field="worksheet.x_studio_bci_response_level"/></td>                    
+                    </tr>                   
+                </table>
+            </div>
+            <br/>
+            <div name="worksheet_task_timesheet">
+                <t t-set="is_uom_day" t-value="worksheet.x_project_task_id.timesheet_ids._is_timesheet_encode_uom_day()"/>
+                <t t-if="worksheet.x_project_task_id.allow_timesheets and worksheet.x_project_task_id.timesheet_ids">
+                    <div t-attf-class="#{'table-responsive-sm' if report_type != 'pdf' else ''}">
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                        <tr>
+                            <td colspan="4" style="background-color: #A9A9A9;"><h2 class="text-center">Timesheets</h2></td>
+                        </tr>
+                            <tr>
+                                <th class="text-start">Date</th>
+                                <th class="text-start">Engineer</th>
+                                <th class="text-start">Description</th>
+                                <th t-if="is_uom_day" class="text-end">Days Spent</th>
+                                <th t-else="" class="text-end">Hours Spent</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-foreach="worksheet.x_project_task_id.timesheet_ids" t-as="line">
+                                <tr t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">
+                                    <td>
+                                        <span t-field="line.date"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.employee_id.name"/>
+                                    </td>
+                                    <td class="text-start">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-if="is_uom_day">
+                                            <span t-out="line._convert_hours_to_days(line.unit_amount)" t-options="{&quot;widget&quot;: &quot;timesheet_uom&quot;}"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-out="line.unit_amount" t-options="{'widget': 'float_time'}"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <div class="row justify-content-end">
+                        <div t-attf-class="#{'col-auto' if report_type != 'html' else 'col-sm-2'}">
+                            <table class="table table-sm">
+                                <tr class="border-black o_total">
+                                    <td colspan="4" class="text-end">
+                                        <strong class="me-2">Total</strong>
+                                        <t t-if="is_uom_day">
+                                            <t t-out="line._convert_hours_to_days(worksheet.x_project_task_id.effective_hours)"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-field="worksheet.x_project_task_id.effective_hours" t-options="{&quot;widget&quot;: &quot;float_time&quot;}"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                </t>
+            </div><br/>
+            <div class="row" style="page-break-inside: avoid">
+                <div class="col-6">
+                    <br/>
+                    <div class="row">
+                        <div class="col-3 font-weight-bold">Name :</div>
+                        <div class="col-9 text-wrap" t-field="worksheet.x_studio_bci_name"/>
+                    </div><br/><br/>
+                    <div class="row">
+                        <div class="col-3 font-weight-bold">Remarks :</div>
+                        <div class="col-9 text-wrap" t-field="worksheet.x_studio_bci_remarks"/>
+                    </div>
+                </div>
+                <div t-attf-class="col-6" style="page-break-inside: avoid" t-if="worksheet.x_project_task_id and worksheet.x_project_task_id.worksheet_signature">
+                    <h5>Signature</h5>
+                    <img t-att-src="image_data_uri(worksheet.x_project_task_id.worksheet_signature)" style="max-height: 4rem; max-width: 100%; color:black;"/><br/>
+                    <span t-field="worksheet.x_project_task_id.worksheet_signed_by"/>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

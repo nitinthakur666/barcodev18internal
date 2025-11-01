@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_sub_vertical_category" model="ir.actions.act_window">
+        <field name="name">Sub Vertical Category</field>
+        <field name="res_model">barcode_india.sub_vertical_category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_sub_vertical_category">
+        <field name="name">Sub Vertical Category</field>
+        <field name="model">barcode_india.sub_vertical_category</field>
+        <field name="arch" type="xml">
+            <list string="Sub Vertical Category" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="sub_vertical_id"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>

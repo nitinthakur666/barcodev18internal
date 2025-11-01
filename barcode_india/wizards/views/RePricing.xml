@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bci_sales_repricing_form" model="ir.ui.view">
+        <field name="name">Sales Repricing</field>
+        <field name="model">bci.sales_repricing</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="repricing_currency" readonly="1"/>
+                        <field name="existing_rate" readonly="1"/>
+                        <field name="current_exchange_rate" readonly="1"/>
+                        <field name="order_id" invisible="1" />
+                        <footer>
+                            <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                        </footer>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

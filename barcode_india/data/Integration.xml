@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <data noupdate="1">
+   		<record id="contract_sync_integration" model="barcode_india.integrations">
+            <field name="name">Contract Sync: Barcode</field>
+            <field name="process" ref="model_barcode_india_contract_sync"></field>
+            <field name="logs" ref="model_barcode_india_contract_sync_logs"></field>
+            <field name="cron_job" ref="barcode_india.cron_contract_sync"/>
+            <field name="module">barcode_india</field>
+            <field name="process_code">cs</field>
+            <field name="sequence">1</field>
+        </record>
+    </data>
+</odoo>

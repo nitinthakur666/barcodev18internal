@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_chargeable" model="ir.actions.act_window">
+        <field name="name">Chargeable</field>
+        <field name="res_model">barcode_india.chargeable</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chargeable
+                </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_chargeable_tree">
+        <field name="name">Chargeable</field>
+        <field name="model">barcode_india.chargeable</field>
+        <field name="arch" type="xml">
+            <list string="Chargeable">
+                <field name="name"/>
+                <field name="bci_case_sub_type"/>
+                <field name="bci_problem_type"/>
+                <field name="bci_problem_sub_type"/>
+                <field name="bci_warranty_status"/>
+                <field name="bci_chargeable"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="barcode_india_chargeable_form_view" model="ir.ui.view">
+        <field name="name">Chargeable</field>
+        <field name="model">barcode_india.chargeable</field>
+        <field name="arch" type="xml">
+            <form string="Chargeable">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="bci_case_sub_type" domain="[('bci_case_type','=',name)]"/>
+                            <field name="bci_warranty_status"/>
+                        </group>
+                        <group>
+                            <field name="bci_problem_type"/>
+                            <field name="bci_problem_sub_type" domain="[('bci_problem_type','=',bci_problem_type)]"/>
+                            <field name="bci_chargeable"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

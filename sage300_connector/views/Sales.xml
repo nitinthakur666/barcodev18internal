@@ -1,0 +1,143 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="ssms_sale_order_inherit">
+        <field name="name">Sale order</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="so_state"/>
+                <field name="amount_untaxed"/>
+                <field name="so_invoice_total"/>
+                <field name="so_outstandig_amount"/>
+            </xpath>
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+              <button class="oe_stat_button" name="action_so_invoice_sync" type="object" icon="fa-inr" string='InvoiceSync'>
+                <field name="so_invoice_count" widget="statinfo" string="Invoice"/>
+              </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_sale_order_sync_final" model="ir.actions.act_window">
+            <field name="name">Sale Order Sync</field>
+            <field name="res_model">sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('so_state','in',['done']),('state','in' ,['sale','done','SOPF'])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Synced Sale Orders
+                </p>
+            </field>
+        </record>
+        
+        <record id="action_sale_order_sync" model="ir.actions.act_window">
+            <field name="name">Sales Order Sync</field>
+            <field name="res_model">sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Sale Orders
+                </p>
+            </field>
+        </record>
+
+        <record id="action_sale_order_sync_pending" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('so_state','in',['pending']),('state','in' ,['sale','done','SOPF'])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Pending Sale Orders to Sync
+                </p>
+            </field>
+        </record>
+
+        <record id="action_sale_order_sync_done" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('so_state','in',['done']),('state','in' ,['sale','done','SOPF'])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Synced Sale Orders
+                </p>
+            </field>
+        </record>
+
+        <record id="action_sale_order_sync_failed" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('so_state','in',['fail']),('state','in' ,['sale','done','SOPF'])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Failed Sale Orders
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Logs Views -->
+        <record id="action_sale_sync_logs" model="ir.actions.act_window">
+        <field name="name">Sale Sync Logs</field>
+        <field name="res_model">sage300_connector.sale_logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sale Sync Logs
+            </p>
+        </field>
+    </record>
+
+    <record id="sale_sync_logs_form_view" model="ir.ui.view">
+        <field name="name">Sale Sync Logs</field>
+        <field name="model">sage300_connector.sale_logs</field>
+        <field name="arch" type="xml">
+            <form string="Logs">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="ref" nolabel="1"/>
+                    <field name="message" nolabel="1"/>
+                    <field name="request" nolabel="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="sale_sync_logs_tree">
+        <field name="name">Sale Sync Logs</field>
+        <field name="model">sage300_connector.sale_logs</field>
+        <field name="arch" type="xml">
+            <list string="Logs">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="message"/>
+                <field name="ref"/>   
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_sync_to_erp">
+        <field name="name">Sale Order Sync</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records._so_run_process()
+        </field>
+    </record>
+
+  </data>
+</odoo>

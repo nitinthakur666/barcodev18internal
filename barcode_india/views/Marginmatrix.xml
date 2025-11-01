@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="margin_matrix_tree" model="ir.ui.view">
+        <field name="name">Margin Matrix</field>
+        <field name="model">barcode_india.margin_matrix</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="deal_margin"/>
+                <field name="sequence" widget="handle" />
+                <field name="approver_type" />
+                <field name="approver_role" />
+                <field name="approver" />
+                <field name="quotation_type_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="margin_matrix_form" model="ir.ui.view">
+        <field name="name">Margin Matrix</field>
+        <field name="model">barcode_india.margin_matrix</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="deal_margin"/>
+                        <field name="sequence" widget="handle" />
+                        <field name="approver_type" />
+                        <field name="approver_role" />
+                        <field name="approver" />
+                        <field name="quotation_type_id" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_margin_matrix" model="ir.actions.act_window">
+        <field name="name">Margin Matrix</field>
+        <field name="res_model">barcode_india.margin_matrix</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

@@ -1,0 +1,124 @@
+<odoo>
+    <data>
+        <record id="view_national_account_form_sage300" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                <field name="customer_state" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_national_account_sync_final" model="ir.actions.act_window">
+                <field name="name">Customer Sync</field>
+                <field name="res_model">res.partner</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="view_mode">tree,form</field>
+                <field name="domain">[('is_company', '!=', False),('customer_state','in' ,['done'])]</field>
+                <field name="help" type="html">
+                    <p class="o_view_nocontent_smiling_face">
+                        Synced Customer
+                    </p>
+                </field>
+            </record>
+        
+        <record id="action_national_account_sync" model="ir.actions.act_window">
+            <field name="name">Customer Sync</field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Customer
+                </p>
+            </field>
+        </record>
+
+        <record id="action_national_account_sync_pending" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_company', '!=', False),('customer_state','in',['pending']),('bci_contact_type','=','Parent Company')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Pending Customer Sync
+                </p>
+            </field>
+        </record>
+
+        <record id="action_national_account_sync_done" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_company', '!=', False),('customer_state','in',['done']),('bci_contact_type','=','Parent Company')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Synced Customer Sync
+                </p>
+            </field>
+        </record>
+
+        <record id="action_national_account_sync_failed" model="ir.actions.act_window">
+            <field name="name">Customer </field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_company', '!=', False),('customer_state','in',['fail']),('bci_contact_type','=','Parent Company')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Failed Customer Sync
+                </p>
+            </field>
+        </record>
+
+
+    <!-- Logs Views -->
+    <record id="action_national_account_sync_logs" model="ir.actions.act_window">
+        <field name="name">National Account Sync Logs</field>
+        <field name="res_model">sage300_connector.customer_logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Customer Sync Logs
+            </p>
+        </field>
+    </record>
+
+    <record id="national_account_sync_logs_form_view" model="ir.ui.view">
+        <field name="name">National Account Sync Logs</field>
+        <field name="model">sage300_connector.customer_logs</field>
+        <field name="arch" type="xml">
+            <form string="Logs">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="ref" nolabel="1"/>
+                    <field name="message" nolabel="1"/>
+                    <field name="request" nolabel="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="national_account_sync_logs_tree">
+        <field name="name">Customer Sync Logs</field>
+        <field name="model">sage300_connector.customer_logs</field>
+        <field name="arch" type="xml">
+            <list string="Logs">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="message"/>
+                <field name="ref"/>   
+            </list>
+        </field>
+    </record>
+
+  </data>
+</odoo>

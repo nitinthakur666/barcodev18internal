@@ -1,0 +1,71 @@
+<odoo>
+    <data>
+
+        <record id="barcode_india_payment_terms_tree_view" model="ir.ui.view">
+            <field name="name">Barcode India Payment Term Tree View</field>
+            <field name="model">barcode_india.payment_term</field>
+            <field name="arch" type="xml">
+                <list string="Payment Terms" expand="1">
+                    <header>
+                        <button name="action_approve" type="object" string="Approve"/>
+                    </header>
+                    <field name="name" />
+                    <field name="percentange" />
+                    <field name="bci_pricing_category" invisible="1" />
+                    <field name="order_id" invisible="1" />
+                    <field name="bci_is_approved" invisible="1" />
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" groups="barcode_india.group_payment_term_approver" />
+                </list>
+            </field>
+        </record>
+
+        <record id="barcode_india_payment_terms_form_view" model="ir.ui.view">
+            <field name="name">Barcode India Payment Term Form View</field>
+            <field name="model">barcode_india.payment_term</field>
+            <field name="arch" type="xml">
+                <form string="Payment Term">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="percentange" />
+                            </group>
+                            <group>
+                                <field name="bci_pricing_category" readonly="1" />
+                                <field name="order_id" invisible="1" />
+                                <field name="bci_is_approved" readonly="1" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="bci_approve_note" readonly="1" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="barcode_india_payment_terms_search_view" model="ir.ui.view">
+            <field name="name">Barcode India Payment Term Search View</field>
+            <field name="model">barcode_india.payment_term</field>
+            <field name="arch" type="xml">
+                <search>
+                    <group expand="1" string="Group By">
+                        <filter string="Pricing Category" name="bci_pricing_category" domain="[]" context="{'group_by':'bci_pricing_category'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="barcode_india_payment_terms_action">
+            <field name="name">Payment Term</field>
+            <field name="res_model">barcode_india.payment_term</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Payment Terms
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

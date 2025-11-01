@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record id="barcode_india_erp_category_tree_view" model="ir.ui.view">
+            <field name="name">Barcode India ERP Category Tree View</field>
+            <field name="model">barcode_india.erp_acc_category</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" invisible="1"/>
+                    <field name="name" />
+                    <field name="lineof_business_id" invisible="1"/>
+                    <field name="margin_default" />
+                    <field name="product_head" widget="many2many_tags"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="barcode_india_erp_category_form_view" model="ir.ui.view">
+            <field name="name">Barcode India ERP Category Form View</field>
+            <field name="model">barcode_india.erp_acc_category</field>
+            <field name="arch" type="xml">
+                <form string="ERP Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence" invisible="1"/>
+                                <field name="name" />
+                                <field name="lineof_business_id" invisible="1"/>
+                                <field name="freight_applicable" />
+                                <field name="installation_applicable" />
+                                <field name="margin_default" />
+                                <field name="product_head" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_barcode_india_erp_category" model="ir.actions.act_window">
+            <field name="name">ERP Category</field>
+            <field name="res_model">barcode_india.erp_acc_category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Barcode India ERP Category
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

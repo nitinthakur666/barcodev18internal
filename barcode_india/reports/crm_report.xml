@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record id="crm_lead_report" model="ir.actions.report">
+            <field name="name">Lead with Quotation</field>
+            <field name="model">crm.lead</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">barcode_india.report_lead_with_quotation</field>
+            <field name="report_file">barcode_india.report_lead_with_quotation</field>
+            <field name="attachment_use">True</field>
+            <field name="binding_model_id" ref="crm.model_crm_lead"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_lead_with_quotation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="barcode_india.report_sales_cover_letter"/>
+                    <t t-foreach="doc.order_ids" t-as="doc">
+                        <t t-call="sale.report_saleorder_document"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

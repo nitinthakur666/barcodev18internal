@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_mail_message_view_form_inherited">
+            <field name="name">mail.message.view.form.inherited</field>
+            <field name="model">mail.message</field>
+            <field name="inherit_id" ref="mail.mail_message_view_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_ids']" position="after">
+                      <field name="cc_partner_ids" widget="many2many_tags"/>
+                      <field name="bcc_partner_ids"  widget="many2many_tags"  />
+                  </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

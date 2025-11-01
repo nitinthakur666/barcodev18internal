@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SOPF Header Tree View -->
+    <record id="view_sopf_header_tree" model="ir.ui.view">
+        <field name="name">sopf.header.tree</field>
+        <field name="model">barcode_india.sopf_header</field>
+        <field name="arch" type="xml">
+            <list string="Legacy SOPF" create="false" delete="false">
+                <field name="name"/>
+                <field name="sopf_salesperson"/>
+                <field name="company_name"/>
+                <field name="po_number"/>
+                <field name="order_date"/>
+                <field name="sopf_status"/>
+                <field name="sopf_total_amount_with_tax"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SOPF Header Search View -->
+    <record id="view_sopf_header_search" model="ir.ui.view">
+        <field name="name">sopf.header.search</field>
+        <field name="model">barcode_india.sopf_header</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="sopf_status_posted" string="Posted" domain="[('sopf_status','=','Posted')]"/>
+            </search>
+        </field>
+    </record>    
+
+    <!-- SOPF Header Form View -->
+    <record id="view_sopf_header_form" model="ir.ui.view">
+        <field name="name">sopf.header.form</field>
+        <field name="model">barcode_india.sopf_header</field>
+        <field name="arch" type="xml">
+            <form string="Legacy SOPF" create="false" delete="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sopf_salesperson"/>
+                            <field name="sopf_billingaddress"/>
+                            <field name="sopf_shippingaddress"/>
+                            <field name="company_name"/>
+                            <field name="company_id"/>
+                            <field name="sopf_legacycompanyid" />
+                        </group>
+                        <group>
+                            <field name="costsheet_id"/>
+                            <field name="po_number"/>
+                            <field name="order_date"/>
+                            <field name="sopf_status"/>
+                            <field name="sopf_total_amount_with_tax"/>
+                            <field name="payment_terms"/>
+                            <field name="payment_schedule"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Items">
+                            <field name="item_ids">
+                                <list>
+                                    <field name="sopf_number_text" />
+                                    <field name="part_number"/>
+                                    <field name="item_description"/>
+                                    <field name="quantity"/>
+                                    <field name="order_price"/>
+                                    <field name="total_order_amount"/>
+                                    <field name="amount_after_tax"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_sopf_header" model="ir.actions.act_window">
+        <field name="name">Legacy SOPF</field>
+        <field name="res_model">barcode_india.sopf_header</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_sopf_status_posted' : 1}</field>
+    </record>
+</odoo>

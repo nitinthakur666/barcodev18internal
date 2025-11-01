@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sage300.connector</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside" >
+                <div class="app_settings_block" data-string="sage300_connector" data-key="sage300_connector" string="Sage300 Connector">
+                    <h2>Sage300 Integrations</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <div class="text-muted">
+                                    Sync data with <i>'sales'</i>
+                                </div>
+                                <div class="content-group">
+                                    <div>
+                                        <div class="col-12 col-lg-6 o_setting_box">
+                                            <div > 
+                                                <label for="s3_username" class="col-lg-6 o_light_label"/>
+                                                <field name="s3_username" password="True"/>
+                                            </div>
+                                            <div>
+                                                <label for="s3_password" class="col-lg-6 o_light_label"/>
+                                                <field name="s3_password" password="True"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="content-group">
+                                        <div>
+                                            <group>
+                                                <label for="s3_base_url" string="Base URL"/>
+                                                <field name="s3_base_url" colspan="5" nolabel="1"/>
+                                            </group>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Pricelist</h2>
+                    <div class="row mt16 o_settings_container" name="price_list_setting_container">
+                        <div id="sales_settings_invoicing_policy"
+                            class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="s3_pricelist"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="s3_pricelist" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Billing Cycle</h2>
+                    <div class="row mt16 o_settings_container" name="billing_cycle_setting_container">
+                        <div id="billing_cycle_settings"
+                            class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="s3_billing_cycle"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="s3_billing_cycle" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>InvoiceSync</h2>
+                    <div class="row mt16 o_settings_container" name="invoicing_sync_setting_container">
+                        <div id="sales_settings_invoicing_policy"
+                            class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="s3_invoice_date"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="s3_invoice_date" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_sage300_connector_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'sage300_connector'}</field>
+    </record>
+</odoo>

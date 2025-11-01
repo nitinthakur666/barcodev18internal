@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="barcode_india_freight_type">
+        <field name="name">Freight Type</field>
+        <field name="model">barcode_india.freight_types</field>
+        <field name="arch" type="xml">
+            <list string="Freight Type" editable="bottom">
+                <field name="name"/>
+                <field name="minimumcharge" />
+                <field name="percentage_ofHardware" />
+            </list>
+        </field>
+    </record>
+    <record id="action_barcode_india_freight_type" model="ir.actions.act_window">
+        <field name="name">Freight Type</field>
+        <field name="res_model">barcode_india.freight_types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+</odoo>

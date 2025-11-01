@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="BCI" id="menu_barcode_india_root" sequence="30" web_icon="barcode_india,static/description/icon.png"/>
+  
+    <menuitem action="barcode_india_integration_action" id="menu_barcode_india_integrations" parent="barcode_india.menu_barcode_india_root" sequence="0" name="Integrations"/>
+    <menuitem id="menu_barcode_india_master" name="Master" parent="barcode_india.menu_barcode_india_root" sequence="90" groups="base.group_system"/>
+    <menuitem id="menu_barcode_india_config_root" name="Configuration" parent="barcode_india.menu_barcode_india_root" sequence="100" groups="base.group_system"/>
+    <menuitem id="menu_barcode_india_settings" name="Settings" parent="menu_barcode_india_config_root" sequence="0" action="action_barcode_india_config_settings" groups="base.group_system"/>
+
+    
+    <menuitem name="Contracts" id="menu_contracts_root" parent="barcode_india.menu_barcode_india_root"  sequence="4"/>
+
+    <menuitem action="action_barcode_india_contract" id="menu_barcode_india_contracts_id" parent="barcode_india.menu_contracts_root" sequence="4" name="Contracts"/>
+    <menuitem id="menu_contract_stage" name="Contract Stage" parent="menu_barcode_india_config_root" sequence="1" action="action_barcode_india_contract_stage"/>
+    <menuitem id="menu_contract_type" name="Contract Type" parent="menu_barcode_india_config_root" sequence="2" action="action_barcode_india_contract_type"/>
+    <menuitem id="menu_assets_stage" name="Assets Stage" parent="menu_barcode_india_config_root" sequence="3" action="action_barcode_india_assets_stage"/>
+
+    <menuitem action="action_barcode_india_assets" id="menu_barcode_india_assets_id" parent="barcode_india.menu_contracts_root" sequence="5" name="Assets"/>
+
+    <!-- BCI Helpdesk -->
+    <menuitem id="menu_resolution_type" name="Resolution Type" parent="menu_barcode_india_master" sequence="4" action="action_barcode_india_resolution_type"/>
+    <menuitem id="menu_reason_code" name="RCA Reason Code" parent="menu_barcode_india_master" sequence="5" action="action_barcode_india_reason_code"/>
+    <menuitem id="menu_bant" name="Bant" parent="menu_barcode_india_master" sequence="17" action="action_barcode_india_bant"/>
+    <menuitem name="Helpdesk" id="menu_helpdesk_bci_root" parent="barcode_india.menu_barcode_india_root"  sequence="5"/>
+
+    <menuitem id="menu_bci_case_type" name="Case Type" parent="menu_helpdesk_bci_root" sequence="1" action="action_barcode_india_case_type"/>
+    <menuitem id="menu_bci_case_sub_type" name="Case Sub Type" parent="menu_helpdesk_bci_root" sequence="2" action="action_barcode_india_case_sub_type"/>
+    <menuitem id="menu_bci_problem_type" name="Problem Type" parent="menu_helpdesk_bci_root" sequence="3" action="action_barcode_india_problem_type"/>
+    <!-- <menuitem id="menu_bci_problem_sub_type" name="Problem Sub Type" parent="menu_helpdesk_bci_root" sequence="4" action="action_barcode_india_problem_sub_type"/> -->
+    <menuitem id="menu_bci_chargeable" name="Chargeable" parent="menu_helpdesk_bci_root" sequence="5" action="action_barcode_india_chargeable"/>
+    <menuitem id="menu_bci_master" name="RMA Master" parent="menu_helpdesk_bci_root" sequence="6" action="action_barcode_india_rma_master"/>
+    <menuitem id="menu_bci_escalation" name="Escalation" parent="menu_helpdesk_bci_root" sequence="7" action="action_barcode_india_escalation"/>
+    <menuitem id="menu_assign_report_matrix" name="Assign Reports Matrix" parent="menu_helpdesk_bci_root" sequence="8" action="action_barcode_india_assign_report"/>
+    <menuitem id="menu_assign_report_matrix_helpdesk" name="Assign Reports Matrix" parent="helpdesk.helpdesk_ticket_report_menu_main" sequence="8" action="action_barcode_india_assign_report"/>
+
+    <!-- CRM -->
+    <menuitem id="menu_lead_type" name="Lead Type" parent="crm.crm_menu_config" sequence="100" action="action_barcode_india_lead_type"/>
+    <menuitem id="menu_region" name="Region" parent="crm.crm_menu_config" sequence="101" action="action_barcode_india_region"/>
+    <menuitem id="menu_vertical" name="Vertical" parent="crm.crm_menu_config" sequence="102" action="action_barcode_india_vertical"/>
+    <menuitem id="menu_application_type" name="Application Type" parent="crm.crm_menu_config" sequence="103" action="action_barcode_india_application_type"/>
+    <menuitem id="menu_probability" name="Probability" parent="crm.crm_menu_config" sequence="104" action="action_barcode_india_probability"/>
+    <menuitem id="menu_activities" name="Activities" parent="crm.crm_menu_config" sequence="105" action="action_barcode_india_activities"/>
+    <menuitem id="menu_stages" name="Stages" parent="crm.crm_menu_config" sequence="106" action="action_barcode_india_stages"/>
+    <menuitem id="menu_lead_status" name="Lead Status" parent="crm.crm_menu_config" sequence="107" action="action_barcode_india_lead_status"/>
+    <menuitem id="menu_lead_lob" name="LOB" parent="crm.crm_menu_config" sequence="107" action="action_barcode_india_lob"/>
+    <menuitem id="menu_reason_lost" name="Reject Reason" parent="crm.menu_crm_config_lead" sequence="107" action="action_barcode_india_reject_reason"/>
+    <menuitem id="menu_status_bci" name="Status" parent="crm.crm_menu_config" sequence="108" action="action_barcode_india_status"/>
+
+    <!-- BCI Costing -->
+    <menuitem id="menu_barcode_india_cpq_root" name="Costing" parent="barcode_india.menu_barcode_india_root" sequence="50" groups="base.group_system"/>
+    <menuitem id="menu_quotation_type" name="Quotation Type" parent="menu_barcode_india_cpq_root" sequence="51" action="action_quotation_type"/>
+    <menuitem id="menu_pricing_category" name="Pricing Categories" parent="menu_barcode_india_cpq_root" sequence="52" action="action_barcode_india_pricing_category"/>
+    <menuitem id="menu_termsconditions" name="Terms and Conditions" parent="menu_barcode_india_cpq_root" sequence="55" action="action_barcode_india_termsconditions"/>
+    <menuitem id="menu_pricing_factor" name="Pricing Factor" parent="menu_barcode_india_cpq_root" sequence="53" action="action_barcode_india_pricing_factor"/>
+    <menuitem id="menu_discount_category" name="Discount Category" parent="menu_barcode_india_cpq_root" sequence="54" action="action_barcode_india_discount_category"/>
+    <menuitem id="menu_sale_person_limit" name="Sale Person Limit" parent="menu_barcode_india_cpq_root" sequence="57" action="action_sale_person_limit"/>
+    <menuitem id="menu_view_master" name="Cost Sheet View Master" parent="menu_barcode_india_master" sequence="6" action="action_barcode_india_view_master"/>
+    <menuitem id="menu_super_category" name="Super Category" parent="menu_barcode_india_cpq_root" sequence="58" action="action_barcode_india_super_category"/>
+    <menuitem id="menu_line_of_business" name="Line Of Business" parent="menu_barcode_india_cpq_root" sequence="59" action="action_barcode_india_line_of_business"/>
+    <menuitem id="menu_erp_category" name="ERP Category" parent="menu_barcode_india_cpq_root" sequence="60" action="action_barcode_india_erp_category"/>
+    <menuitem id="menu_freight_type" name="Freight Type" parent="menu_barcode_india_cpq_root" sequence="61" action="action_barcode_india_freight_type"/>
+    <menuitem id="menu_installation_type" name="Installation Type" parent="menu_barcode_india_cpq_root" sequence="62" action="action_barcode_india_installation_type"/>
+
+    <menuitem id="menu_acount_set_code_master" name="Account Set Code" parent="menu_barcode_india_master" sequence="7" action="action_barcode_india_account_set_code"/>
+
+    <menuitem id="menu_grpup_code_master" name="Group Code" parent="menu_barcode_india_master" sequence="10" action="action_barcode_india_group_code"/>
+        <menuitem id="menu_model_number_master" name="Model Number" parent="menu_barcode_india_master" action="action_barcode_india_model_number"/>
+    <menuitem id="menu_tax_group_master" name="Tax Group" parent="menu_barcode_india_master" sequence="11" action="action_barcode_india_tax_group"/>
+    <menuitem id="menu_terms_code_master" name="Terms Code" parent="menu_barcode_india_master" sequence="12" action="action_barcode_india_terms_code"/>
+    <menuitem id="menu_vertical_master" name="Vertical" parent="menu_barcode_india_master" sequence="13" action="action_barcode_india_vertical"/>
+    <menuitem id="menu_sub_vertical_master" name="Sub Vertical" parent="menu_barcode_india_master" sequence="14" action="action_barcode_india_sub_vertical"/>
+    <menuitem id="menu_sub_vertical_category_master" name="Sub Vertical Category" parent="menu_barcode_india_master" sequence="15" action="action_barcode_india_sub_vertical_category"/>
+    <menuitem id="menu_location_wise_inventory" name="Location Wise Inventory" parent="menu_barcode_india_master" sequence="16" action="action_barcode_india_location_inventory"/>
+  
+    <menuitem name="Pricing Requests" id="menu_sales_order_lines_report" parent="sale.sale_menu_root" action="sale_order_line_report_action" sequence="15"/>
+    <!-- Sevice Menuitem -->
+
+    <menuitem name="Service" id="menu_service_root" parent="barcode_india.menu_barcode_india_root"  sequence="6"/>
+    <menuitem id="menu_own_company_master" name="Own Company" parent="menu_service_root" sequence="1" action="action_barcode_india_own_company"/>
+    <menuitem id="menu_oem_product_group_master" name="OEM &amp; Product Group" parent="menu_service_root" sequence="2" action="action_barcode_india_oem_product_group"/>
+    <menuitem id="menu_oem_master" name="OEM" parent="menu_service_root" sequence="2" action="action_barcode_india_oem"/>
+    <menuitem id="menu_warranty_amc_master" name="Warranty/AMC/Carepack Type" parent="menu_service_root" sequence="3" action="action_barcode_india_warranty_amc"/>
+    <menuitem id="menu_coverage_master" name="Coverage" parent="menu_service_root" sequence="4" action="action_barcode_india_coverage"/>
+    <menuitem id="menu_service_category_master" name="Service Category" parent="menu_service_root" sequence="5" action="action_barcode_india_service_category"/>
+    <menuitem id="menu_coverage_type_master" name="Coverage Type" parent="menu_service_root" sequence="6" action="action_barcode_india_coverage_type"/>
+    <menuitem id="menu_onsite_coverage_master" name="Onsite Coverage" parent="menu_service_root" sequence="7" action="action_barcode_india_onsite_coverage"/>
+    <menuitem id="menu_standby_equipment_master" name="Engineer &amp; Standby Equipment" parent="menu_service_root" sequence="8" action="action_barcode_india_standby_equipment"/>
+
+
+    <menuitem id="menu_legacy_asset_root" name="Legacy Asset" parent="barcode_india.menu_barcode_india_root" sequence="77" />
+    <menuitem id="menu_lgacy_asset" name="Legacy Asset" parent="barcode_india.menu_legacy_asset_root" sequence="0" action="action_legacy_asset"/>
+
+    <menuitem id="menu_test_case_status" name="Test Case Status" parent="project.menu_project_config" sequence="0" action="action_barcode_india_test_case_status"/>
+    <menuitem id="menu_test_cases" name="Test Cases" parent="project.menu_project_report" action="action_barcode_india_test_cases" sequence="100"/>
+
+    <menuitem id="menu_sopf_header" name="Legacy SOPF" parent="sale.sale_order_menu" sequence="109" action="action_sopf_header"/>
+    <menuitem id="menu_sopf_items" name="Legacy SOPF Items" parent="sale.sale_order_menu" sequence="110" action="action_sopf_items"/>
+
+    <menuitem id="menu_order_lines_custom_view" name="Order Lines" parent="sale.sale_order_menu" action="sale_order_line_custom_action" sequence="111"/>
+</odoo>

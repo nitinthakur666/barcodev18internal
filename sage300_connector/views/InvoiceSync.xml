@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record id="invoice_sync_form_view" model="ir.ui.view">
+            <field name="name">Invoice Sync form</field>
+            <field name="model">sage300_connector.invoice_sync</field>
+            <field name="arch" type="xml">
+                <form string="Logs">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="s3_invoice_no"/>
+                                <field name="s3_sopf_ref"/>
+                                <field name="s3_invoice_date"/>
+                            </group>
+                            <group>
+                                <field name="s3_amount"/>  
+                                <field name="s3_document"></field> 
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="invoice_sync_tree">
+            <field name="name">Invoice Sync tree</field>
+            <field name="model">sage300_connector.invoice_sync</field>
+            <field name="arch" type="xml">
+                <list string="Logs">
+                    <field name="s3_invoice_no"/>
+                    <field name="s3_sopf_ref"/>
+                    <field name="s3_invoice_date"/>
+                    <field name="s3_amount"/>  
+                    <field name="s3_document"></field> 
+                </list>
+            </field>
+        </record>
+
+        <record id="action_invoice_sync" model="ir.actions.act_window">
+                <field name="name">Invoice Sync</field>
+                <field name="res_model">sage300_connector.invoice_sync</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="view_mode">tree,form</field>
+                <field name="domain"></field>
+        </record>
+
+    </data>
+</odoo>

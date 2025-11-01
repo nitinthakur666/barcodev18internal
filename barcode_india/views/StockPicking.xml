@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record id="bci_stock_picking_form" model="ir.ui.view">
+            <field name="name">bci.stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Copy Operations" name="action_copy_moves" type="object" modifiers="{'invisible': [('bci_moves_to_copy','=',False)]}"/>
+                    <button string="Change Asset" name="action_change_asset" type="object" modifiers="{'invisible': [('bci_spare_transfer','=',True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="bci_source_ticket"/>
+                    <field name="bci_product"/>
+                    <field name="bci_for_repair_at_bci" />
+                    <field name="bci_spare_transfer" invisible="1"/>
+                    <field name="bci_moves_to_copy" invisible="1"/>
+                    <field name="bci_oem"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside">
+                    <field name="bci_product" invisible="1"/>
+                    <field name="bci_spare_transfer" invisible="1"/>
+                    <field name="bci_rma_request_no" optional="show" modifiers="{'invisible': [('bci_spare_transfer','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="bci_stock_picking_tree" model="ir.ui.view">
+            <field name="name">bci.stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="bci_source_ticket"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

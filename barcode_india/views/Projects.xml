@@ -1,0 +1,96 @@
+<odoo>
+	<data>
+		<record id="project_project_form_baarcode" model="ir.ui.view">
+            <field name="name">project.project.form.barcode</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//div//button[@name='project_update_all_action']" position="before">
+                    <button name="action_show_contract_details" string="Contracts" type="object" icon="fa-usd">
+                        <field name="bci_contract_details_count" widget="statinfo" />
+                    </button>
+                    <button class="oe_stat_button" icon="fa-sitemap" type="object" name="action_parent_project_details">
+                        <field widget="statinfo" name="bci_parent_project_count" string="CR's"/>
+                    </button>
+                    <button name="action_show_bugs" string="Bugs" type="object" icon="fa-usd">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value"><field name="bci_bug_task_count" widget="statinfo" nolabel="1"/></span>
+                            <span class="o_stat_text">Bugs</span>
+                        </div>
+                    </button>
+                    <button name="action_show_test_case" string="Test Cases" type="object" icon="fa-usd">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value"><field name="bci_test_case_count" widget="statinfo" nolabel="1"/></span>
+                            <span class="o_stat_text">Test Cases</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="bci_cr" string="CR"/>
+                    <field name="bci_parent_project" string="Parent Project" modifiers="{'invisible': [['bci_cr','=',False]]}"/>
+                    <field name="is_presales_project" />
+                    <field name="bci_is_bug"/>
+                    <field name="software_project" />
+                    <field name="is_product" modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_type"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_platform"  widget="radio" modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_priority"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_severity"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_impact_module"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_cluster_type" modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="bug_environment"  widget="radio" modifiers="{'invisible': [('software_project', '=', False)]}"/>
+                    <field name="product_process_bifurcation" modifiers="{'invisible': [('is_product', '=', False)]}" />
+                    <field name="is_product_package_selected" modifiers="{'invisible': [('is_product', '=', False)]}" />
+                    <field name="product_package_selection" 
+                           modifiers="{'invisible': [('is_product_package_selected', '=', False)]}"
+                           />
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="bci_partner_ids" widget="many2many_tags"/>
+                    <field name="bci_user_ids" widget="many2many_tags"/>
+                    <field name="bci_primary_user" domain="[('id','in',bci_user_ids)]" required="1"/>
+                    <field name="bci_senior_designated" domain="[('id','in',bci_user_ids)]"/>
+                </xpath>
+                <xpath expr="//page[@name='description']" position="after">
+                    <page name="summary_page" string="Project Risks">
+                        <field name="bci_summary" type="html" placeholder="Project Risks"/>
+                    </page>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="contract" string="Contract">
+                        <field name="bci_contract_ids">
+                            <list string="Contracts">
+                                <field name="name"/>
+                                <field name="bci_customer"/>
+                                <field name="bci_site"/>
+                                <field name="bci_start"/>
+                                <field name="bci_end"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="project_view_form_inherit_barcode" model="ir.ui.view">
+            <field name="name">project.view.form.inherit.barcode</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_field_service']/div" position="inside">
+                    <div class="o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="bci_is_pm"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="bci_is_pm"/>
+                            <div class="text-muted" id="bci_is_pm">
+                                PM Project
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

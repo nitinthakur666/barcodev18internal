@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <record id="barcode_india_super_category_tree_view" model="ir.ui.view">
+            <field name="name">Barcode India Super Category Tree View</field>
+            <field name="model">barcode_india.super_category</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" invisible="1"/>
+                    <field name="name" />
+                </list>
+            </field>
+        </record>
+
+        <record id="barcode_india_super_category_form_view" model="ir.ui.view">
+            <field name="name">Barcode India Super Category Form View</field>
+            <field name="model">barcode_india.super_category</field>
+            <field name="arch" type="xml">
+                <form string="Super Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence" invisible="1"/>
+                                <field name="name" />
+                            </group>
+                            <notebook>
+                                <page name="LineOfBusiness" string="Line Of Business">
+                                    <field name="line_of_business_ids">
+                                        <list>
+                                            <field name="name" /> 
+                                        </list>
+                                        <form>
+                                            <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name" />
+                                                    <field name="super_category_id" invisible="1"/>
+                                                </group>
+                                                <notebook>
+                                                    <page name="ERP Category" string="ERP Category">
+                                                        <field name="erp_ids">
+                                                            <list>
+                                                                <field name="name" />
+                                                                <field name="lineof_business_id" invisible="1"/>
+                                                            </list>
+                                                            <form string="ERP Category">
+                                                                <sheet>
+                                                                    <group>
+                                                                        <group>
+                                                                            <field name="name" />
+                                                                            <field name="lineof_business_id" invisible="1"/>
+                                                                            <field name="freight_applicable" />
+                                                                            <field name="installation_applicable" />
+                                                                            <field name="margin_default" />
+                                                                            <field name="product_head" widget="many2many_tags"/>
+                                                                        </group>
+                                                                    </group>
+                                                                </sheet>
+                                                            </form>
+                                                        </field>
+                                                    </page>
+                                                </notebook>
+                                            </group>
+                                            </sheet>
+                                        </form>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_barcode_india_super_category" model="ir.actions.act_window">
+            <field name="name">Super Category</field>
+            <field name="res_model">barcode_india.super_category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Barcode India Super Account Category
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,469 @@
+<odoo>
+    <data>
+        <template id="report_saleorder_document_custom" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@name='signature']" position="before">
+                <table class="table table-condensed" t-if="doc.bci_payment_terms">
+                    <h4>Payment Terms :</h4>
+                    <thead>
+                        <tr>
+                            <th>Milestone</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.bci_payment_terms" t-as="tnc_line">
+                            <tr>
+                                <td><span t-esc="tnc_line.name"/></td>
+                                <td class="text-center"><span t-esc="tnc_line.percentange"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </xpath>
+            <xpath expr="//t[@t-set='address']" position="replace"/>
+            <xpath expr="//t[@t-set='information_block']" position="replace" />
+            <xpath expr="//div[@class='page']" position="before">
+                <div class="col-4">                
+                    <div t-field="doc.partner_id" t-options="{'widget': 'contact', 'fields': ['address', 'name', 'phone', 'email'], 'no_marker': True, 'phone_icons': True}"/>
+                    <p t-if="doc.partner_id.vat"><t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST NO'"/>: <span t-field="doc.partner_id.vat"/></p>
+                </div><br/><br/>
+            </xpath>
+            <!-- <xpath expr="//div[@class='page']" position="attributes">
+                <attribute name="style">page-break-before: always</attribute>
+            </xpath> -->
+            <xpath expr="//div[@id='informations']" position="replace">
+                <div id="informations">
+                    <!-- <h4>Sales Information :</h4> -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div t-if="doc.client_order_ref" name="informations_reference">
+                                <strong>Your Reference:</strong>
+                                <span t-field="doc.client_order_ref"/>
+                            </div>
+                            <div t-if="doc.date_order" name="informations_date">
+                                <strong t-if="doc.state in ['draft', 'sent']">Quotation Date:</strong>
+                                <strong t-else="">Order Date:</strong>
+                                <span t-field="doc.date_order" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
+                            </div>
+                            <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" name="expiration_date">
+                                <strong>Expiration:</strong>
+                                <span t-field="doc.validity_date"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <strong>Sale person:</strong>
+                            <span t-field="doc.user_id.name"/>
+                            <t t-if="doc.user_id.phone">
+                                <br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-field="doc.user_id.phone"/>
+                            </t>
+                            <t t-if="doc.user_id.email">
+                                <br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-field="doc.user_id.email"/>
+                            </t>
+                        </div>
+                        <!-- <div class="col-6">
+                            <strong>Salesperson:</strong>
+                            <span t-field="doc.user_id" t-options="{'widget': 'contact', 'fields': ['name', 'phone', 'email'], 'no_marker': True, 'phone_icons': True}"/>
+                        </div> -->
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//p[@name='order_note']" position="before">
+                <h4>Other Terms &amp; Conditions :</h4>
+            </xpath>
+            <!-- <xpath expr="//p[@id='fiscal_position_remark']" position="after">
+                <p t-if="doc.bci_warranty_details ">
+                    <strong><h4>Warranty Details:</h4></strong>
+                    <span t-field="doc.bci_warranty_details"/>
+                </p>
+            </xpath> -->
+            <xpath expr="//table[hasclass('o_main_table')]/thead" position="replace">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_s_no" class="text-center"><strong>S NO</strong></th>
+                        <th name="th_default_code" class="text-center" t-if="doc.bci_printout_type == 'details'">Default Code</th>
+                        <th name="th_description" class="text-center">Description</th>
+                        <th name="th_quantity" class="text-center">Quantity</th>
+                        <th name="th_priceunit" class="text-center">Unit Price</th>
+                        <t t-if="doc.bci_printout_type == 'details'"> 
+                            <th name="th_net_price" class="text-center">Net Amount</th>
+                            <th name="th_warranty" class="text-center">Warranty(in Mths.)</th>
+                        </t>
+                        <th name="th_taxes" class="text-end">Taxes</th>
+                        <th name="th_subtotal" class="text-end">
+                            <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                            <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                        </th>
+                    </tr>
+                </thead>
+            </xpath>
+            <xpath expr="//tbody[@class='sale_tbody']" position="replace">
+                <tbody class="sale_tbody">
+                    <t t-if="doc.bci_printout_type == 'section'">
+                        <t t-set="sections" t-value="list(set(lines_to_report.filtered(lambda line: line.bci_section).mapped('bci_section')))"/>
+                        <t t-set="printed_sections" t-value="[]"/>
+                        <tr t-foreach="lines_to_report" t-as="line">
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <t t-if="line.bci_section and line.bci_section not in printed_sections and doc.bci_show_optional == False">
+                                        <t t-set="total_amount" t-value="sum(lines_to_report.filtered(lambda sec: sec.bci_section == line.bci_section and not sec.bci_is_optional).mapped('price_subtotal'))"/>
+                                        <tr t-if="total_amount">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td><span t-esc="line.bci_section"/></td>
+                                            <td class="text-center">1.00 Units</td>
+                                            <td class="text-center"><span t-esc="round(total_amount, 2)"/></td>
+                                            <td class="text-center"><span t-field="line.tax_id"/></td>                                        
+                                            <td class="text-center">
+                                                <strong><span t-esc="round(total_amount, 2)"/></strong>
+                                            </td>
+                                        </tr>
+                                        <t t-set="printed_sections" t-value="printed_sections + [line.bci_section]"/>
+                                    </t>
+
+                                    <t t-if="line.bci_section and line.bci_section not in printed_sections and doc.bci_show_optional == True">
+                                        <t t-set="total_amount" t-value="sum(lines_to_report.filtered(lambda sec: sec.bci_section == line.bci_section).mapped('price_subtotal'))"/>
+                                        <tr t-if="total_amount">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td><span t-esc="line.bci_section"/></td>
+                                            <td class="text-center">1.00 Units</td>
+                                            <td class="text-center"><span t-esc="round(total_amount, 2)"/></td>
+                                            <td class="text-center"><span t-field="line.tax_id"/></td>                                        
+                                            <td class="text-center">
+                                                <strong><span t-esc="round(total_amount, 2)"/></strong>
+                                            </td>
+                                        </tr>
+                                        <t t-set="printed_sections" t-value="printed_sections + [line.bci_section]"/>
+                                    </t>
+
+                                    <t t-if="not line.bci_section">
+                                        <t t-if="not line.display_type and (not line.bci_is_optional or doc.bci_show_optional)">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td name="td_name"><span t-field="line.name"/></td>
+                                            <td name="td_quantity" class="text-center">
+                                                <span t-field="line.product_uom_qty"/>
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td name="td_priceunit" class="text-center">
+                                                <span t-field="line.price_unit"/>
+                                            </td>
+                                            <!-- <td name="td_net_amount" class="text-center">
+                                                <span t-esc="round(line.price_unit * line.product_uom_qty,2)"/>
+                                            </td> -->
+                                            <td name="td_taxes" class="text-center">
+                                                <span t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                            </td>
+                                            <td t-if="not line.is_downpayment" name="td_subtotal" class="text-center o_price_total">
+                                                <!-- <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/> -->
+                                                <span t-field="line.price_total"/>
+                                            </td>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-elif="line.display_type == 'line_section'">
+                                    <td name="td_section_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                                <t t-elif="line.display_type == 'line_note'">
+                                    <td name="td_note_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </tr>
+                    </t>
+
+                    <t t-elif="doc.bci_printout_type == 'sub_section'">
+                        <t t-set="subsections" t-value="list(set(lines_to_report.filtered(lambda line: line.bci_subsection).mapped('bci_subsection')))"/>
+                        <t t-set="printed_subsections" t-value="[]"/>
+                        <tr t-foreach="lines_to_report" t-as="line">
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <t t-if="line.bci_subsection and line.bci_subsection not in printed_subsections and doc.bci_show_optional == False">
+                                        <t t-set="total_amount" t-value="sum(lines_to_report.filtered(lambda sec: sec.bci_subsection == line.bci_subsection and not sec.bci_is_optional).mapped('price_subtotal'))"/>
+                                        <tr t-if="total_amount">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td><span t-esc="line.bci_subsection"/></td>
+                                            <td class="text-center">1 Units</td>
+                                            <td class="text-center"><span t-esc="round(total_amount, 2)"/></td>
+                                            <td class="text-center"><span t-field="line.tax_id"/></td>                                     
+                                            <td class="text-center">
+                                                <strong><span t-esc="round(total_amount, 2)"/></strong>
+                                            </td>
+                                        </tr>
+                                        <t t-set="printed_subsections" t-value="printed_subsections + [line.bci_subsection]"/>
+                                    </t>
+
+                                    <t t-if="line.bci_subsection and line.bci_subsection not in printed_subsections and doc.bci_show_optional == True">
+                                        <t t-set="total_amount" t-value="sum(lines_to_report.filtered(lambda sec: sec.bci_subsection == line.bci_subsection).mapped('price_subtotal'))"/>
+                                        <tr t-if="total_amount">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td><span t-esc="line.bci_subsection"/></td>
+                                            <td class="text-center">1 Units</td>
+                                            <td class="text-center"><span t-esc="round(total_amount, 2)"/></td>
+                                            <td class="text-center"><span t-field="line.tax_id"/></td>                                    
+                                            <td class="text-center">
+                                                <strong><span t-esc="round(total_amount, 2)"/></strong>
+                                            </td>
+                                        </tr>
+                                        <t t-set="printed_subsections" t-value="printed_subsections + [line.bci_subsection]"/>
+                                    </t>
+
+                                    <t t-if="not line.bci_subsection">
+                                        <t t-if="not line.display_type and (not line.bci_is_optional or doc.bci_show_optional)">
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td name="td_name"><span t-field="line.name"/></td>
+                                            <td name="td_quantity" class="text-center">
+                                                <span t-field="line.product_uom_qty"/>
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td name="td_priceunit" class="text-center">
+                                                <span t-field="line.price_unit"/>
+                                            </td>
+                                            <!-- <td name="td_net_amount" class="text-center">
+                                                <span t-esc="round(line.price_unit * line.product_uom_qty,2)"/>
+                                            </td> -->
+                                            <td name="td_taxes" class="text-center">
+                                                <span t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                            </td>
+                                            <td t-if="not line.is_downpayment" name="td_subtotal" class="text-center o_price_total">
+                                                <!-- <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/> -->
+                                                <span t-field="line.price_total"/>
+                                            </td>
+                                        </t>
+                                    </t>
+
+                                </t>
+                                <t t-elif="line.display_type == 'line_section'">
+                                    <td name="td_section_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                                <t t-elif="line.display_type == 'line_note'">
+                                    <td name="td_note_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </tr>
+                    </t>
+                        
+                    <t t-elif="doc.bci_printout_type == 'details'">
+                        <t t-set="current_subtotal" t-value="0"/>
+
+                        <t t-foreach="lines_to_report" t-as="line">
+
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" t-if="not line.bci_is_optional" groups="account.group_show_line_subtotals_tax_excluded"/>
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" t-if="not line.bci_is_optional" groups="account.group_show_line_subtotals_tax_included"/>
+
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type and (not line.bci_is_optional or doc.bci_show_optional)">
+                                    <td name="td_so_no" class="text-center">
+                                        <t t-esc="line_index + 1"/>
+                                    </td>
+                                    <td name="td_default_code">
+                                        <span t-field="line.product_template_id.default_code"/>
+                                    </td>
+                                    <td name="td_name"><span t-field="line.name"/><br/><span t-if="line.product_template_id.l10n_in_hsn_code">HSN/SAC Code : </span><span t-field="line.product_template_id.l10n_in_hsn_code"/></td>
+                                    <td name="td_quantity" class="text-center">
+                                        <span t-field="line.product_uom_qty"/>
+                                        <span t-field="line.product_uom"/>
+                                    </td>
+                                    <td name="td_priceunit" class="text-center">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td name="td_net_amount" class="text-center">
+                                        <span t-esc="round(line.price_unit * line.product_uom_qty,2)"/>
+                                    </td>
+                                    <td name="td_warranty" class="text-center">
+                                        <span t-field="line.product_id.bci_warranty" />
+                                    </td>
+                                    <td name="td_taxes" class="text-center">
+                                        <span t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                    </td>
+                                    <td t-if="not line.is_downpayment" name="td_subtotal" class="text-center o_price_total">
+                                        <span t-field="line.price_total"/>
+                                    </td>
+                                </t>
+                                <t t-elif="line.display_type == 'line_section'">
+                                    <td name="td_section_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>
+                                </t>
+                                <t t-elif="line.display_type == 'line_note'">
+                                        <td name="td_note_line" colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                </t>
+
+                            </tr>
+
+                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section') and not line.is_downpayment and not line.bci_is_optional">
+                                <tr class="is-subtotal text-center">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                            t-out="current_subtotal"
+                                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </t>
+                </tbody>
+            </xpath>
+
+            <!-- <xpath expr="//th[@name='th_description']" position="before">
+                <th name="th_s_no" class="text-start"><strong>S NO</strong></th>
+                <th name="th_default_code" class="text-start" t-if="doc.bci_printout_type == 'details'">Default Code</th>
+            </xpath>
+
+            <xpath expr="//th[@name='th_discount']" position="replace">                
+            </xpath>
+
+            <xpath expr="//th[@name='th_priceunit']" position="after">
+                <t t-if="doc.bci_printout_type == 'details'"> 
+                    <th name="th_net_price" class="text-center">Net Amount</th>
+                    <th name="th_warranty" class="text-center">Warranty(in Mths.)</th>
+                </t>
+            </xpath> -->
+        </template>
+
+        <!-- <template id="custom_web_external_layout" inherit_id="web.external_layout_standard">
+            <xpath expr="//div[@t-attf-class='header o_company_#{company.id}_layout']" position="replace">
+                <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                    <div class="o_clean_header">
+                        <div class="row">
+                            <div class="col-6">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                            </div>
+                            <div class="col-5 offset-1" name="company_address">
+                                <ul class="list-unstyled">
+                                    <li t-if="company.is_company_details_empty"><t t-esc="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/></li>
+                                    <li t-else=""><t t-esc="company.company_details"/></li>
+                                    <li t-if="forced_vat">
+                                        <t t-esc="company.country_id.vat_label or 'Tax ID'"/>:
+                                        <span t-esc="forced_vat"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template> -->
+        <template id="custom_web_box_external_layout" inherit_id="web.external_layout_boxed">
+            <xpath expr="//div[@class='col-6 text-end mb4']" position="replace"></xpath>
+            <xpath expr="//div[@t-attf-class='footer o_boxed_footer o_company_#{company.id}_layout']" position="replace">
+                <style>
+
+                    .footer-line {
+                    border-width: 1px; /* Adjust border thickness as needed */
+                    border-style: solid; /* Ensure border style is set */
+                    border-color: black; /* Define border color as per your design */
+                    font-weight: normal; /* Ensure normal font weight */
+                    }
+
+                </style>
+
+                <div t-attf-class="footer o_company_#{company.id}_layout">
+                    <hr class="footer-line" />
+                    <div class="text-center">
+                        <div t-field="company.report_footer" />
+                        <div t-if="report_type == 'pdf'"> Page: <span class="page" /> / <span
+                                class="topage" />
+                        </div>
+                        <div t-if="report_type == 'pdf' and display_name_in_footer"
+                            class="text-muted">
+                            <span t-field="o.name" />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="report_sales_cover_letter">
+            <t t-call="web.external_layout">
+                <div class="page" style="page-break-after:always">
+                    <div class="col-4" style="font-size: 18px;">
+                        <div t-field="doc.partner_id" t-options="{'widget': 'contact', 'fields': ['address', 'name', 'phone', 'email'], 'no_marker': True, 'phone_icons': True}"/>
+                        <p t-if="doc.partner_id.vat"><t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST NO'"/>: <span t-field="doc.partner_id.vat"/></p>
+                    </div><br/><br/>
+                    
+                    <span style="font-size: 18px;">Dear <t t-esc="doc.partner_id.name"/>,</span><br/><br/>
+                    
+                    <span style="font-size: 18px;">We, at Bar Code India (BCI), are thrilled about the opportunity to partner with you. At BCI, our core mission is to collaborate with esteemed organizations like yours, to unlock excellence by driving efficiency, ensuring quality, and fostering sustainability across their manufacturing and supply chains.</span><br/><br/>
+                    
+                    <span style="font-size: 18px;">Over the past 25 years, we have successfully executed more than 2000 projects in India's Manufacturing, Retail, Transport and Logistics, and Government sectors. Our extensive and diverse portfolio of supply chain solutions, encompassing both hardware and software domains, is unparalleled. Our greatest strength lies in our team of over 250 adept technology specialists located across 9 offices spanning India. Our team possesses comprehensive expertise in Barcoding, RFID, IoT, Automation, WLAN, and Supply Chain Software, including but not limited to Warehouse Management, Manufacturing Execution Systems, and Asset Intelligence.</span><br/><br/>
+                    
+                    <span style="font-size: 18px;">We are confident that we can design, create, and implement the right solution to meet your needs. Enclosed herewith, please find comprehensive details of our proposed engagement for the discussed project.</span><br/><br/>
+                    
+                    <span style="font-size: 18px;">We understand the criticality of our solutions deployed within your operations, and as such, our principles are anchored in an unwavering commitment to customer-centricity. If you have any inquiries or concerns at any point, please do not hesitate to contact me directly. We at BCI are excited to embark on this collaborative journey as part of your digital transformation.</span><br/><br/>
+                    
+                    <span style="font-size: 18px;">Best regards,</span><br/><br/>
+                    
+                    <div class="col-6" style="font-size: 18px;">
+                        <t t-esc="doc.user_id.name"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_sale_order_with_cover_letter">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-if="doc.bci_stage == 'approved'">
+                        <t t-call="barcode_india.report_sales_cover_letter"/>
+                        <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+                    </t>
+                    <t t-else="">
+                        <t t-call="web.external_layout">
+                            <div class="page">
+                                <div style="margin-top: 300px;">
+                                    <p style="text-align: center;">This Quotation is not approved and cannot be printed.</p>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="bci_report_saleorder_with_condition" inherit_id="sale.report_saleorder">
+            <xpath expr="//t[@t-foreach='docs']" position="replace">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-if="doc.bci_stage == 'approved'">
+                        <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+                    </t>
+                    <t t-else="">
+                        <t t-call="web.external_layout">
+                            <div class="page">
+                                <div style="margin-top: 300px;">
+                                    <p style="text-align: center;">This Quotation is not approved and cannot be printed.</p>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+        
+
+        <record id="sales_with_cover_letter_report" model="ir.actions.report">
+            <field name="name">Quotation with Cover Letter</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">barcode_india.report_sale_order_with_cover_letter</field>
+            <field name="report_file">barcode_india.report_sale_order_with_cover_letter</field>
+            <field name="attachment_use">True</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

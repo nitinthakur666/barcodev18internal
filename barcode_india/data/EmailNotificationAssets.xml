@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <record id="bci_email_notification_expired_assets_template" model="mail.template">
+            <field name="name">Expired Assets</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="subject">Expired Email Notification</field>
+            <field name="email_from">{{ object.company.email }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>
+                        Dear madam/sir,<br/>
+                        Email notification for expired assets
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <record id="bci_email_template_task_due_reminder" model="mail.template">
+            <field name="name">Task Due Date Reminder</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="subject">Reminder: Task {{object.name}} is due soon!</field>
+            <field name="email_from">{{ object.company_id.email }}</field>
+            <field name="email_to">{{ ctx.get('email_to', '') }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello 
+                        <t t-if="object.user_ids">
+                            <t t-esc="', '.join(object.user_ids.mapped('name'))"/>
+                        </t>
+                        <t t-else="Assignee">
+                        </t>,
+                    </p><br/>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        This is a reminder that the task "<strong t-out="object.name"></strong>" is due on <strong t-out="object.date_deadline"></strong>.
+                    </p><br/>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Task details:
+                        <ul>
+                            <li>Project: <t t-out="object.project_id.name or ''"/></li>
+                            <li>Description: <t t-out="object.description or ''"/></li>
+                        </ul>
+                    </p><br/>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Please make sure to complete it on time. You can view the task 
+                        <a t-attf-href="/web#id={{ object.id }}&amp;model=project.task&amp;view_type=form">here</a>.
+                    </p><br/>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Thank you!
+                    </p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

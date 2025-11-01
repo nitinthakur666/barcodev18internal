@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_location_inventory" model="ir.actions.act_window">
+        <field name="name">Location Wise Inventory</field>
+        <field name="res_model">barcode_india.location_inventory</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_location_inventory_tree_view">
+        <field name="name">Location Wise Inventory</field>
+        <field name="model">barcode_india.location_inventory</field>
+        <field name="arch" type="xml">
+            <list string="Location Wise Inventory" editable="bottom">
+                <field name="name"/>
+                <field name="item_no"/>
+                <field name="location"/>
+                <field name="category"/>
+                <field name="quantity_on_hand"/>
+                <field name="quantity_on_po_order"/>
+                <field name="quantity_on_so"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="location_inventory_search" model="ir.ui.view">
+        <field name="name">Location Wise Inventory</field>
+        <field name="model">barcode_india.location_inventory</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="item_no"/>
+                <field name="location"/>
+                <field name="category"/>
+            </search>
+        </field>
+    </record>
+</odoo>

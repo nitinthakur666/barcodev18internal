@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_own_company" model="ir.actions.act_window">
+        <field name="name">Own Company</field>
+        <field name="res_model">barcode_india.own_company</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_own_company_tree_view">
+        <field name="name">Own Company</field>
+        <field name="model">barcode_india.own_company</field>
+        <field name="arch" type="xml">
+            <list string="Own Company" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+</odoo>

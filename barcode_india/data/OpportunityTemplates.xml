@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="bci_pre_sale_template" model="mail.template">
+            <field name="name">Pre Sale Opportunity</field>
+            <field name="model_id" ref="barcode_india.model_bci_pre_sales" />
+            <field name="subject">Pre Sale Notification</field>
+            <field name="email_to">{{object.bci_user.email}}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <div>
+                        <p> Dear Ma'am/Sir,<br /> You are assigned to this opportunity. Please open and review. </p>
+                        <div style="margin: 16px 0px 16px 0px;">
+                            <a t-att-href="'/web#id=%s&amp;model=crm.lead&amp;view_type=form' % object.id" target="_blank"
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                                Open Lead
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

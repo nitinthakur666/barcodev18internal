@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="expired_assets_email_sending_action" model="base.automation">
+            <field name="name">Expired Assets Mail</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="state">mail_post</field>
+            <field name="trigger">on_create</field>
+            <field name="active" eval="True"/>
+            <field name="template_id" ref="barcode_india.bci_email_notification_expired_assets_template"/>
+            <field name="filter_domain">[['bci_barcode_case_type_find','=','hardware'],['bci_warranty_status','=','Out of Warranty']]</field>
+        </record>
+
+        <record id="entitlement_mappig" model="base.automation">
+            <field name="name">Entitlement &amp; SLA Mapping</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="state">code</field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="active" eval="True"/>
+            <field name="trigger_field_ids" eval="[(4,ref('barcode_india.field_helpdesk_ticket__bci_service_product'))]"/>
+            <field name="code">records._onchange_service_product()</field>
+        </record>
+         
+    </data>
+</odoo>

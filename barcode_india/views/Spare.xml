@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="barcode_india_spare">
+        <field name="name">Spares</field>
+        <field name="model">barcode_india.spare</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name" required="1"/>
+                <field name="spare_tmpl_id" invisible="1"/>
+                <field name="product_id" required="1"/>
+                <field name="product_tmpl_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_barcode_india_spare" model="ir.actions.act_window">
+        <field name="name">Spares</field>
+        <field name="res_model">barcode_india.spare</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+
+</odoo>

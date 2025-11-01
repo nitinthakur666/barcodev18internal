@@ -1,0 +1,206 @@
+<odoo>
+  <data>
+
+    <record id="action_contract_sync_final" model="ir.actions.act_window">
+            <field name="name">Contract Sync</field>
+            <field name="res_model">barcode_india.contract_sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                
+                    Synced Contract Staging Table
+                </p>
+            </field>
+        </record>
+        
+        <record id="action_contract_sync" model="ir.actions.act_window">
+            <field name="name">Contract</field>
+            <field name="res_model">barcode_india.contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Contract
+                </p>
+            </field>
+        </record>
+
+        <record id="action_contract_sync_pending" model="ir.actions.act_window">
+            <field name="name">Contract Staging Table</field>
+            <field name="res_model">barcode_india.contract_sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('cs_state','=','pending')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Pending Contract to Sync
+                </p>
+            </field>
+        </record>
+
+        <record id="action_contract_sync_done" model="ir.actions.act_window">
+            <field name="name">Contract Staging Table</field>
+            <field name="res_model">barcode_india.contract_sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('cs_state','=','done')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Synced Contract Staging Table
+                </p>
+            </field>
+        </record>
+
+        <record id="action_contract_sync_failed" model="ir.actions.act_window">
+            <field name="name">Contract Staging Table</field>
+            <field name="res_model">barcode_india.contract_sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('cs_state','=','fail')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Failed Contract Staging Table
+                </p>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="cs_contract_sync_tree">
+            <field name="name">Contract Staging Table Sync</field>
+            <field name="model">barcode_india.contract_sync</field>
+            <field name="arch" type="xml">
+                <list string="Contract Staging Table Tree" decoration-danger="cs_message != False">
+                    <field name="name" />
+                    <field name="cs_invoice_number"/>
+                    <field name="cs_invoice_date"/>
+                    <field name="cs_customer_name"/>
+                    <field name="cs_origin"/>
+                    <field name="cs_sopf_ref"/>
+                    <field name="cs_ready_for_sync" />
+                    <field name="cs_message"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="cs_contract_sync_tree_form">
+            <field name="name">Contract Staging Table Sync</field>
+            <field name="model">barcode_india.contract_sync</field>
+            <field name="arch" type="xml">
+                <form string="Contract Staging Table Sync">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" modifiers="{'invisible': [('active', '=', True)]}"/>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                                
+                        <group name="main">
+                            <group name="first">
+                                <field name="active" invisible="1"/>
+                                <field name="cs_state"/>
+                                <field name="cs_invoice_number"/>
+                                <field name="cs_invoice_date"/>
+                                <field name="cs_origin"/>
+                                <field name="cs_customer_code"/>
+                                <field name="cs_customer_name"/>
+                                <field name="cs_site_code"/>
+                                <field name="cs_sales_person"/>
+                                <field name="cs_preferred_applicable" />
+                                <field name="cs_ready_for_sync" />
+                                <field name="cs_sopf_ref"/>
+                                <field name="cs_erp_oder_ref" />
+                            </group>
+                            <group name="second">
+                                <field name="cs_street"/>
+                                <field name="cs_street2" />
+                                <field name="cs_street3"/>
+                                <field name="cs_street4" />
+                                <field name="cs_state_id"/>
+                                <field name="cs_city" />
+                                <field name="cs_zip" />
+                                <field name="cs_country" />
+                                <field name="cs_address_verification" />
+                                <field name="cs_type" />
+                                <field name="cs_invoice_internal_id" />
+                                <field name="cs_message"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Assets/Carepack">
+                                <field name="cs_assets_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="cs_product_code"/>
+                                        <field name="cs_invoice_date"/>
+                                        <field name="cs_invoice_number"/>
+                                        <field name="cs_line_number"/>
+                                        <field name="cs_quantity"/>
+                                        <field name="cs_contract_sync" invisible="1"/>
+                                        <field name="cs_line_type"/>
+                                        <field name="cs_sopf_ref"/>
+                                        <field name="cs_product"/>
+                                        <field name="cs_service_product"/>
+                                        <field name="cs_careack_product" invisible="1"/>
+                                        <field name="cs_care_pack_line" invisible="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <!-- Contract Logs Views -->
+
+        <record id="action_contract_sync_logs" model="ir.actions.act_window">
+            <field name="name">Contract Sync Logs</field>
+            <field name="res_model">barcode_india.contract_sync_logs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Contract Sync Logs
+                </p>
+            </field>
+        </record>
+
+        <record id="contract_sync_logs_form_view" model="ir.ui.view">
+            <field name="name">Contract Sync Logs</field>
+            <field name="model">barcode_india.contract_sync_logs</field>
+            <field name="arch" type="xml">
+                <form string="Logs">
+                    <sheet>
+                        <group>
+                            <field name="cs_sync_name"/>
+                            <field name="cs_records"/>
+                            <field name="cs_status"/>
+                            <field name="cs_error"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="contract_sync_logs_tree">
+            <field name="name">Contract Sync Logs</field>
+            <field name="model">barcode_india.contract_sync_logs</field>
+            <field name="arch" type="xml">
+                <list string="Logs">
+                    <field name="create_date"/>
+                    <field name="cs_sync_name"/>
+                    <field name="cs_records"/>
+                    <field name="cs_status"/>
+                    <field name="cs_error"/>   
+                </list>
+            </field>
+        </record>
+
+    </data>
+</odoo>

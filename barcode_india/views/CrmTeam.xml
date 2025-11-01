@@ -1,0 +1,265 @@
+<odoo>
+    <record model="ir.ui.view" id="barcode_sales_team_form_view">
+        <field name="name">crm.team.form.barcode</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="bci_code"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_crm_lead_tree_view">
+        <field name="name">crm.lead.form.barcode</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="bci_lead_status" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="before">
+                <xpath expr="//field[@name='partner_name']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field name="write_date"/>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_name']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="after">
+                <xpath expr="//field[@name='email_from']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="bci_vertical"/>
+                <field name="bci_region"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_crm_lead_search_view">
+        <field name="name">crm.lead.search.barcode</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="bci_lead_status"/>
+            </xpath>
+            <xpath expr="//filter[@name='saleschannel']" position="after">
+                <filter string="Lead Status" name="bci_lead_status" context="{'group_by':'bci_lead_status'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_crm_lead_form_view">
+        <field name="name">crm.lead.form.barcode</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//widget[@name='web_ribbon']" position="after">
+                <widget name="web_ribbon" title="Rejected" bg_color="bg-danger" modifiers="{'invisible':[('bci_reject_reason', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_contract" type="object" class="oe_stat_button" icon="fa-inr">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Contract</span>
+                    </div>
+                </button>
+                <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" modifiers="{'invisible':[('bci_task_count', '=', 0)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <field name="bci_task_count" />
+                        <span class="o_stat_text">Task</span>
+                    </div>
+                </button>
+                <button name="action_show_contract_details" string="Contract Details" type="object" icon="fa-folder" modifiers="{'invisible':[('bci_contract_details_count', '=', 0)]}">
+                    <field name="bci_contract_details_count" widget="statinfo" />
+                </button>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/div[1]" position="after">
+                <field name="bci_status"/>
+            </xpath>
+            <xpath expr="//group" position="after">
+                <group>
+                    <group string="Client Details" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}">
+                        <field name="bci_turnover"/>
+                        <field name="bci_any_other_info"/>
+                        <field name="bci_account_type"/>
+                        <field name="decision_maker_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
+                        <field name="influencer_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
+                        <field name="influencer_ext_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
+                        <field name="user_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
+                    </group>
+                    <group string="Client Details" >
+                        <field name="bci_industry_id"/>
+                        <field name="bci_department" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                        <field name="bci_linkedin" widget="url" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                    </group>
+                <!-- </group>
+                <group> -->
+                    <group string="BCI Details">                        
+                        <field name="bci_reject_reason" modifiers="{'invisible': [('bci_reject_reason', '=', False)]}"/>
+                        <field name="bci_rejection_remark" modifiers="{'invisible': [('bci_rejection_remark', '=', False)]}"/>
+                        <field name="bci_lead" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                        <field name="bci_region" />
+                        <field name="bci_vertical" />
+                        <field name="bci_sub_vertical" domain="[('vertical_id','=',bci_vertical)]"/>
+                        <field name="bci_sub_vertical_category" domain="[('sub_vertical_id','=',bci_sub_vertical)]"/>
+                        <field name="bci_requirement"/>
+                        <field name="bci_application_type" widget="many2many_tags"/>
+                        <field name="bci_status_lead"/>
+                        <field name="bci_probability" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                        <field name="bci_activities" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                        <field name="bci_project_title" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}"/>
+                        <field name="bci_lead_status_value" invisible="1"/>
+                    </group>
+                    <group string="BCI Details" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}">
+                        <field name="bci_no_of_site_visit" />
+                        <field name="bci_no_of_meetings" />
+                        <field name="bci_no_of_revision" />
+                        <field name="bci_team_presale" widget="many2many_tags" />
+                        <field name="currency_id" invisible="1" />
+                        <field name="company_id" invisible="1" />
+                        <field name="bci_software" widget="monetary" />
+                        <field name="bci_stage" />
+                        <field name="bci_lead_state" modifiers="{'invisible':[('type','!=','lead')]}" />
+                        <field name="bci_contract_id"/>
+                        <field name="bci_technical_qualified"/>
+                        <field name="bci_technical_description" modifiers="{'invisible':[('bci_technical_qualified','!=',True)]}"/>
+                        <field name="bci_lost_type" modifiers="{'invisible':[('bci_lost_type','=',False)]}" readonly="1"/>
+                        <field name="bci_lost_reason_id" modifiers="{'invisible':[('bci_lost_reason_id','=',False)]}" readonly="1"/>
+                        <field name="bci_lost_reason" modifiers="{'invisible':[('bci_lost_reason','=',False)]}" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="after">
+                <page name='clickup_details' string='Clickup Details'>
+                    <group>
+                        <group>
+                            <field name="bci_task_id" />
+                            <field name="bci_task_custom_id" />
+                            <field name="bci_start_date" />
+                            <field name="bci_date_created" />
+                        </group>
+                        <group>
+                            <field name="bci_space" />
+                            <field name="bci_folder" />
+                            <field name="bci_list" />
+                            <field name="bci_lists" />
+                        </group>
+                    </group>
+                </page>
+                <page name="mql" string="MQL">
+                    <group>
+                        <group>
+                            <!-- <field name="bci_vertical"/> -->
+                            <field name="bci_geography"/>
+                        </group>
+                        <group>
+                            <field name="bci_lob_first_level"/>
+                            <field name="bci_prospect_expectation"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="sql" string="SQL" modifiers="{'invisible':[('bci_lead_status_value','=','NEW'),('type','=','lead')]}">
+                    <group>
+                        <group>
+                            <field name="bci_application_area" modifiers="{'required':[('bci_lead_status_value','=','SQL')]}"/>
+                            <field name="bci_use_case" modifiers="{'required':[('bci_lead_status_value','=','SQL')]}"/>
+                            <field name="bci_key_issue"/>
+                            <field name="bci_discovery_details"/>
+                            <field name="bci_solution_fit"/>
+                        </group>
+                        <group>
+                            <field name="bci_lob" modifiers="{'required':[('bci_lead_status_value','=','SQL')]}"/>
+                            <field name="bci_location_type" modifiers="{'required':[('bci_lead_status_value','=','SQL')]}"/>
+                            <field name="bci_location" modifiers="{'invisible':[('bci_location_type','!=','Multiple Locations')]}"/>
+                            <field name="bci_seniority" modifiers="{'required':[('bci_lead_status_value','=','SQL')]}"/>
+                            <field name="currency_id"/>
+                            <field name="bci_budget" modifiers="{'required':[('bci_lead_status_value','=','MQL')]}"/>
+                            <field name="bci_current_erp"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="bant" string="BANT">
+                    <field name="bci_bant_ids" options="{'no_create': True}">
+                        <list string="BANT" editable="bottom">
+                            <field name="name"/>
+                            <field name="weightage" widget="percentage"/>
+                            <field name="requirement_score"/>
+                            <field name="weightage_value"/>
+                            <field name="bci_lead_id" invisible="1"/>
+                        </list>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" colspan="2">
+                        <field name="total_weightage_value" string="Weighted Average" readonly="1" />
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//h2" position="after">
+                <div class="oe_edit_only d-flex align-items-center" modifiers="{'invisible': [('type', '!=', 'opportunity')]}">
+                    <label for="bci_priority"/>
+                </div>
+                <div class="o_lead_opportunity_form_inline_fields" modifiers="{'invisible': [('type', '!=', 'opportunity')]}">
+                    <field name="bci_priority" widget="priority" nolabel="1" class="oe_inline align-top"/>
+                    <field name="bant_remarks" nolabel="1" class="oe_inline" style="color: red;"/>
+                </div>
+            </xpath>
+
+            <xpath expr="/form[1]/sheet[1]/group[1]/group[3]" position="attributes">
+                <attribute name="string">Client Details</attribute>
+            </xpath>
+            <xpath expr="/form[1]/sheet[1]/group[1]/group[1]" position="attributes">
+                <attribute name="string">Client Details</attribute>
+            </xpath>
+
+            <xpath expr="//header" positon="inside">
+                <button name="convert_to_mql" string="Convert To MQL" data-hotkey="l" type="object" modifiers="{'invisible': ['|',('type', '=', 'opportunity'),('bci_lead_status_value','!=','NEW')]}"/>
+                <button name="convert_to_sql" string="Convert To SQL" data-hotkey="l" type="object" modifiers="{'invisible': ['|',('type', '=', 'opportunity'),('bci_lead_status_value','!=','MQL')]}"/>
+                <button name="action_rejected" string="REJECT" data-hotkey="l" type="object" modifiers="{'invisible': ['|',('type', '=', 'opportunity'),('bci_lead_status_value','=','REJECT')]}"/>
+                <field name="bci_lead_status" widget="statusbar" class="o_field_statusbar" modifiers="{'invisible': ['|', ('active', '=', False), ('type', '=', 'opportunity')],'readonly':True}"/>
+            </xpath>
+
+            <xpath expr="/form[1]/sheet[1]/group[2]/group[2]" position="inside">
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][2]/field[@name='user_id']" position="move"/>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][2]/field[@name='team_id']" position="move"/>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_priority']/field[@name='priority']" position="move"/>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_priority']/field[@name='tag_ids']" position="move"/>
+            </xpath>
+            <xpath expr="//header" positon="inside">
+                <!-- <button name="assign_hardware_pre_sales" string="Add Hardware Pre-Sales" type="object"/>
+                <button name="assign_software_pre_sales" string="Add Software Pre-Sales" type="object"/> -->
+                <button name="add_pre_sales_task" string="Add Pre-Sales Task" type="object"/>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="after">
+                <!-- <field name="bci_hardware_pre_sales" />
+                <field name="bci_software_pre_sales" /> -->
+                <field name="bci_presales_ids" widget="many2many_tags" readonly="1"/>
+            </xpath>
+            <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="attributes">
+                <attribute name="string">Lost/Technical rejected</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_set_lost" string="Lost/Technical rejected" type="object"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>

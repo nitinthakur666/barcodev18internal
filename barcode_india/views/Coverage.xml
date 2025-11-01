@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_coverage" model="ir.actions.act_window">
+        <field name="name">Coverage</field>
+        <field name="res_model">barcode_india.coverage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_coverage_tree_view">
+        <field name="name">Coverage</field>
+        <field name="model">barcode_india.coverage</field>
+        <field name="arch" type="xml">
+            <list string="Coverage" editable="bottom">
+                <field name="name"/>
+                <field name="no_of_days"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+</odoo>

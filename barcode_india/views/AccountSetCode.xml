@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_account_set_code" model="ir.actions.act_window">
+        <field name="name">Account Set Code</field>
+        <field name="res_model">barcode_india.account_set_code</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_account_set_code_tree_view">
+        <field name="name">Account Set Code</field>
+        <field name="model">barcode_india.account_set_code</field>
+        <field name="arch" type="xml">
+            <list string="Account Set Code" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="barcode_india_rma_master">
+        <field name="name">RMA Master</field>
+        <field name="model">barcode_india.rma_masters</field>
+        <field name="arch" type="xml">
+            <list string="RMA Master">
+                <field name="sequence" widget="handle"/>
+                <field name="bci_rma"/>
+                <field name="bci_receive_at_bci"/>
+                <field name="bci_receive_at_engineer" />
+                <field name="bci_receive_at_defective" />
+                <field name="bci_oem_involved" />
+                <field name="bci_spare_transfer"/>
+                <field name="bci_operation_types" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="barcode_india_rma_master_form_view" model="ir.ui.view">
+        <field name="name">RMA Master</field>
+        <field name="model">barcode_india.rma_masters</field>
+        <field name="arch" type="xml">
+            <form string="RMA Master">
+                <sheet>
+                    <group>
+                        <field name="bci_rma" required="1"/>
+                        <field name="bci_receive_at_bci"/>
+                        <field name="bci_receive_at_engineer" />
+                        <field name="bci_receive_at_defective" />
+                        <field name="bci_oem_involved" />
+                        <field name="bci_spare_transfer"/>
+                        <field name="sequence" invisible="1"/>
+                        <field name="bci_operation_types">
+                            <list editable="bottom" >
+                                <field name="sequence" widget="handle"/>
+                                <field name="name" required="1"/>
+                                <field name="bci_rma" invisible="1"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_barcode_india_rma_master" model="ir.actions.act_window">
+        <field name="name">RMA Master</field>
+        <field name="res_model">barcode_india.rma_masters</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+    </record>
+</odoo>

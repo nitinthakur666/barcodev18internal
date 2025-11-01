@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="barcode_india_site_tree">
+        <field name="name">Sites</field>
+        <field name="model">barcode_india.site</field>
+        <field name="arch" type="xml">
+            <list string="Sites" editable="bottom">
+                <!-- <field name="name" required="1" domain="[('type','=','site'),('parent_id','=',bci_customer)]"/> -->
+                <field name="name" required="1" domain="[('bci_contact_type','=','Site'),('bci_parent_company','=',bci_customer)]"/>
+                <field name="bci_customer" required="1"/>
+                <field name="bci_contract_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+</odoo>

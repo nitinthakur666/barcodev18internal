@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_estimation_risk_rating_form_view" model="ir.ui.view">
+        <field name="name">Risk Rating Form View</field>
+        <field name="model">cost_estimation.risk_rating</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Risk Rating">
+                            <field name="risk_rating_lines">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="factor" />
+                                    <field name="rating" widget="percentage" optional="show" />
+                                    <field name="risk_rating" invisible="1" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="cost_estimation_risk_rating_tree_view" model="ir.ui.view">
+        <field name="name">Risk Rating Tree View</field>
+        <field name="model">cost_estimation.risk_rating</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_risk_rating" model="ir.actions.act_window">
+        <field name="name">Risk Rating</field>
+        <field name="res_model">cost_estimation.risk_rating</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Risk Rating
+            </p>
+        </field>
+    </record>
+</odoo>

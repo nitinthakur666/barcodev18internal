@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="barcode_india_integration_action" model="ir.actions.act_window">
+		<field name="name">Integration Dashboard</field>
+		<field name="res_model">barcode_india.integrations</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">kanban,form</field>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+
+	
+	<record model="ir.ui.view" id="barcode_india_integration_kanban">
+			<field name="name">barcode_india.integration.kanban</field>
+			<field name="model">barcode_india.integrations</field>
+			<field name="arch" type="xml">
+				<kanban edit="false" class="o_kanban_mobile" group_create="0" records_draggable="0">
+					<field name="name"/>
+					<field name="has_archive"/>
+					<field name="active_job"/>
+					<field name="limit"/>
+					<field name="cron_job"/>
+					<field name="records"/>
+					<field name="pending_records"/>
+					<field name="process"/>
+					<field name="logs"/>
+					<field name="total_logs"/>
+					<field name="failed_records"/>
+					<field name="processed_records"/>
+					<field name="has_process"/>
+					<field name="final_records"/>
+					<templates>
+                        <t t-name="kanban-box">
+	                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title mb16">
+                                        <div class="o_primary">
+                                            <a type="edit" class="mr-auto">
+                                                <span><field name="name" class="o_primary"/></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content mt0">
+                                    <div class="row mb16">
+                                        <div class="col-6 o_kanban_primary_left">
+                                            <button class="btn btn-primary" name="get_pending_records" type="object" t-if="!record.has_process.raw_value">
+                                            	<span><t t-esc="record.pending_records.value"/> To Process</span>
+                                            </button>
+											<div class="btn-group">
+												<button class="btn btn-primary" name="run_process" type="object" t-if="record.has_process.raw_value and record.active_job.raw_value">
+													<span>Run</span>
+												</button>
+												<button class="btn btn-secondary fa fa-archive" name="run_archive" type="object" t-if="record.has_archive.raw_value" title="Archive Records" aria-label="Archive Records">
+												</button>
+											</div>
+										</div>
+                                        <div class="col-6 o_kanban_primary_right">
+											<div class="d-flex" t-if="record.final_records.raw_value > 0">
+                                                <a name="get_final_records" type="object" class="mr-auto">Documents</a>
+                                            </div>
+                                            <div class="d-flex">
+                                                <a name="get_all_records" type="object" class="mr-auto">Total Records</a>
+                                            </div>
+                                            <div class="d-flex">
+                                                <a name="get_process_logs" type="object" class="mr-auto">Logs</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt3">
+                                        <div class="col-4 border-right">
+                                            <a name="get_pending_records" type="object" class="d-flex flex-column align-items-center">
+                                                <span class="font-weight-bold"><field name="pending_records"/></span>
+                                                <span class="text-muted">Pending</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-4 border-right">
+                                            <a name="get_processed_records" type="object" class="d-flex flex-column align-items-center">
+                                                <span class="text-muted">Processed</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a name="get_failed_records" type="object" class="d-flex flex-column align-items-center">
+                                                <span class="font-weight-bold"><field name="failed_records"/></span>
+                                                <span class="text-muted">Failed</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                        </t>
+                    </templates>
+				</kanban>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="barcode_india_integration_form">
+			<field name="name">barcode_india.integration.form</field>
+			<field name="model">barcode_india.integrations</field>
+			<field name="arch" type="xml">
+				<form string="Integrations">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+                            <button name="toggle_debug" modifiers="{'invisible': [('debug_mode', '=', True)]}" class="oe_stat_button" type="object" icon="fa-code">
+                                <div class="o_stat_info o_field_widget">
+                                    <span class="text-danger">No debug</span>
+                                </div>
+                            </button>
+                            <button name="toggle_debug" modifiers="{'invisible': [('debug_mode', '=', False)]}" class="oe_stat_button" type="object" icon="fa-code">
+                                <div class="o_stat_info o_field_widget">
+                                    <span class="text-success">Debug requests</span>
+                                </div>
+                            </button>
+                        </div>
+						<h1>
+							<field name="name" />
+						</h1>
+						<group nam="main_group">
+							<group name="first">
+								<field name="debug_mode" invisible="1"/>
+								<field name="records" />
+								<field name="pending_records" />
+								<field name="active_job"/>
+								<field name="limit"/>
+							</group>
+							<group name="second">
+								<field name="process" />
+								<field name="sequence" />
+                                <field name="process_code" />
+								<field name="cron_job"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+</odoo>

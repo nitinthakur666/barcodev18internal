@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_set_validity_expired" model="ir.cron">
+        <field name="name">Sale: Set Validity Expired</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._set_validity_expired(limit=False)</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="ir_cron_check_exchange_diff" model="ir.cron">
+        <field name="name">Sale: Check Exchange Diff</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._check_exchange_diff(limit=False)</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="ir_cron_check_cost_diff" model="ir.cron">
+        <field name="name">Sale: Check Purchase Cost Difference</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._check_cost_diff(limit=False)</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="ir_cron_contract_amc" model="ir.cron">
+        <field name="name">Contract: AMC Opportunity Generation</field>
+        <field name="model_id" ref="barcode_india.model_barcode_india_contracts" />
+        <field name="state">code</field>
+        <field name="code">model._cron_renew_opportunity_generation(limit=False, days=60)</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_contract_activate" model="ir.cron">
+        <field name="name">Activate Contract</field>
+        <field name="model_id" ref="barcode_india.model_barcode_india_contracts" />
+        <field name="state">code</field>
+        <field name="code">model.activate_contract(limit=False, days=1)</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_contract_expired" model="ir.cron">
+        <field name="name">Expired Contract</field>
+        <field name="model_id" ref="barcode_india.model_barcode_india_contracts" />
+        <field name="state">code</field>
+        <field name="code">model.expired_contract(limit=False, days=1)</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="cron_contract_sync" model="ir.cron">
+        <field name="name">Barcode: Contract Sync</field>
+        <field name="model_id" ref="barcode_india.model_barcode_india_contract_sync"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_contract_sync()</field>
+        <field name='interval_number'>5</field>
+        <field name='interval_type'>hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_task_due_reminder" model="ir.cron">
+        <field name="name">Task Due Date Reminder</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="state">code</field>
+        <field name="code">model.send_due_date_reminder()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_estimation_phase_form_view" model="ir.ui.view">
+        <field name="name">Phase Form View</field>
+        <field name="model">cost_estimation.phase</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type" />
+                            <field name="calculation_factor" />
+                            <field name="total" widget="percentage" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Phase Allocation">
+                            <field name="phase_allocations">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="resource" />
+                                    <field name="allocation" widget="percentage" sum="Total" optional="show" />
+                                    <field name="phase" invisible="1" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Risk Data">
+                            <field name="risk_data">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="factor" />
+                                    <field name="type" optional="show" />
+                                    <field name="applied" optional="show" />
+                                    <field name="phase" invisible="1" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="cost_estimation_phase_tree_view" model="ir.ui.view">
+        <field name="name">Phase Tree View</field>
+        <field name="model">cost_estimation.phase</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="type" optional="show" />
+                <field name="calculation_factor" optional="show" />
+                <field name="total" widget="percentage" optional="show" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_phase" model="ir.actions.act_window">
+        <field name="name">Phase</field>
+        <field name="res_model">cost_estimation.phase</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Phase
+            </p>
+        </field>
+    </record>
+</odoo>

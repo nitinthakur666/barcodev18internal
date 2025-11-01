@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_assets" model="ir.actions.act_window">
+        <field name="name">Assets</field>
+        <field name="res_model">barcode_india.assets</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Assets
+                </p>
+        </field>
+    </record>
+
+    <record id="barcode_india_assets_form_view" model="ir.ui.view">
+        <field name="name">Assets</field>
+        <field name="model">barcode_india.assets</field>
+        <field name="arch" type="xml">
+            <form string="Assets">
+                <header>
+                    <button name="action_generate_pm_ticket" type="object" string="Create PM Ticket"/>
+                    <field name="bci_stage_id" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_previous_contracts" icon="fa-certificate" type="object" string="Previous Contracts">
+                        </button>                        
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" modifiers="{'invisible': [('active', '=', True)]}"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="bci_lot" readonly="1"/>
+                            <field name="bci_customer" required="1"/>
+                            <field name="bci_product"/>
+                            <field name="bci_service_product"/>
+                            <field name="bci_model_number_id"/>
+                            <field name="bci_contract_id"/>
+                            <field name="bci_contract_ids" widget="many2many_tags" invisible="1"/>
+                            <field name="bci_draft_contract"/>
+                            <!-- <field name="bci_status"/> -->
+                            <field name="bci_site" domain="[('bci_contact_type','=','Site'),('bci_parent_company','=',bci_customer)]"/>
+                            <!-- <field name="bci_site" domain="[('type','=','site'),('parent_id','=',bci_customer)]"/> -->
+                            <label for="bci_street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="bci_street" class="o_address_street" placeholder="Street..."/>
+                                <field name="bci_street2" class="o_address_street" placeholder="Street 2..."/>
+                                <field name="bci_street3" class="o_address_street" placeholder="Street 3..."/>
+                                <field name="bci_street4" class="o_address_street" placeholder="Street 4..."/>
+                                <field name="bci_city" class="o_address_city" placeholder="City"/>
+                                <field name="bci_state_id" class="o_address_state" placeholder="State"/>
+                                <field name="bci_zip" class="o_address_zip" placeholder="ZIP"/>
+                                <field name="bci_country_id" class="o_address_country" placeholder="Country"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="bci_origin"/>
+                            <field name="bci_invoice_date"/>
+                            <field name="bci_end_date"/>
+                            <field name="bci_invoice_number"/>
+                            <field name="bci_line_no" invisible="1"/>
+                            <field name="bci_oem_start_date"/>
+                            <field name="bci_oem_end_date"/>
+                            <field name="bci_delivery_type"/>
+                            <field name="bci_oem_contract_no"/>
+                            <field name="bci_replaced_by"/>
+                            <field name="bci_pm"/>
+                            <field name="bci_pm_frequency" modifiers="{'invisible':[('bci_pm','=',False)]}"/>
+                            <field name="bci_pm_next_date" modifiers="{'invisible':[('bci_pm','=',False)]}"/>
+                            <field name="bci_opportunity" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_assets_tree">
+        <field name="name">Assets</field>
+        <field name="model">barcode_india.assets</field>
+        <field name="arch" type="xml">
+            <list string="Assets" multi_edit="1">
+                <header>
+                    <button name="action_generate_pm_ticket" type="object" string="Create PM Ticket"/>
+                </header>
+                <field name="bci_customer"/>
+                <field name="bci_product" readonly="1"/>
+                <field name="bci_service_product"/>
+                <field name="name" readonly="1"/>
+                <field name="bci_site" domain="[('bci_contact_type','=','Site'),('bci_parent_company','=',bci_customer)]"/>
+                <field name="bci_contract_id" readonly="1"/>
+                <field name="bci_stage_id" readonly="1"/>
+                <field name="bci_origin" readonly="1"/>
+                <field name="bci_invoice_date" readonly="1"/>
+                <field name="bci_end_date" readonly="0"/>
+                <field name="bci_invoice_number" readonly="1"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bci_create_quotation_form" model="ir.ui.view">
+        <field name="name">Create Quotation</field>
+        <field name="model">bci.create_quotation</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="bci_ticket_id" required="1"/>
+                        <field name="bci_location" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

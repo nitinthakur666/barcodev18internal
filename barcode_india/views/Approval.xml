@@ -1,0 +1,24 @@
+<odoo>
+    <record id="approval_request_view_form_bci" model="ir.ui.view">
+        <field name="name">approval_request.inherited</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="bci_approval_for" modifiers="{'invisible':[('approval_type','not in',['RemoteSupport','Field Service and Remote Support','Complete Process'])]}" />
+                <field name="bci_sale_order_id" readonly="1" />
+                <field name="bci_deal_margin" readonly="1"/>
+                <field name="bci_sale_partner_id" string="Customer"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Payment Terms" name="payment_terms">
+                    <field name="bci_payment_terms" readonly="1"/>
+                </page>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cost_sheet" type="object" string="Cost Sheet"
+                    class="oe_highlight" icon="fa-list"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

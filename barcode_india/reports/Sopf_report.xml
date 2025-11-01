@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_sopf_document">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+            <t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat" />
+            <!-- So that it appears in the footer of the report instead of the company VAT if it's set -->
+            <t t-set="address">
+                <strong>Customer Address:</strong>
+                <div t-field="doc.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": True, "phone_icons": True}' />
+                <p t-if="doc.partner_id.vat">
+                    <t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST No'" />: <span t-field="doc.partner_id.vat" />
+                </p>
+            </t>
+        
+            <t t-set="information_block">
+                <t>
+                    <strong>
+                        Bill to:
+                    </strong>
+                    <div t-field="doc.partner_invoice_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": True, "phone_icons": True}' />
+                    <p t-if="doc.partner_shipping_id.vat">
+                        <t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST No'" />: 
+                        <span t-field="doc.partner_shipping_id.vat" />
+                    </p>
+                </t>
+                <t>
+                    <strong>Ship to:</strong>
+                    <div t-field="doc.partner_shipping_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": True, "phone_icons": True}' />
+                    <p t-if="doc.partner_invoice_id.vat">
+                        <t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST No'" />: 
+                        <span t-field="doc.partner_invoice_id.vat" />
+                    </p>
+                </t>
+            </t>
+            
+            <div class="page">
+                <div class="oe_structure" />
+
+                <h2 class="mt-4">
+                    <span>SOPF No : </span>
+                    <span t-field="doc.sopf_sequence" />
+                </h2>
+
+                <div class="row mt-4 mb-4" id="informations" style="font-size: 1.0rem;">
+                    <div class="col-6">
+                        <div>
+                            <div t-if="doc.name" class="col-12 mb-2">
+                                <strong>Order No:</strong>
+                                <span t-field="doc.name" />
+                            </div>
+                            <div t-if="doc.date_order" class="col-12 mb-2" name="informations_date">
+                                <strong t-if="doc.state in ['draft', 'sent']">Order Date:</strong>
+                                <strong t-else="">Order Date:</strong>
+                                <span t-field="doc.date_order" t-options='{"widget": "date"}' />
+                            </div>
+                            <div t-if="doc.bci_location" class="col-12 mb-2" name="expiration_date">
+                                <strong>Location:</strong>
+                                <span t-field="doc.bci_location" />
+                            </div>
+                            <div t-if="doc.user_id.name" class="col-12 mb-2">
+                                <strong>Salesperson:</strong>
+                                <span t-field="doc.user_id" />
+                            </div>
+                            <div t-if="doc.opportunity_id" class="col-12 mb-2">
+                                <strong>Opportunity Name:</strong>
+                                <span t-field="doc.opportunity_id" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div>
+                            <div t-if="doc.po_date" class="col-12 mb-2">
+                                <strong>PO Date:</strong>
+                                <span t-field="doc.po_date" />
+                            </div>
+                            <div class="col-12 mb-2">
+                                <strong>PO Number:</strong>
+                                <span t-field="doc.po_number" />
+                            </div>
+                            <div t-if="doc.bci_freight_type" class="col-12 mb-2">
+                                <strong>Freight Mode:</strong>
+                                <span t-field="doc.bci_freight_type" />
+                            </div>
+                            <div t-if="doc.bci_freight_amount" class="col-12 mb-2">
+                                <strong>Freight Charges:</strong>
+                                <span t-esc="round(doc.bci_freight_amount,2)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()" />
+                <t t-set="display_discount" t-value="any(l.bci_discount for l in lines_to_report)" />
+
+                <table class="table table-sm o_main_table mt-4">
+                    <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_part" class="text-center">Part No.</th>
+                            <th name="th_model" class="text-center">Model No.</th>
+                            <th name="th_description" class="text-center">Description</th>
+                            <th name="th_hsncode" class="text-center">HSN/SAC Code</th>
+                            <th name="th_quantity" class="text-center">Quantity</th>
+                            <th name="th_priceunit" class="text-center">Order Price</th>
+                            <th name="th_amount_without_tax" class="text-center">Total Order amount without Tax</th>
+                            <th name="th_warranty" class="text-center">Warranty(in Mths.)</th>
+                            <th name="th_discount" class="text-center">Disc.%</th>
+                            <th name="th_taxes" class="text-center">Taxes</th>
+                            <th name="th_subtotal" class="text-center">
+                                Total Order amount After Tax
+                                <!-- <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                                <span groups="account.group_show_line_subtotals_tax_included">Total Price</span> -->
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+
+                        <t t-set="current_subtotal" t-value="0"/>
+
+                        <t t-foreach="lines_to_report" t-as="line">
+
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <td name="td_part" class="text-center"><span t-field="line.product_id.bci_code"/></td>
+                                    <td name="td_model" class="text-center"><span t-field="line.product_id.bci_model_number"/></td>
+                                    <td name="td_name" class="text-center"><span t-field="line.name"/></td>
+                                    <td name="td_hsncode" class="text-center">
+                                        <span t-field="line.product_template_id.l10n_in_hsn_code"/>
+                                    </td>
+                                    <td name="td_quantity" class="text-end">
+                                        <span t-field="line.product_uom_qty"/>
+                                        <span t-field="line.product_uom"/>
+                                    </td>
+                                    <td name="td_priceunit" class="text-end">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td name="td_price_without_tax" class="text-end">
+                                        <span t-esc="round(line.price_reduce_taxexcl * line.product_uom_qty,2)"/>
+                                    </td>
+                                    <td name="td_warranty" class="text-end">
+                                        <span t-field="line.product_id.bci_warranty"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="line.bci_discount"/>
+                                    </td>
+                                    <td name="td_taxes" class="text-end">
+                                        <span t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                    </td>
+                                    <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                        <span t-esc="round(line.price_reduce_taxinc * line.product_uom_qty,2)"/>
+                                        <!-- <span t-field="line.price_subtotal"
+                                            groups="account.group_show_line_subtotals_tax_excluded" />
+                                        <span t-field="line.price_total"
+                                            groups="account.group_show_line_subtotals_tax_included" /> -->
+                                    </td>
+                                </t>
+                                <t t-elif="line.display_type == 'line_section'">
+                                    <td name="td_section_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>
+                                </t>
+                                <t t-elif="line.display_type == 'line_note'">
+                                    <td name="td_note_line" colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                            </tr>
+
+                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section') and not line.is_downpayment">
+                                <tr class="is-subtotal text-end">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span t-out="current_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: doc.pricelist_id.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+                <div class="clearfix" name="so_total_summary">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                            <table class="table table-sm">
+                                <!-- Tax totals -->
+                                <t t-set="tax_totals" t-value="doc.tax_totals" />
+                                <t t-call="account.document_tax_totals" />
+                            </table>
+                        </div>
+                    </div>
+                </div>                
+
+                <t t-if="not doc.advance_100">
+                    <t t-if="doc.bci_payment_terms">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-condensed">
+                                    <h3>Payment Terms</h3>
+                                    <thead>
+                                        <tr>
+                                            <th>Milestone</th>
+                                            <th style="text-align: center;">Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="doc.bci_payment_terms" t-as="tnc_line">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="tnc_line.name" />
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span t-field="tnc_line.percentange" />% </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <div t-if="doc.advance_100" class="row mt-4">
+                    <div class="col-12">
+                        <div class="o_payment_terms p-3 border border-dark rounded">
+                            <h4 class="mb-3 border-bottom border-dark pb-2">Payment Terms</h4>
+                            <div class="d-flex align-items-center">
+                                <span class="font-weight-bold">100% Advance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <table class="table table-bordered table-condensed mt-4" style="page-break-inside: avoid;">                    
+                    <tbody class="sale_tbody">
+                        <!-- <tr t-if="not is_html_empty(doc.payment_term_id.note)">
+                            <td style="width: 30%; text-align: center;"><strong>Payment Terms</strong></td>
+                            <td style="width: 70%;"><span t-field="doc.payment_term_id.note" /></td>
+                        </tr> -->
+                        <tr>
+                            <td style="width: 30%; text-align: center;"><strong>Delivery Schedule</strong></td>
+                            <td style="width: 70%;"><!-- <span t-field="doc.payment_term_id.note" /> --></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%; text-align: center;"><strong>Special Instruction</strong></td>
+                            <td style="width: 70%;"><span t-field="doc.special_instructions" /></td>
+                        </tr>     
+                        <tr>
+                            <td style="width: 30%; text-align: center;"><strong>Balance Outstanding</strong></td>
+                            <td style="width: 70%;"><span t-field="doc.partner_id.bci_outstanding_balance" /></td>
+                        </tr>
+                        <t t-if="doc.bci_bg_pg">
+                            <tr>
+                                <td style="width: 30%; text-align: center;"><strong>Any ABG/PBG ?</strong></td>
+                                <td style="width: 70%;"><span t-field="doc.bci_bg_pg" /></td>
+                            </tr>
+                        </t>
+                        <t t-if="doc.bci_payment_period">
+                            <tr>
+                                <td style="width: 30%; text-align: center;"><strong>Payment period</strong></td>
+                                <td style="width: 70%;"><span t-field="doc.bci_payment_period" /></td>
+                            </tr>
+                        </t>
+                        <t t-if="doc.bci_ld_clause">
+                            <tr>
+                                <td style="width: 30%; text-align: center;"><strong>Is there a LD Clause?</strong></td>
+                                <td style="width: 70%;">
+                                    <span>Yes</span>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td style="width: 30%; text-align: center;"><strong>Is there a LD Clause?</strong></td>
+                                <td style="width: 70%;">
+                                    <span>No</span>
+                                </td>
+                            </tr>
+                        </t>                                                          
+                    </tbody>
+                </table>
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="report_sopf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-if="doc.state in ['sale', 'SOPF']">
+                    <t t-call="barcode_india.report_sopf_document" t-lang="doc.partner_id.lang"/>
+                </t>
+                <t t-else="">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div style="margin-top: 300px;">
+                                <p style="text-align: center; font-size: 18px;">SOPF is not created for this document.</p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_sopf" model="ir.actions.report">
+        <field name="name">SOPF</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">barcode_india.report_sopf</field>
+        <field name="report_file">barcode_india.report_sopf</field>
+        <field name="print_report_name">'SOPF - %s' % (object.sopf_sequence)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+        
+        <record id="product_template_form_view_barcode" model="ir.ui.view">
+            <field name="name">product.template.form.barcode</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="bci_code" required="1"/>
+                    <field name="bci_warranty" invisible="1"/>
+                    <field name="bci_sla_product"/>
+                    <field name="bci_carepack_ids" widget="many2many_tags"/>
+                    <field name="bci_complete_unit_rma"/>
+                    <field name="bci_is_resource_product"/>
+                    <field name="bci_kitting_item"/>
+                    <!-- <field name="bci_parent_product" invisible="1"/> -->
+                </xpath>
+                <xpath expr="//field[@name='uom_po_id']" position="after">
+                    <field name="bci_account_set_code" required="1"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_barcode_india_spare" type="object" class="oe_stat_buttons" icon="fa-th-list">
+                        <field name="bci_spare_count" widget="statinfo" class='o_stat_value' string="Spares"></field>
+                    </button>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Cost Management" name="cost_management">
+                        <group>
+                            <group>
+                                <field name="bci_pricing_category" />
+                                <field name="bci_pricing_factor" />
+                                <field name="bci_freight" />
+                                <field name="bci_ins" />
+                                <field name="bci_duty" />
+                                <field name="bci_clearing_nd_handling" />
+                                <field name="bci_forex" />
+                                <field name="bci_exchange_rate" force_save="1"/>
+                                <field name="special_price_applicable"/>
+                            </group>
+                            <group>
+                                <field name="bci_model_number" invisible="1"/>
+                                <field name="bci_model_number_id"/>
+                                <field name="bci_discount_category" readonly="1"/>
+                                <field name="bci_discount" readonly="1"/>
+                                <field name="bci_erp_category" force_save="1"/>
+                                <field name="bci_margin" />
+                                <field name="bci_factor_price" force_save="1" invisible="1"/>
+                                <field name="bci_purchase_cost" force_save="1" />
+                                <field name="bci_purchase_cost_change" readonly="1" invisible="1"/>
+                                <field name="bci_purchase_currency" force_save="1"/>
+                                <field name="bci_landed_cost" force_save="1" string="Suggested Price"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Entitlements" name="entitlements" modifiers="{'invisible':[('detailed_type','!=','service')]}">
+                        <group>
+                            <group>
+                                <field name="bci_own_company" />
+                                <field name="bci_oem_product_group" />
+                                <field name="bci_warranty_amc"/> 
+                                <field name="bci_coverage"/>
+                            </group>
+                            <group>
+                                <field name="bci_service_category" />
+                                <field name="bci_coverage_type" />
+                                <field name="bci_onsite_coverage" />
+                                <field name="bci_standby_equipment"/>
+                                <field name="bci_sla"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>                
+            </field>
+        </record>
+        <record id="product_inherit_barcode_india" model="ir.ui.view">
+            <field name="name">product.inherit.bci</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_tree_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="discount_category" />
+                    <field name="bci_discount_percentage" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

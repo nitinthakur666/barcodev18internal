@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <menuitem id="sage300_connector_root_menu" name="Sage300 Connector"/>
+        <menuitem id="sage300_connector_sub_menu" parent="sage300_connector_root_menu" action="sage300_integration_action" name="Sage300 Connector"/>
+        <menuitem id="sage300_connector_configuration_menu" parent="sage300_connector_root_menu" name="Configuration" sequence="100"/>
+        <menuitem id="sage300_connector_setting" parent="sage300_connector_configuration_menu" action="action_sage300_connector_config_settings" name="Settings" sequence="0"/>
+        <menuitem id="sage300_connector_invoice_sync" parent="sage300_connector_configuration_menu" action="action_invoice_sync" name="Invoice Sync"/>
+    </data>
+</odoo>

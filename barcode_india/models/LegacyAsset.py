@@ -1,0 +1,37 @@
+from odoo import models, fields, _
+
+class LegacyAsset(models.Model):
+    _name = 'barcode_india.legacy.asset'
+    _description = 'Legacy Asset'
+
+    name = fields.Char(string="Contract Name")
+    sage_internal_assests = fields.Integer(string="Sage Internal Assests ID")
+    sage_asset_createdby = fields.Char(string="Sage Asset CreatedBy")
+    sage_asset_created_date = fields.Datetime(string="Sage Asset Created Date")
+    sage_asset_updated_by = fields.Char(string="Sage Asset Updated By")
+    sage_updateddate = fields.Datetime(string="Sage Updated Date")
+    asset_serial_number = fields.Char(string="Asset Serial Number")
+    bci_status =  fields.Char(string="Status")
+    bci_part_number = fields.Char(string="Part Number")
+    bci_part_description = fields.Char(string="Part Description")
+    bcil_start_date = fields.Datetime(string="Bcil Start Date")
+    bcil_end_date = fields.Datetime(string="Bcil End Date")
+    bci_Oem_start_date = fields.Datetime(string="OEM Start Date")
+    bci_Oemend_date = fields.Datetime(string="OEM End Date")
+    bci_stage = fields.Char(string="Stage")
+    bci_stage_change_reason = fields.Char(string="Stage Change Reason")  
+    bci_model_number = fields.Char(string="Model Number")
+    bci_company_name = fields.Char(string="Company Name")
+    bci_OEM_contract_number = fields.Char(string="OEM Contract Number")
+    bci_vendor_name = fields.Char(string="Vendor Name")
+    bci_delivery_type = fields.Char(string="Delivery Type")
+    bci_service_part_number = fields.Char(string="Service Part Number")
+    bcil_service_start_date = fields.Datetime(string="BCIL Service Start Date")
+    bcil_service_end_date = fields.Datetime(string="BCIL Service End Date")
+    bci_OEMPO_number = fields.Char(string="OEM PO Number")
+    bci_services_invoice_no = fields.Char(string="Services Invoice No")
+    bci_hardware_invoice_no = fields.Char(string="Hardware Invoice No")
+    bci_invoice_date = fields.Datetime(string="Invoice Date")
+    bci_site_details = fields.Char(string="Site Details")
+    bci_replaced_with_serial_number = fields.Char(string="Replaced with Serial Number")
+    bci_kit_name = fields.Char(string="Kit Name")

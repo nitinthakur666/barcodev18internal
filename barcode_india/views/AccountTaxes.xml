@@ -1,0 +1,23 @@
+<odoo>
+    <record id="account_tax_bci_form_view" model="ir.ui.view">
+        <field name="name">account.tax.inherited.crm</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tax_scope']" position="after">
+                <field name="bci_tax_class_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_tax_bci_tree_view" model="ir.ui.view">
+        <field name="name">account.tax.inherited.crm</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tax_scope']" position="after">
+                <field name="bci_tax_class_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

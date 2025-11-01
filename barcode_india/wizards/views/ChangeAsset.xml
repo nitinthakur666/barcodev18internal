@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bci_change_asset_form" model="ir.ui.view">
+        <field name="name">Change Asset</field>
+        <field name="model">bci.change_asset</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="bci_current_lot_id" required="1"/>
+                        <field name="bci_new_asset" required="1"/>
+                        <field name="bci_stock_picking_id" invisible="1" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

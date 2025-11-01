@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_view_master" model="ir.actions.act_window">
+        <field name="name">Cost Sheet View Master</field>
+        <field name="res_model">barcode_india.view_master</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Readonly Master
+            </p>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_view_master_tree_view">
+        <field name="name">Cost Sheet View Master Tree View</field>
+        <field name="model">barcode_india.view_master</field>
+        <field name="arch" type="xml">
+            <list string="Readonly Master" editable="bottom">
+                <field name="bci_stage" />
+                <field name="bci_role" />
+                <field name="bci_view" domain="[('model','=','sale.order.line'),('type','=','tree')]"/>
+            </list>
+        </field>
+    </record>
+</odoo>

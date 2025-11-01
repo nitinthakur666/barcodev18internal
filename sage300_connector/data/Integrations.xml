@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="sale_sync_integration" model="sage300_connector.integrations">
+            <field name="name">Sale Sync: Sage300</field>
+            <field name="process" ref="sale.model_sale_order"></field>
+            <field name="logs" ref="model_sage300_connector_sale_logs"></field>
+            <field name="cron_job" ref="sage300_connector.sale_order_job"/>
+            <field name="module">sage300_connector</field>
+            <field name="process_code">so</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <!-- <record id="product_sync_integration" model="sage300_connector.integrations">
+            <field name="name">Product Sync: Sage300</field>
+            <field name="process" ref="product.model_product_template"></field>
+            <field name="logs" ref="model_sage300_connector_product_logs"></field>
+            <field name="cron_job" ref="sage300_connector.product_sync_to_erp"/>
+            <field name="module">sage300_connector</field>
+            <field name="process_code">po</field>
+            <field name="sequence">3</field>
+        </record> -->
+
+        <record id="customer_sync_integration" model="sage300_connector.integrations">
+            <field name="name">Customer Sync: Sage300</field>
+            <field name="process" ref="base.model_res_partner"></field>
+            <field name="logs" ref="model_sage300_connector_customer_logs"></field>
+            <field name="cron_job" ref="sage300_connector.customer_job"/>
+            <field name="module">sage300_connector</field>
+            <field name="process_code">rp</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <record id="national_account_sync_integration" model="sage300_connector.integrations">
+            <field name="name">National Account Sync: Sage300</field>
+            <field name="process" ref="base.model_res_partner"></field>
+            <field name="logs" ref="model_sage300_connector_customer_account_logs"></field>
+            <field name="cron_job" ref="sage300_connector.national_account_job"/>
+            <field name="module">sage300_connector</field>
+            <field name="process_code">na</field>
+            <field name="sequence">5</field>
+        </record>
+
+
+</odoo>

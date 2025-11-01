@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_oem_product_group" model="ir.actions.act_window">
+        <field name="name">OEM &amp; Product Group</field>
+        <field name="res_model">barcode_india.oem_product_group</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_oem_product_group_tree_view">
+        <field name="name">OEM &amp; Product Group</field>
+        <field name="model">barcode_india.oem_product_group</field>
+        <field name="arch" type="xml">
+            <list string="OEM &amp; Product Group" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_barcode_india_oem" model="ir.actions.act_window">
+        <field name="name">OEM</field>
+        <field name="res_model">barcode_india.oem</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_oem_tree_view">
+        <field name="name">OEM</field>
+        <field name="model">barcode_india.oem</field>
+        <field name="arch" type="xml">
+            <list string="OEM" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>

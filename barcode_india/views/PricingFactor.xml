@@ -1,0 +1,47 @@
+<odoo>
+    <record id="action_barcode_india_pricing_factor" model="ir.actions.act_window">
+        <field name="name">Pricing Factor</field>
+        <field name="res_model">barcode_india.pricing_factor</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Pricing Factor
+            </p>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_pricing_factor_tree_view">
+        <field name="name">Pricing Factor Master Tree View</field>
+        <field name="model">barcode_india.pricing_factor</field>
+        <field name="arch" type="xml">
+            <list string="Pricing Factor">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_pricing_factor_form_view">
+        <field name="name">Pricing Factor Master Form View</field>
+        <field name="model">barcode_india.pricing_factor</field>
+        <field name="arch" type="xml">
+            <form string="Pricing Factor">
+                <sheet>
+                    <h1>
+                        <field name="name" required="1" />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="bci_freight" placeholder="Freight %age" />
+                            <field name="bci_ins" placeholder="Ins %age" />
+                            <field name="bci_duty" placeholder="Duty %age" />
+                        </group>
+                        <group>
+                            <field name="bci_clearing_nd_handling" placeholder="Clearing and Handling %age" />
+                            <field name="bci_forex" placeholder="Forex %age" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

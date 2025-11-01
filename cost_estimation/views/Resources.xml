@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_estimation_resource_form_view" model="ir.ui.view">
+        <field name="name">Resource Form View</field>
+        <field name="model">cost_estimation.resource</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="salary" />
+                            <field name="overhead" widget="percentage" />
+                            <field name="ctc" />
+                            <field name="per_day" />
+                            <field name="margin" widget="percentage" />
+                            <field name="quote" />
+                        </group>
+                        <group>
+                            <field name="salary_n" />
+                            <field name="overhead_n" widget="percentage" />
+                            <field name="ctc_n" />
+                            <field name="manday_n" />
+                            <field name="margin_n" widget="percentage" />
+                            <field name="quoted_n" />
+                        </group>
+                        <group>
+                            <field name="increase" widget="percentage" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="cost_estimation_resource_tree_view" model="ir.ui.view">
+        <field name="name">Resource Tree View</field>
+        <field name="model">cost_estimation.resource</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="salary" optional="show" />
+                <field name="overhead" widget="percentage" optional="show" />
+                <field name="ctc" optional="show" />
+                <field name="per_day" optional="show" />
+                <field name="margin" widget="percentage" optional="show" />
+                <field name="quote" optional="show" />
+                <field name="salary_n" optional="show" />
+                <field name="overhead_n" widget="percentage" optional="show" />
+                <field name="ctc_n" optional="show" />
+                <field name="manday_n" optional="show" />
+                <field name="margin_n" widget="percentage" optional="show" />
+                <field name="quoted_n" optional="show" />
+                <field name="increase" widget="percentage" optional="show" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_resource" model="ir.actions.act_window">
+        <field name="name">Resource</field>
+        <field name="res_model">cost_estimation.resource</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Resource
+            </p>
+        </field>
+    </record>
+</odoo>

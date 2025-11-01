@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_contract_stage" model="ir.actions.act_window">
+        <field name="name">Contracts Stage</field>
+        <field name="res_model">barcode_india.contracts.stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Contracts Stage
+                </p>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_contract_stage_tree">
+        <field name="name">Contracts Stage</field>
+        <field name="model">barcode_india.contracts.stage</field>
+        <field name="arch" type="xml">
+            <list string="Contracts Stage">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="stage_type"/>
+                <!-- <field name="is_draft_stage"/> -->
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_contract_stage_form">
+        <field name="name">Contracts Stage</field>
+        <field name="model">barcode_india.contracts.stage</field>
+        <field name="arch" type="xml">
+            <form string="Contracts Stage">
+                <sheet>
+                    <h2><field name="name"/></h2>
+                    <group>
+                        <field name="sequence"/>
+                    </group>
+                    <group>
+                        <field name="stage_type"/>
+                        <!-- <field name="is_draft_stage"/>
+                        <field name="is_active_stage"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

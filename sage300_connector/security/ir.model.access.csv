@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sage300_connector_integrations,sage300_connector.integrations,model_sage300_connector_integrations,base.group_user,1,1,1,1
+access_sage300_connector_sale_logs,sage300_connector.sale_logs,model_sage300_connector_sale_logs,base.group_user,1,1,1,1
+access_sage300_connector_product_logs,sage300_connector.product_logs,model_sage300_connector_product_logs,base.group_user,1,1,1,1
+access_sage300_connector_invoice_sync,sage300_connector_invoice_sync,model_sage300_connector_invoice_sync,base.group_user,1,1,1,1
+access_sage300_connector_customer_logs,sage300_connector.customer_logs,model_sage300_connector_customer_logs,base.group_user,1,1,1,1

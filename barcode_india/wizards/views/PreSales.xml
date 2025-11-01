@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bci_pre_sales_form" model="ir.ui.view">
+        <field name="name">Pre Sales</field>
+        <field name="model">bci.pre_sales</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="bci_user"/>
+                        <field name="lead_id" invisible="1" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

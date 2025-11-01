@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cost_estimation" name="Cost Estimations" parent="sale.sale_order_menu" sequence="10" action="action_cost_estimation"/>
+    <menuitem id="menu_cost_estimation_root" name="Cost Estimations" parent="sale.menu_sale_config"  sequence="30"/>
+    <menuitem id="menu_resource" name="Resources" parent="menu_cost_estimation_root" sequence="10" action="action_resource"/>
+    <menuitem id="menu_factor" name="Factor" parent="menu_cost_estimation_root" sequence="10" action="action_factor"/>
+    <menuitem id="menu_phase" name="Phases" parent="menu_cost_estimation_root" sequence="10" action="action_phase"/>
+    <menuitem id="menu_risk_rating" name="Risk Rating" parent="menu_cost_estimation_root" sequence="10" action="action_risk_rating"/>
+</odoo>

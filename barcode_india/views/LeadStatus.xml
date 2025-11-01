@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_lead_status" model="ir.actions.act_window">
+        <field name="name">Lead Status</field>
+        <field name="res_model">barcode_india.lead_status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_lead_status_tree_view">
+        <field name="name">Lead Status</field>
+        <field name="model">barcode_india.lead_status</field>
+        <field name="arch" type="xml">
+            <list string="Lead Status" editable="bottom">
+                <field name="name"/>
+                <field name="is_mql"/>
+                <field name="is_sql"/>
+                <field name="is_reject"/>
+            </list>
+        </field>
+    </record>
+</odoo>

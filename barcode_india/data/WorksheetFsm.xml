@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="worksheet_template" model="worksheet.template">
+            <field name="name">Barcode Worksheet</field>
+            <field name="res_model">project.task</field>
+            <!-- <field name="report_view_id" ref="barcode_india.barcode_india_worksheet_template"/> -->
+            <field name="color">3</field>
+        </record>
+
+        <record id="fsm_template_name" model="ir.model.fields">
+            <field name="name">x_studio_bci_name</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Name</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_call_type" model="ir.model.fields">
+            <field name="name">x_studio_bci_call_type</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Call Type</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_deptt" model="ir.model.fields">
+            <field name="name">x_studio_bci_deptt</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Deptt.</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_email" model="ir.model.fields">
+            <field name="name">x_studio_bci_e_mail</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Email</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_mob_no" model="ir.model.fields">
+            <field name="name">x_studio_bci_mob_no</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Mob. No.</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_user_name" model="ir.model.fields">
+            <field name="name">x_studio_bci_user_name</field>
+            <field name="ttype">char</field>
+            <field name="field_description">Mob. No.</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_call_no" model="ir.model.fields">
+            <field name="name">x_studio_bci_call_no</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">helpdesk.ticket</field>
+            <field name="field_description">Call No.</field>
+            <field name="related">x_project_task_id.helpdesk_ticket_id</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_co_name" model="ir.model.fields">
+            <field name="name">x_studio_bci_co_name</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">res.partner</field>
+            <field name="field_description">Co. Name</field>
+            <field name="related">x_project_task_id.partner_id</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_device_type" model="ir.model.fields">
+            <field name="name">x_studio_bci_device_type</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">barcode_india.case_sub_type</field>
+            <field name="field_description">Device Type</field>
+            <field name="related">x_project_task_id.helpdesk_ticket_id.bci_case_sub_type</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_site_id" model="ir.model.fields">
+            <field name="name">x_studio_bci_location</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">res.partner</field>
+            <field name="field_description">Location</field>
+            <field name="related">x_project_task_id.bci_site_id</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_call_received" model="ir.model.fields">
+            <field name="name">x_studio_bci_call_received</field>
+            <field name="ttype">datetime</field>
+            <field name="field_description">Call Received</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_call_attended" model="ir.model.fields">
+            <field name="name">x_studio_bci_call_attended</field>
+            <field name="ttype">datetime</field>
+            <field name="field_description">Call Attended</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_call_completed" model="ir.model.fields">
+            <field name="name">x_studio_bci_call_completed</field>
+            <field name="ttype">datetime</field>
+            <field name="field_description">Call Completed</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_engineer" model="ir.model.fields">
+            <field name="name">x_studio_bci_engineer_name</field>
+            <field name="ttype">many2many</field>
+            <field name="relation">res.users</field>
+            <field name="field_description">Engineer Name</field>
+            <field name="relation_table">x_res_users_x__bci_project_task_worksheet_template_5_rel</field>
+            <field name="column1">x_project_task_bci_worksheet_template_5_id</field>
+            <field name="column2">res_users_bci_id</field>
+            <field name="related">x_project_task_id.user_ids</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_problem_reported" model="ir.model.fields">
+            <field name="name">x_studio_bci_problem_reported</field>
+            <field name="ttype">html</field>
+            <field name="field_description">Problem Reported</field>
+            <field name="related">x_project_task_id.helpdesk_ticket_id.description</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_action_summary" model="ir.model.fields">
+            <field name="name">x_studio_bci_action_summary</field>
+            <field name="ttype">text</field>
+            <field name="field_description">Action Summary</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_remarks" model="ir.model.fields">
+            <field name="name">x_studio_bci_remarks</field>
+            <field name="ttype">text</field>
+            <field name="field_description">Remarks</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_response_level" model="ir.model.fields">
+            <field name="name">x_studio_bci_response_level</field>
+            <field name="ttype">selection</field>
+            <field name="field_description">Response Level</field>
+            <field name="selection">[('Prompt','Prompt'),('OK','OK'),('Delayed','Delayed')]</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="fsm_template_staisfaction_level" model="ir.model.fields">
+            <field name="name">x_studio_bci_satisfaction_level</field>
+            <field name="ttype">selection</field>
+            <field name="field_description">Satisfaction Level</field>
+            <field name="selection">[('Good','Good'),('OK','OK'),('Not Satisfactory','Not Satisfactory')]</field>
+            <field name="model_id" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.id"/>
+        </record>
+
+        <record id="worksheet_template_form_inherit" model="ir.ui.view">
+            <field name="name">fsm.worksheet.template2.form.inherit</field>
+            <field name="type">form</field>
+            <field name="model" model="ir.model" eval="obj().env.ref('barcode_india.worksheet_template').model_id.model"/>
+            <field name="inherit_id" model="ir.ui.view" search="[('name','ilike', obj().env.ref('barcode_india.worksheet_template').model_id.model),('type', '=', 'form')]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="replace">
+                    <sheet>
+                        <!-- <group invisible="context.get('studio') or context.get('default_x_project_task_id')">
+                            <group> -->
+                        <h1><field name="x_project_task_id" domain="[('is_fsm', '=', True)]" readonly="1"/></h1>
+                            <!-- </group>
+                        </group> -->
+                        <group name="studio_group_9U7lM">
+                            <group name="studio_group_9U7lM_left">
+                                <field name="x_studio_bci_co_name" string="Co. Name"/>
+                                <field name="x_studio_bci_e_mail" string="E-mail"/>
+                                <field name="x_studio_bci_location" string="Location"/>
+                                <field name="x_studio_bci_deptt" string="Deptt."/>
+                                <field name="x_studio_bci_mob_no" string="Mob. No."/>
+                            </group>
+                            <group name="studio_group_9U7lM_right">
+                                <field name="x_studio_bci_call_no" string="Call No."/>
+                                <field name="x_studio_bci_call_type" string="Call Type"/>
+                                <field name="x_studio_bci_device_type" string="Device Type"/>
+                                <field name="x_studio_bci_user_name" string="User Name"/>
+                                <field name="x_studio_bci_engineer_name" widget="many2many_tags_avatar" string="Engineer Name"/>
+                            </group>
+                        </group>
+                        <group name="studio_group_AdV4E" string="Problem Reported">
+                            <field name="x_studio_bci_problem_reported" string="Problem Reported"/>
+                        </group>
+                        <group name="studio_group_dXY5B" string="Action Summary">
+                            <field name="x_studio_bci_action_summary" string="Action Summary"/>
+                        </group>
+                        <group name="studio_group_9dNk5">
+                            <group name="studio_group_9dNk5_left" string="To be filled in by the Service Engineer">
+                                <field name="x_studio_bci_call_received" string="Call Received"/>
+                                <field name="x_studio_bci_call_attended" string="Call Attended"/>
+                                <field name="x_studio_bci_call_completed" string="Call Completed"/>
+                            </group>
+                            <group name="studio_group_9dNk5_right" string="To be filled in by the User">
+                                <field name="x_studio_bci_satisfaction_level" string="Satisfaction Level" widget="radio"/>
+                                <field name="x_studio_bci_response_level" string="Response Level" widget="radio"/>
+                            </group>
+                        </group>
+                        <group name="studio_group_V0kHt">
+                            <field name="x_studio_bci_name" string="Name"/>
+                            <field name="x_studio_bci_remarks" string="Remarks"/>
+                        </group>
+                    </sheet>
+                </xpath>
+            </field>
+        </record>
+
+        <function model="worksheet.template" name="_generate_qweb_report_template" eval="[[ref('worksheet_template')]]"/>
+
+        <record id="industry_fsm.fsm_project" model="project.project">
+            <field name="worksheet_template_id" ref="barcode_india.worksheet_template"/>
+        </record>
+
+    </data>
+</odoo>

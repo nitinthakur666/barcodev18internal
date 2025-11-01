@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        
+        <record id="product_form_view_barcode" model="ir.ui.view">
+            <field name="name">product.product.form.barcode</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="software" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_category_form_view_barcode" model="ir.ui.view">
+            <field name="name">product.category.form.barcode</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='first']" position="inside">
+                    <field name="is_software" />
+                </xpath>
+            </field>
+        </record>    
+    </data>
+</odoo>

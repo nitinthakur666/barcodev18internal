@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+
+        <record id="barcode_india_pricing_category_tree_view" model="ir.ui.view">
+            <field name="name">Barcode India Pricing Category Tree View</field>
+            <field name="model">barcode_india.pricing_category</field>
+            <field name="arch" type="xml">
+                <list string="Pricing Category">
+                    <field name="name" />
+                    <field name="approver" />
+                </list>
+            </field>
+        </record>
+
+        <record id="barcode_india_pricing_category_form_view" model="ir.ui.view">
+            <field name="name">Barcode India Pricing Category Form View</field>
+            <field name="model">barcode_india.pricing_category</field>
+            <field name="arch" type="xml">
+                <form string="Pricing Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="approver" />
+                            </group>
+                            <group>
+                                <field name="pricing_provider" widget="many2many_tags"/>
+                            </group>
+                        </group>
+<!--                         <notebook>
+                            <page string="Payment Terms" name="paymentterms">
+                                <field name="bci_pt_master_ids">
+                                    <list editable="top">
+                                        <field name="sequence" widget="handle" />
+                                        <field name="name" />
+                                        <field name="bci_percentage" />
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook> -->
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_barcode_india_pricing_category" model="ir.actions.act_window">
+            <field name="name">Pricing Category</field>
+            <field name="res_model">barcode_india.pricing_category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Barcode India Pricing Category
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

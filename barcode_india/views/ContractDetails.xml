@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_contract_details" model="ir.actions.act_window">
+        <field name="name">Contracts Details</field>
+        <field name="res_model">barcode_india.contracts.details</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Contracts Details
+                </p>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_contract_details_tree">
+        <field name="name">Contracts Details</field>
+        <field name="model">barcode_india.contracts.details</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="bci_partner"/>
+                <field name="bci_startdate"/>
+                <field name="bci_enddate"/>
+                <field name="bci_site_ids" widget="many2many_tags" />
+                <field name="bci_plants_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_contract_details">
+        <field name="name">Contracts Details</field>
+        <field name="model">barcode_india.contracts.details</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                       <group>
+                            <field name="bci_contracts"/>
+                            <field name="bci_projects" domain="[('bci_partner_ids','=',bci_partner)]"/>
+                            <field name="bci_startdate"/>
+                            <field name="bci_enddate" />
+                       </group> 
+                       <group>
+                            <field name="bci_partner"/>
+                            <field name="bci_site_ids" widget="many2many_tags" domain="[('bci_contact_type','=','Site')]"/>
+                            <field name="bci_plants_ids" widget="many2many_tags" domain="[('bci_contact_type','=','Plant')]"/>
+                            <field name="renewal_opportunity" />
+                            <field name="bci_opportunity" invisible="1"/>
+                       </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

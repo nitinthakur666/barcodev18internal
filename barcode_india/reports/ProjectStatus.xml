@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="project_report_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page"> 
+                          <h2>Project Name: <t t-esc="doc.display_name"/></h2>
+                            <table class="table table-bordered" style="font-size: 10px;">
+                                <td >Prepared on <t t-esc="doc.create_date" t-options='{"widget": "date"}'/></td>
+                                <td>Prepared by <t t-esc="doc.create_uid.name"/></td>
+                            </table>
+
+                            <div class="row" style="text-align: center; background-color: #f2960d;color:white;margin:0px ">
+                                <div class="col-8">
+                                    <h5>Summary</h5>
+                                </div>
+                                <div class="col-4">
+                                    <h5>Overall Status</h5>
+                                </div>
+                            </div>
+                            <t t-set="status_color" t-value="{
+                                'on_track': '#00cc66',
+                                'at_risk': '#ff9900',
+                                'off_track': '#ff3300',
+                                'on_hold': '#66ccff',
+                                'to_define': '#d9d9d9'
+                            }"/>
+                            <table class="table table-bordered" style="width:100%;">
+                                <tr>
+                                    <td class="col-8"><t t-esc="doc.description"/></td>
+                                    
+                                    <td class="col-4" t-attf-style="text-align: center; background-color: #{status_color.get(doc.last_update_status, '#FFFFFF')};">
+                                        <span t-field="doc.last_update_status" t-options="{'widget': 'selection'}"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="text-align: center; background-color: #ffb366;color:white">
+                                <h5>Completed Tasks and Milestones</h5>
+                            </div>
+                            <table class="table table-bordered" style="width:100%;text-align:center">
+                                <tr>
+                                    <th>Deliverable</th>
+                                    <th>Actual Start Date</th>
+                                    <th>Actual End Date</th>
+                                    <th>Planned End Date</th>
+                                    <th>Target No. of Days</th>
+                                    <th>Actual No. of Days</th>
+                                    <th>Deviation from plan (Days)</th>
+                                    <th>Status</th>
+                                    <th class="col-2">Ownership</th>
+                                    <th class="col-2">Comments</th>
+                                </tr>
+                                <t t-foreach="doc.task_ids" t-as="task">
+                                    <t t-set="calendar" t-value="task.company_id.resource_calendar_id"/>
+                                    <t t-set="target_days" t-value="round(calendar.get_work_duration_data(task.planned_date_begin, task.planned_date_end)['days']) if task.planned_date_begin and task.planned_date_end else 0"/>
+                                    <t t-set="actual_days" t-value="round(calendar.get_work_duration_data(task.bci_actual_start_date, task.bci_actual_end_date)['days']) if task.bci_actual_start_date and task.bci_actual_end_date else 0"/>
+                                    <t t-set="deviation_days" t-value="actual_days - target_days"/>
+                                    <tr>
+                                        <td><t t-esc="task.name"/></td>
+                                        <td><t t-esc="task.bci_actual_start_date or ''"/></td>
+                                        <td><t t-esc="task.bci_actual_end_date or ''"/></td>
+                                        <td><t t-esc="task.planned_date_end" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></td>
+                                        <td><t t-esc="target_days"/></td>
+                                        <td><t t-esc="actual_days"/></td>
+                                        <td><t t-esc="deviation_days"/></td>
+                                        <td><t t-esc="task.stage_id.name"/></td>
+                                        <td><t t-esc="task.company_id.name"/></td>
+                                        <td><t t-esc="task.description"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+
+                            <div style="text-align: center; background-color: #808080;color:white">
+                                <h5>Top Risks and Issues</h5>
+                            </div>
+                            <table class="table table-bordered" style="width:100%;text-align:left">
+                                <tr>
+                                    <th>Risk / Issue</th>
+                                </tr>
+                                <tr>  
+                                  <td class="col-12"><t t-esc="doc.bci_summary"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="project_report_paperformat" model="report.paperformat">
+            <field name="name">Project Status Report Paperformat</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_spacing">28</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="project_report_action" model="ir.actions.report">
+            <field name="name">Project Status</field>
+            <field name="model">project.project</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">barcode_india.project_report_template</field>
+            <field name="report_file">barcode_india.project_report_template</field>
+            <field name="attachment_use">True</field>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="barcode_india.project_report_paperformat"/>
+        </record>
+
+    </data>
+</odoo>

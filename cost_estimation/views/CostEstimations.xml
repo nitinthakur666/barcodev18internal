@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_estimation_form_view" model="ir.ui.view">
+        <field name="name">Cost Estimation Form View</field>
+        <field name="model">cost_estimation.cost_estimation</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button name="action_compute_cost" string="Compute Cost" type="object" class="oe_highlight" modifiers="{'invisible': [('cost_computed','!=',False)]}" />
+                    <button name="action_update_quote" string="Update Quote" type="object" class="oe_highlight" modifiers="{'invisible': ['|',('cost_computed','=',False),('quote_updated','!=',False)]}" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_costing" string="Calculation" class="oe_stat_button" type="object" modifiers="{'invisible': [('costing','=',False)]}" />
+                        <button name="action_view_project_cost" string="Outcome" class="oe_stat_button" type="object" modifiers="{'invisible': [('project_cost','=',False)]}" />
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Order Details">
+                            <field name="order_id" readonly="1" />
+                            <field name="partner_id" readonly="1" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True}' />
+                            <field name="cost_computed" invisible="1" />
+                            <field name="quote_updated" invisible="1" />
+                            <field name="costing" invisible="1" />
+                            <field name="project_cost" invisible="1" />
+                        </group>
+                        <group string="Calculation Hours">
+                            <field name="activity_estimate_hours" readonly="1" />
+                            <field name="technical_risk_impact_estimate_hours" readonly="1" />
+                            <field name="business_risk_impact_estimate_hours" readonly="1" />
+                        </group>
+                        <group string="Calculation Costs">
+                            <field name="baseline_costing_cost" readonly="1" />
+                            <field name="technical_risk_impact_cost" readonly="1" />
+                            <field name="business_risk_impact_cost" readonly="1" />
+                        </group>
+                        <group string="Application Support / Consulting and Professional Services">
+                            <field name="amc_cost" readonly="1" />
+                            <field name="software_support" readonly="1" />
+                        </group>
+                        <group string="Risks factored in the project">
+                            <field name="scope_creep_factored" readonly="1" />
+                            <field name="timeline_deviation" readonly="1" />
+                            <field name="project_overheads" readonly="1" />
+                        </group>
+                        <group string="Total Risks factored">
+                            <field name="estimated_man_days" readonly="1" />
+                            <field name="manday_rate" readonly="1" />
+                            <field name="technical_risk_impact_percent" widget="percentage" readonly="1" />
+                            <field name="business_risk_impact_percent" widget="percentage" readonly="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Effort Basis">
+                            <field name="effort_basis" />
+                        </page>
+                        <page string="Technical Factor">
+                            <field name="technical_factor" />
+                        </page>
+                        <page string="Business Factor">
+                            <field name="business_factor" />
+                        </page>
+                        <page string="Quotation Cost">
+                            <field name="quotation_cost" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="cost_estimation_tree_view" model="ir.ui.view">
+        <field name="name">Cost Estimation Tree View</field>
+        <field name="model">cost_estimation.cost_estimation</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="create_date" />
+                <field name="display_name" />
+                <field name="partner_id" />
+                <field name="order_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cost_estimation" model="ir.actions.act_window">
+        <field name="name">Cost Estimation</field>
+        <field name="res_model">cost_estimation.cost_estimation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Cost Estimation
+            </p>
+        </field>
+    </record>
+
+</odoo>

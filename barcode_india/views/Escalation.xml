@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_escalation" model="ir.actions.act_window">
+        <field name="name">Escalation</field>
+        <field name="res_model">barcode_india.escalation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Escalation
+                </p>
+        </field>
+    </record>
+
+    <record id="barcode_india_escalation_form_view" model="ir.ui.view">
+        <field name="name">Escalation</field>
+        <field name="model">barcode_india.escalation</field>
+        <field name="arch" type="xml">
+            <form string="Escalation">
+                <sheet>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="bci_email_template"/>
+                            <field name="bci_tat" widget="percentage" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <field name="bci_user_ids" widget="many2many_tags"/>
+                            <field name="bci_sla" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_escalation_tree">
+        <field name="name">Escalation</field>
+        <field name="model">barcode_india.escalation</field>
+        <field name="arch" type="xml">
+            <list string="Escalation">
+                <field name="name"/>
+                <field name="bci_tat" widget="percentage"/>
+                <field name="bci_sla" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+</odoo>

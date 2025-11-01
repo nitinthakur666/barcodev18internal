@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record model="barcode_india.lead_status" id="lead_status1">
+            <field name="name">New</field>
+            <field name="is_mql">False</field>
+            <field name="is_sql">False</field>
+            <field name="is_reject">False</field>
+        </record>
+        <record model="barcode_india.lead_status" id="lead_status2">
+            <field name="name">MQL</field>
+            <field name="is_mql">True</field>
+            <field name="is_sql">False</field>
+            <field name="is_reject">False</field>
+        </record>
+        <record model="barcode_india.lead_status" id="lead_status3">
+            <field name="name">SQL</field>
+            <field name="is_mql">False</field>
+            <field name="is_sql">True</field>
+            <field name="is_reject">False</field>
+        </record>
+        <record model="barcode_india.lead_status" id="lead_status4">
+            <field name="name">Rejected</field>
+            <field name="is_mql">False</field>
+            <field name="is_sql">False</field>
+            <field name="is_reject">True</field>
+        </record>
+        <record id="mail_activity_data_na" model="mail.activity.type">
+            <field name="name">ERP Update</field>
+            <field name="icon">fa-tasks</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_standby_equipment" model="ir.actions.act_window">
+        <field name="name">Engineer &amp; Standby Equipment</field>
+        <field name="res_model">barcode_india.standby_equipment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_standby_equipment_tree_view">
+        <field name="name">Engineer &amp; Standby Equipment</field>
+        <field name="model">barcode_india.standby_equipment</field>
+        <field name="arch" type="xml">
+            <list string="Engineer &amp; Standby Equipment" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+</odoo>

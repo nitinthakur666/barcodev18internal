@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_estimation_business_factor_tree_view" model="ir.ui.view">
+        <field name="name">Business Factor Tree View</field>
+        <field name="model">cost_estimation.business_factor</field>
+        <field name="arch" type="xml">
+            <list create="0" editable="bottom" delete="0">
+                <field name="sequence" widget="handle" />
+                <field name="factor" readonly="1" options="{'no_open': True}" />
+                <field name="description" optional="show" />
+                <field name="risk" required="1" options="{'no_create': True, 'no_open': True}" optional="show" />
+                <field name="general_hints" optional="show" />
+                <field name="cost_estimation" invisible="1" />
+            </list>
+        </field>
+    </record>
+</odoo>

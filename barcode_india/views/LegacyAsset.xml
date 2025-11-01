@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="legacy_asset_tree" model="ir.ui.view">
+        <field name="name">Legacy Asset</field>
+        <field name="model">barcode_india.legacy.asset</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sage_internal_assests"/>
+                <field name="sage_asset_createdby" />
+                <field name="sage_asset_created_date" />
+                <field name="sage_asset_updated_by" />
+                <field name="sage_updateddate" />
+                <field name="asset_serial_number" />
+                <field name="bci_status" />
+                <field name="bci_part_number" />
+                <field name="bci_part_description" />
+                <field name="bcil_start_date" />
+                <field name="bcil_end_date" />
+                <field name="bci_Oem_start_date" />
+                <field name="bci_Oemend_date" />
+                <field name="bci_stage" />
+                <field name="bci_stage_change_reason" />
+                <field name="bci_model_number" />
+                <field name="bci_company_name" />
+                <field name="bci_OEM_contract_number" />
+                <field name="bci_vendor_name" />
+                <field name="bci_delivery_type" />
+                <field name="bci_service_part_number" />
+                <field name="bcil_service_start_date" />
+                <field name="bcil_service_end_date" />
+                <field name="bci_OEMPO_number" />
+                <field name="bci_services_invoice_no" />
+                <field name="bci_hardware_invoice_no" />
+                <field name="bci_invoice_date" />
+                <field name="bci_site_details" />
+                <field name="bci_replaced_with_serial_number" />
+                <field name="bci_kit_name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="legacy_asset_form" model="ir.ui.view">
+        <field name="name">Legacy Asset Form</field>
+        <field name="model">barcode_india.legacy.asset</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="sage_internal_assests"/>
+                            <field name="sage_asset_createdby" />
+                            <field name="sage_asset_created_date"/>
+                            <field name="sage_asset_updated_by" />
+                            <field name="sage_updateddate" />
+                            <field name="asset_serial_number" />
+                            <field name="bci_status" />
+                            <field name="bci_part_number" />
+                            <field name="bci_part_description" />
+                            <field name="bcil_start_date" />
+                            <field name="bcil_end_date" />
+                            <field name="bci_Oem_start_date" />
+                            <field name="bci_Oemend_date" />
+                            <field name="bci_stage" />
+                            <field name="bci_stage_change_reason" />
+                        </group>
+                        <group>
+                            <field name="bci_service_part_number" />
+                            <field name="bcil_service_start_date" />
+                            <field name="bcil_service_end_date" />
+                            <field name="bci_OEMPO_number" />
+                            <field name="bci_services_invoice_no" />
+                            <field name="bci_hardware_invoice_no" />
+                            <field name="bci_invoice_date" />
+                            <field name="bci_site_details" />
+                            <field name="bci_replaced_with_serial_number" />
+                            <field name="bci_kit_name" />
+                            <field name="bci_model_number" />
+                            <field name="bci_company_name" />
+                            <field name="bci_OEM_contract_number" />
+                            <field name="bci_vendor_name" />
+                            <field name="bci_delivery_type" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_legacy_asset" model="ir.actions.act_window">
+        <field name="name">Legacy Asset</field>
+        <field name="res_model">barcode_india.legacy.asset</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

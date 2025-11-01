@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_barcode_india_region" model="ir.actions.act_window">
+        <field name="name">Region</field>
+        <field name="res_model">barcode_india.region</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain"></field>
+    </record>
+    <record model="ir.ui.view" id="barcode_india_region">
+        <field name="name">Region</field>
+        <field name="model">barcode_india.region</field>
+        <field name="arch" type="xml">
+            <list string="Region" editable="bottom">
+                <field name="name"/>
+                <field name="region_head"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>

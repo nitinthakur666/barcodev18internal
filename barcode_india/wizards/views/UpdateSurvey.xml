@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+        <record id="view_barcode_india_update_survey" model="ir.ui.view" >
+            <field name="name">barcode.india.update.survey.form</field>
+            <field name="model">barcode_india.update_survey</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="survey_id" required="1"/>
+                        <field name="mailing_contacts" widget="many2many_tags" modifiers="{'required': [('partner_ids', '=', False)]}"/>
+                        <field name="partner_ids" widget="many2many_tags" modifiers="{'required': [('partner_ids', '=', False)]}"/>
+                    </group>
+                    <footer>
+                        <button string="Confirm" class="btn btn-primary" name="action_update_survey" type="object" />
+                        <button string="Discard" class="btn btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

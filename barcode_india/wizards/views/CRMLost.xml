@@ -1,0 +1,19 @@
+<odoo>
+    <record model="ir.ui.view" id="barcode_crm_lead_lost_form_view">
+        <field name="name">crm.lead.lost.form.barcode</field>
+        <field name="model">crm.lead.lost</field>
+        <field name="inherit_id" ref="crm.crm_lead_lost_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="before">
+                <field name="lost_type" widget='radio' options="{'horizontal': true}" nolabel="1"/>
+            </xpath>
+            <xpath expr="//field[@name='lost_reason_id']" position="attributes">
+                <attribute name="string">Lost/Technical Reason</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm.crm_lead_lost_action" model="ir.actions.act_window">
+        <field name="name">Lost/Technical Reason</field>
+    </record>
+</odoo>

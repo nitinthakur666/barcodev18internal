@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <record id="barcode_india_line_of_business_tree_view" model="ir.ui.view">
+            <field name="name">Barcode India Line Of Business Tree View</field>
+            <field name="model">barcode_india.line_of_business</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" invisible="1"/>
+                    <field name="name" />
+                    <field name="super_category_id" />
+                </list>
+            </field>
+        </record>
+
+        <record id="barcode_india_line_of_business_form_view" model="ir.ui.view">
+            <field name="name">Barcode India Line Of Business Form View</field>
+            <field name="model">barcode_india.line_of_business</field>
+            <field name="arch" type="xml">
+                <form string="Line Of Business">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence" invisible="1"/>
+                                <field name="name" />
+                                <field name="super_category_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="ERP Category">
+                                <field name="erp_ids" >
+                                <form>
+                                    <sheet>
+                                        <group> 
+                                            <field name="name" /> 
+                                            <field name="lineof_business_id" />
+                                        </group>
+                                    </sheet>
+                                </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_barcode_india_line_of_business" model="ir.actions.act_window">
+            <field name="name">Line Of Business</field>
+            <field name="res_model">barcode_india.line_of_business</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Barcode India Line Of Business
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

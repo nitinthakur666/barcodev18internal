@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="barcode_india_assign_report_tree">
+        <field name="name">Assign Reports</field>
+        <field name="model">barcode_india.assign_report</field>
+        <field name="arch" type="xml">
+            <list string="Assign Reports">
+                <field name="updated_user" />
+                <field name="bci_support_type"/>
+                <field name="team_id"/>
+                <field name="updated_by" invisible="1"/>
+                <field name="engineer_update"/>
+                <field name="updated_on" />
+                <field name="previous_user" invisible="1" />
+                <field name="ticket_id" invisible="1"/>
+                <field name="resolved_on" readonly="1" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_assign_report_form">
+        <field name="name">Assign Reports</field>
+        <field name="model">barcode_india.assign_report</field>
+        <field name="arch" type="xml">
+            <form string="Assign Reports">
+                <group>
+                    <group>
+                        <field name="updated_user" />
+                        <field name="bci_support_type"/>
+                        <field name="updated_by" invisible="1"/>
+                        <field name="engineer_update"/>
+                    </group>
+                    <group>
+                        <field name="updated_on" />
+                        <field name="team_id"/>
+                        <field name="previous_user" invisible="1" />
+                        <field name="ticket_id"/>
+                        <field name="resolved_on" readonly="1" invisible="1"/>
+                        <field name="remark"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="barcode_india_assign_report_pivot">
+        <field name="name">Assign Reports</field>
+        <field name="model">barcode_india.assign_report</field>
+        <field name="arch" type="xml">
+            <pivot string="Assign Reports">
+                <field name="previous_user" type="col"/>
+                <field name="updated_user" type="col"/>
+                <field name="ticket_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_barcode_india_assign_report" model="ir.actions.act_window">
+        <field name="name">Assign Reports</field>
+        <field name="res_model">barcode_india.assign_report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Assign Reports
+                </p>
+        </field>
+    </record>
+</odoo>

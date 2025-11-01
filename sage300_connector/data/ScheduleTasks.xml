@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <record id="productdata_sync" model="ir.cron">
+            <field name="name">Product Sync From Sage300 Erp to Odoo</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">model._pt_run_process(max_iterations=100)</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <!-- <field name="numbercall">-1</field> -->
+        </record>
+
+        <record id="sale_order_job" model="ir.cron">
+            <field name="name">Sale Order Sync</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_sale_order_sync()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <!-- <field name="numbercall">-1</field> -->
+        </record>
+
+        <record id="invoice_job" model="ir.cron">
+            <field name="name">Invoice sync</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model._invoice_sync()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <!-- <field name="numbercall">-1</field> -->
+        </record>
+
+         <!-- <record id="product_sync_to_erp" model="ir.cron">
+            <field name="name">Product sync To ERP</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_productsync_to_erp()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+        </record> -->
+
+        <record id="customer_job" model="ir.cron">
+            <field name="name">Customer sync</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model.customer_push_to_erp()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <!-- <field name="numbercall">-1</field> -->
+        </record>
+
+        <record id="national_account_job" model="ir.cron">
+            <field name="name">National Account sync</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model.national_account_push_to_erp()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <!-- <field name="numbercall">-1</field> -->
+        </record>
+
+    </data>
+</odoo>

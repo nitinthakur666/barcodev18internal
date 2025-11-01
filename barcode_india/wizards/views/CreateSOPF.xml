@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bci_create_sopf_form" model="ir.ui.view">
+        <field name="name">Create SOPF</field>
+        <field name="model">bci.create_sopf</field>
+        <field name="arch" type="xml">
+            <form>
+                <div class="oe_title mb24">
+                    <field name="sopf_type" widget="radio" options="{'horizontal': true}"
+                        on_change="1" />
+                </div>
+                <div class="oe_title">
+                    <label for="sopf_sequence" string="Name"/>
+                    <h1 class="d-flex flex-row">
+                        <field name="sopf_sequence" readonly="1"/>
+                        <field name="creation_date" readonly="1" invisible="1"/>
+                    </h1>
+                </div>
+                <span class="o_form_label" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">If you need the different customer for this SOPF</span>
+                <group string="Customer" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                    <group modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                        <field name="customer_id" domain="[('is_company', '=', True)]"/>
+                        <field name="invoice_address_id" domain="[('type', '=', 'invoice')]"/>
+                        <field name="delivery_address_id" domain="[('type', '=', 'delivery')]"/>
+                    </group>
+                </group>
+                <group col="2" string="Contact">
+                    <group>
+                        <field name="order_id" invisible="1" />
+                        <field name="purchase_contact_name" required="1"/>
+                        <field name="purchase_contact_email" required="1"/>
+                        <field name="purchase_contact_phone" required="1"/>
+                        <field name="finance_contact_name" required="1"/>
+                        <field name="finance_contact_email" required="1"/>
+                        <field name="finance_contact_phone" required="1"/>
+                        <field name="store_contact_name" required="1"/>
+                        <field name="store_contact_email" required="1"/>
+                        <field name="store_contact_phone" required="1"/>
+                        <!-- <field name="purchase_contact" options="{'no_create':True}" required="1"/>
+                        <field name="finance_contact" options="{'no_create':True}" required="1"/>
+                        <field name="store_contact" options="{'no_create':True}" required="1"/> -->
+                    </group>
+
+                    <group>
+                        <field name="po_date" />
+                        <field name="po_number" required="1"/>
+                        <field name="delivery_schedule" />
+                        <field name="po_attach_ids" widget="many2many_binary" required="1"/>
+                    </group>
+
+                    <div style="margin-top: 20px; margin-bottom: 20px; "></div>
+                    <field name="instructions" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}" readonly="1"/>
+                    <div style="margin-bottom: 20px;" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}"></div>
+
+                    <field name="special_instructions" placeholder="Special Instructions...."/>
+                    <notebook>
+                        <page name="Lines" string="Lines" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                            <field name="order_lines_id" no_label="1" options="{'no_create': true}">
+                                <list editable="bottom" create="0">
+                                    <field name="product_id" />
+                                    <field name="product_uom_qty" />
+                                    <field name="price_unit" />
+                                    <field name="special_price" readonly="1"/>
+                                    <field name="sale_order_line_id" invisible="1" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object"
+                        class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel"
+                        data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

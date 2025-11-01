@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_for_bci" model="ir.ui.view">
+        <field name="name">Approval</field>
+        <field name="model">barcode_india.approval_for</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="bci_ticket_id" invisible="1"/>
+                        <field name="bci_approval_for" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

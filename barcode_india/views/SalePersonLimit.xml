@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_person_limit_tree" model="ir.ui.view">
+        <field name="name">Sale Person Limit</field>
+        <field name="model">barcode_india.sale_person_limit</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="user" widget="many2many_tags"/>
+                <field name="quot_type" />
+                <field name="deal_value" />
+                <field name="payment_deal_value" />
+            </list>
+        </field>
+    </record>
+    <record id="action_sale_person_limit" model="ir.actions.act_window">
+        <field name="name">Sale Person Limit</field>
+        <field name="res_model">barcode_india.sale_person_limit</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>
