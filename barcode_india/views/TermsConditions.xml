@@ -16,12 +16,12 @@
         <field name="name">Terms and Conditions</field>
         <field name="model">barcode_india.tnc</field>
         <field name="arch" type="xml">
-            <list string="Terms and Conditions" editable="bottom">
+            <tree string="Terms and Conditions" editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="bci_description"/>
                 <field name="bci_quotation_type" widget='many2many_tags'/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

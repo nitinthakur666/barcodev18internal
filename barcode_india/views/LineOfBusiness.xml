@@ -4,11 +4,11 @@
             <field name="name">Barcode India Line Of Business Tree View</field>
             <field name="model">barcode_india.line_of_business</field>
             <field name="arch" type="xml">
-                <list>
+                <tree>
                     <field name="sequence" invisible="1"/>
                     <field name="name" />
                     <field name="super_category_id" />
-                </list>
+                </tree>
             </field>
         </record>
 

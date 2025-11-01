@@ -11,11 +11,11 @@
         <field name="name">Vertical</field>
         <field name="model">barcode_india.vertical</field>
         <field name="arch" type="xml">
-            <list string="Vertical" editable="bottom">
+            <tree string="Vertical" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="vertical_head" />
-            </list>
+            </tree>
         </field>
     </record>
 

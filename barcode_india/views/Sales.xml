@@ -17,19 +17,16 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//button[@name='action_quotation_send'][4]" position="attributes">
-                <attribute name="modifiers">{'invisible': [('bci_stage', '!=', 'approved')]}</attribute>
+                <attribute name="attrs">{'invisible': [('bci_stage', '!=', 'approved')]}</attribute>
             </xpath>
         
             <xpath expr="//button[@name='action_confirm']" position="after">
-                <button string="Send for Approval" name="send_for_approval" type="object" class="oe_highlight" modifiers="{'invisible': ['|',('bci_stage','in',['draft','pricing_request','pending_approval','approved','rejected']),('state', '=', 'cancel')]}" />
-                <button string="Send For Pricing" name="action_send_for_pricing" type="object" class="oe_highlight" modifiers="{'invisible':['|','|','|',('bci_stage','in',['pricing_updated','pricing_request','pending_approval','approved','rejected']),('is_send_for_pricing','=',False),('state', '=', 'cancel'),('bci_is_estimation','=',True)]}" />
-                <button string="Add Freight and Installation" type="object" name="action_freight_and_installation" modifiers="{'invisible':['|','|',('bci_stage','in',['draft','pricing_request','pending_approval','approved','rejected']),('bci_is_estimation','=',True),('state', '=', 'cancel')]}" />
-                <button string="Create SOPF" name="view_bci_create_sopf_form" type="object" class="oe_highlight" modifiers="{'invisible': ['|','|',('bci_stage', '!=','approved'),('state','in',['sale','done','cancel','SOPF']),('is_sopf_button_visible', '=', False)]}" />
-                <button name="action_create_new_quotation" string="Create New Version" type="object" modifiers="{'invisible': ['|',('bypass_quote', '=', True),('state','in',['sale','done','cancel','SOPF'])]}" />
-                <button string="Re-Price" name="view_bci_sales_repricing_form" type="object" modifiers="{'invisible': ['|',('state', '=', 'cancel'),('bci_stage', 'in',['pending_approval','approved','SOPF'])]}" />
-                <button name="action_use_reference_costsheet" string="Use Reference Costsheet" type="object" modifiers="{'invisible': ['|',('use_reference_costsheet', '=', True), ('state', 'not in', ['draft', 'sent'])]}"/>
-                <button name="action_confirm_reference_costsheet" string="Set Reference Costsheet" type="object" modifiers="{'invisible': ['|',('use_reference_costsheet', '=', True), ('state', 'not in', ['draft', 'sent'])]}"/>
-                <button name="action_unset_reference_costsheet" string="Unset Reference Costsheet" type="object" modifiers="{'invisible': [('use_reference_costsheet', '!=', True)]}"/>
+                <button string="Send for Approval" name="send_for_approval" type="object" class="oe_highlight" attrs="{'invisible': ['|',('bci_stage','in',['draft','pricing_request','pending_approval','approved','rejected']),('state', '=', 'cancel')]}"/>
+                <button string="Send For Pricing" name="action_send_for_pricing" type="object" class="oe_highlight" attrs="{'invisible':['|','|','|',('bci_stage','in',['pricing_updated','pricing_request','pending_approval','approved','rejected']),('is_send_for_pricing','=',False),('state', '=', 'cancel'),('bci_is_estimation','=',True)]}"/>
+                <button string="Add Freight and Installation" type="object" name="action_freight_and_installation" attrs="{'invisible':['|','|',('bci_stage','in',['draft','pricing_request','pending_approval','approved','rejected']),('bci_is_estimation','=',True),('state', '=', 'cancel')]}"/>
+                <button string="Create SOPF" name="view_bci_create_sopf_form" type="object" class="oe_highlight" attrs="{'invisible': ['|','|',('bci_stage', '!=','approved'),('state','in',['sale','done','cancel','SOPF']),('is_sopf_button_visible', '=', False)]}"/>
+                <button name="action_create_new_quotation" string="Create New Version" type="object" attrs="{'invisible': ['|',('bypass_quote', '=', True),('state','in',['sale','done','cancel','SOPF'])]}"/>
+                <button string="Re-Price" name="view_bci_sales_repricing_form" type="object" attrs="{'invisible': ['|',('state', '=', 'cancel'),('bci_stage', 'in',['pending_approval','approved','SOPF'])]}"/>
             </xpath>
             <xpath expr="//field[@name='payment_term_id']" position="after">
                 <field name="bci_helpdesk"/>
@@ -42,21 +39,21 @@
             </xpath>
             <xpath expr="//field[@name='sale_order_template_id']" position="after">
                 <field name="bci_is_low_value_order" invisible="1"/>
-                <field name="bci_is_cost_sheet_final" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}" invisible="1"/>
+                <field name="bci_is_cost_sheet_final" attrs="{'readonly': [('bci_stage', '=', 'approved')]}" invisible="1"/>
                 <field name="approval_approvers_ids" widget="many2many_tags" invisible="1"/>
                 <field name="bci_margin_approver" widget="many2many_tags" invisible="1"/>
                 <field name="is_approver" invisible="1"/>
-                <field name="bci_installation_type" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
-                <field name="bci_freight_type" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                <field name="bci_installation_type" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                <field name="bci_freight_type" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
                 <field name="bci_installation_amount" />
                 <field name="bci_freight_amount" />
-                <field name="advance_100" />
+                
             </xpath>
             <xpath expr="//group[@name='order_details']" position="after">
                 <group string="Special Condition" name="special_conditions">
-                    <field name="bci_bg_pg" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
-                    <field name="bci_payment_period" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
-                    <field name="bci_ld_clause" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                    <field name="bci_bg_pg" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                    <field name="bci_payment_period" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                    <field name="bci_ld_clause" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
                 </group>
                 <group string="Status" name="status">
                     <field name="bci_deal_margin" force_save="1"/>
@@ -72,46 +69,45 @@
                     <field name="bci_is_estimation" invisible="1"/>
                     <field name="bci_presales_ids" widget="many2many_tags" invisible="1"/>
                     <field name="is_sopf_button_visible" invisible="1"/>
-                    <field name="use_reference_costsheet" invisible="1"/>
                 </group>
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': [('bci_payment_period', '=', 'within_45_days')]}">
-                    <field name="check_payment_message" modifiers="{'invisible': [('bci_payment_period', '=', 'within_45_days')]}" readonly="1" nolabel="1"/>
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_payment_period', '=', 'within_45_days')]}">
+                    <field name="check_payment_message" attrs="{'invisible': [('bci_payment_period', '=', 'within_45_days')]}" readonly="1" nolabel="1"/>
                 </div>
             </xpath>
             <field name="partner_id" position="attributes">
-                <attribute name="domain">[('is_company', '=', True),('bci_contact_type', 'in', ['Parent Company', 'Company'])]</attribute>
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="domain">[('is_company', '=', True)]</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
             <field name="partner_invoice_id" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
 
             <field name="sale_order_template_id" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
 
             <field name="partner_shipping_id" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
             <field name="validity_date" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
 
             <field name="date_order" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')], 'invisible': [('state', 'in', ['sale', 'done', 'cancel'])]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')], 'invisible': [('state', 'in', ['sale', 'done', 'cancel'])]}</attribute>
             </field>
             <field name="pricelist_id" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
+                <attribute name="attrs">{'readonly': [('bci_stage', '=', 'approved')]}</attribute>
             </field>
             <xpath expr="//div[@class='oe_button_box']" position="after">
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': ['|',('bci_validity_expired', '=', False),('state', 'in', ['sale', 'done', 'cancel'])]}">
-                    <field name="validity_expired_message" modifiers="{'invisible': ['|',('bci_validity_expired', '=', False),('state', 'in', ['sale', 'done', 'cancel'])]}" />
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_validity_expired', '=', False)]}">
+                    <field name="validity_expired_message" attrs="{'invisible': [('bci_validity_expired', '=', False)]}" />
                 </div>
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': [('bci_exchange_expired', '=', False)]}">
-                    <field name="exchange_expired_message" modifiers="{'invisible': [('bci_exchange_expired', '=', False)]}" />
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_exchange_expired', '=', False)]}">
+                    <field name="exchange_expired_message" attrs="{'invisible': [('bci_exchange_expired', '=', False)]}" />
                 </div>
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': [('bci_cost_expired', '=', False)]}">
-                    <field name="cost_expired_message" modifiers="{'invisible': [('bci_cost_expired', '=', False)]}" />
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_cost_expired', '=', False)]}">
+                    <field name="cost_expired_message" attrs="{'invisible': [('bci_cost_expired', '=', False)]}" />
                 </div>
             </xpath>
             <xpath expr="//notebook" position="before">
@@ -120,9 +116,9 @@
                     <field name="bci_printout_type"/>
                     <field name="bci_show_optional"/>
                 </group>
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': [('bci_quote_type', '!=', False)]}">
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_quote_type', '!=', False)]}">
                     <group>
-                        <field name="check_quote_type_message" modifiers="{'invisible': [('bci_quote_type', '!=', False)]}" readonly="1"/>
+                        <field name="check_quote_type_message" attrs="{'invisible': [('bci_quote_type', '!=', False)]}" readonly="1"/>
                     </group>
                 </div>
             </xpath>
@@ -131,13 +127,13 @@
             </xpath>
             <xpath expr="//field[@name='validity_date']" position="before">
                 <field name="bci_version" readonly="1" groups="base.group_no_one"/>
-                <field name="bci_quote_type" required="1" modifiers="{'readonly': [('bci_stage', '=', 'approved')]}"/>
+                <field name="bci_quote_type" required="1" attrs="{'readonly': [('bci_stage', '=', 'approved')]}"/>
                 <field name="bci_readonly_fields" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_preview_sale_order']" position="before">
-                <button type="object" name="action_view_cost_sheet" string="Cost Sheet" class="oe_stat_button" icon="fa-puzzle-piece" modifiers="{'invisible': [('bypass_quote', '=', True)]}"/>
-                <button type="object" name="action_view_approval" string="Approvals" class="oe_stat_button" icon="fa-check" modifiers="{'invisible': [('bypass_quote', '=', True)]}"/>
-                <button type="object" name="action_view_sopf_order" string="SOPF" class="oe_stat_button" icon="fa-list" modifiers="{'invisible': [('bci_sopf_count', '=', 0)]}">
+                <button type="object" name="action_view_cost_sheet" string="Cost Sheet" class="oe_stat_button" icon="fa-puzzle-piece" attrs="{'invisible': [('bypass_quote', '=', True)]}"/>
+                <button type="object" name="action_view_approval" string="Approvals" class="oe_stat_button" icon="fa-check" attrs="{'invisible': [('bypass_quote', '=', True)]}"/>
+                <button type="object" name="action_view_sopf_order" string="SOPF" class="oe_stat_button" icon="fa-list" attrs="{'invisible': [('bci_sopf_count', '=', 0)]}">
                     <field name="bci_sopf_count" string="SOPF" widget="statinfo" />
                 </button>
             </xpath>
@@ -149,24 +145,24 @@
                         <field name="bci_cost_diff_threshold" />
                     </group>
                 </page>
-                <page string="Payment Milestone" name="payment_terms" modifiers="{'invisible': [('bypass_quote', '=', True)]}">
-                    <field name="bci_payment_terms" modifiers="{'readonly': [('bci_stage', 'in', ['approved', 'pending_approval'])]}">
-                        <list editable="bottom">
+                <page string="Payment Milestone" name="payment_terms" attrs="{'invisible': [('bypass_quote', '=', True)]}">
+                    <field name="bci_payment_terms" attrs="{'readonly': [('bci_stage', 'in', ['approved', 'pending_approval'])]}">
+                        <tree editable="bottom">
                             <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="percentange" />
                             <field name="order_id" invisible="1" />
                             <field name="bci_is_approved" invisible="1" />
-                        </list>
+                        </tree>
                     </field>
                 </page>
-                <page name="sopf" string="SOPF" modifiers="{'invisible': [('bci_sopf_count', '!=', 0)]}">
+                <page name="sopf" string="SOPF" attrs="{'invisible': [('bci_sopf_count', '!=', 0)]}">
                     <group col="2">
                         <group>
                             <field name="sopf_order" invisible="1" readonly="1"/>
-                            <!-- <field name="purchase_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" modifiers="{'readonly': [('state','in',['sale','done'])]}"/>
-                            <field name="finance_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" modifiers="{'readonly': [('state','in',['sale','done'])]}"/>
-                            <field name="store_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" modifiers="{'readonly': [('state','in',['sale','done'])]}"/> -->
+                            <!-- <field name="purchase_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" attrs="{'readonly': [('state','in',['sale','done'])]}"/>
+                            <field name="finance_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" attrs="{'readonly': [('state','in',['sale','done'])]}"/>
+                            <field name="store_contact" options="{'no_create':True}" domain="[('parent_id', '=', partner_id)]" attrs="{'readonly': [('state','in',['sale','done'])]}"/> -->
                             <field name="purchase_contact_name" readonly="1"/>
                             <field name="purchase_contact_email" readonly="1"/>
                             <field name="purchase_contact_phone" readonly="1"/>
@@ -188,76 +184,42 @@
                     </group>
                     <separator/>
                     <group>
-                        <field name="special_instructions" placeholder="Special Instructions...." modifiers="{'readonly': [('state','in',['sale','done'])]}"/>
-                    </group>
-                </page>
-                <page string="Reference Costsheet" modifiers="{'invisible': [('use_reference_costsheet', '=', False)]}">
-                    <group>
-                        <field name="reference_costsheet_validity" groups="barcode_india.group_reference_costsheet_admin" modifiers="{'invisible': [('use_reference_costsheet', '=', False)]}"/>
-                        <field name="reference_company_ids" widget="many2many_tags" domain="[('is_company', '=', True), ('bci_contact_type', 'in', ['Parent Company', 'Company'])]" modifiers="{'invisible': [('use_reference_costsheet', '=', False)]}"/>
+                        <field name="special_instructions" placeholder="Special Instructions...." attrs="{'readonly': [('state','in',['sale','done'])]}"/>
                     </group>
                 </page>
             </xpath>
             <xpath expr="//page[@name='order_lines']/field[@name='order_line']" position="attributes">
-                <attribute name="modifiers">{'readonly': ['&amp;', ('bypass_quote', '=', False), '|','|',('state', 'in', ('done','cancel')),('bci_stage', '=', 'approved'),('bci_quote_type','=',False)]}</attribute>
+                <attribute name="attrs">{'readonly': ['&amp;', ('bypass_quote', '=', False), '|','|',('state', 'in', ('done','cancel')),('bci_stage', '=', 'approved'),('bci_quote_type','=',False)]}</attribute>
                 <attribute name="options">{'no_create': [('bci_is_estimation', '=', True)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='payment_term_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='tax_id']" position="after">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']" position="after">
                 <field name="bci_discount" />
-                <field name="bci_price_with_discount" invisible="1"/>
+                <field name="bci_price_with_discount" invisible="1"/>                
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_id']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
+            <xpath expr="//field[@name='order_line']/tree" position="inside">
+                    <field name="bci_section"  />
+                    <field name="bci_subsection"  />
+                    <field name="bci_is_optional"  />
+                    <field name="bci_pricing_factor" invisible="1" />
+                    <field name="bci_discount_category" invisible="1"/>
+                    <field name="bci_duty" invisible="1"/>
+                    <field name="bci_freight" invisible="1" />
+                    <field name="bci_exchange_rate" invisible="1"/>
+                    <field name="bci_purchase_cost" invisible="1"/>
+                    <field name="bci_purchase_currency" invisible="1" />
+                    <field name="bci_discount" invisible="1" />
+                    <field name="bci_landed_cost" invisible="1" />
+                    <field name="bci_suggested_price_unit" invisible="1" />
+                    <field name="bci_principal_cost" invisible="1"/>
+                    <field name="bci_target_margin" invisible="1" />
+                    <field name="sopf_done_quantity" invisible="1"/>
+                    <field name="sopf_done_amount" invisible="1"/>
+                    <field name="bci_principal_cost" invisible="1"/>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='name']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='customer_lead']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_subtotal']" position="attributes">
-                <attribute name="modifiers">{'readonly': [('bci_is_reference', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_unit']" position="after">
-                <field name="special_price" />
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list" position="inside">
-                <field name="bci_is_reference" invisible="1" />
-                <field name="bci_section"  />
-                <field name="bci_subsection"  />
-                <field name="bci_is_optional"  />
-                <field name="bci_pricing_factor" invisible="1" />
-                <field name="bci_discount_category" invisible="1"/>
-                <field name="bci_duty" invisible="1"/>
-                <field name="bci_freight" invisible="1" />
-                <field name="bci_exchange_rate" invisible="1"/>
-                <field name="bci_purchase_cost" invisible="1"/>
-                <field name="bci_purchase_currency" invisible="1" />
-                <field name="bci_discount" invisible="1" />
-                <field name="bci_landed_cost" invisible="1" />
-                <field name="bci_suggested_price_unit" invisible="1" />
-                <field name="bci_principal_cost" invisible="1"/>
-                <field name="bci_target_margin" invisible="1" />
-                <field name="sopf_done_quantity" invisible="1"/>
-                <field name="sopf_done_amount" invisible="1"/>
-                <field name="bci_principal_cost" invisible="1"/>
-            </xpath>
-            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='bci_is_optional']" position="after">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='bci_is_optional']" position="after">
                 <button name="open_product_last_sale_popup" type="object" icon="fa-ellipsis-h" string=" "/>
             </xpath>
         </field>
@@ -319,17 +281,6 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_open_delivery_wizard'][1]" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </xpath>
-        </field>
-    </record>
-    <record id="bci_sales_order_filter_inherit" model="ir.ui.view">
-        <field name="name">sale.order.filter.inherit</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
-        <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <filter string="PO Number" name="po_number_filter" context="{'group_by': 'po_number'}"/>
-                <field name="po_number" string="PO Number"/>
             </xpath>
         </field>
     </record>

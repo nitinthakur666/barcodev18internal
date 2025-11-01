@@ -16,8 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '18.0',
-    'license': 'LGPL-3',
+    'version': '0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'web','sale_management', 'sale','contacts','product','stock','helpdesk','helpdesk_fsm','project','survey','mass_mailing','sale_crm','base_automation','cost_estimation','approvals','purchase','worksheet','l10n_in','asc_mail','sales_team','mail', 'delivery'],
@@ -136,9 +135,6 @@
         'wizards/views/CreateSOPF.xml',
         'wizards/views/CRMLost.xml',
         'wizards/views/HelpdeskTicketHold.xml',
-        'wizards/views/Reject.xml',
-        'wizards/views/ReferenceCostsheet.xml',
-        'wizards/views/SetReferenceCostsheet.xml',
         'data/EmailNotificationAssets.xml',
         'data/AutomatedAction.xml',
         'data/ir_cron_data.xml',
@@ -149,6 +145,4 @@
     ],
     # only loaded in demonstration mode
     'application':True,
-    'installable': True,
-    
 }

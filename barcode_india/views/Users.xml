@@ -5,10 +5,10 @@
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
-            	<xpath expr="//field[@name='share']" position="after">
+            	<xpath expr="//div//group//field[@name='share']" position="after">
                     <field name="bci_salesperson"/>
                     <field name="is_on_holiday" />
-                    <field name="alternateuser" modifiers="{'invisible': [('is_on_holiday', '!=', True)],'no_create': True, 'no_create_edit': True,'create':False}"/>
+                    <field name="alternateuser" attrs="{'invisible': [('is_on_holiday', '!=', True)],'no_create': True, 'no_create_edit': True,'create':False}"/>
             	</xpath>
             </field>
         </record>

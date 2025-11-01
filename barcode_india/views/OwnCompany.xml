@@ -11,10 +11,10 @@
         <field name="name">Own Company</field>
         <field name="model">barcode_india.own_company</field>
         <field name="arch" type="xml">
-            <list string="Own Company" editable="bottom">
+            <tree string="Own Company" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

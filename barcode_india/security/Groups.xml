@@ -47,9 +47,6 @@
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
         </record> -->
-        <record id="group_reference_costsheet_admin" model="res.groups">
-            <field name="name">Reference Costsheet Administrator</field>
-        </record>
         <record id="group_corporate_contact_manager" model="res.groups">
             <field name="name">Corporate Contact Manager</field>
             <field name="category_id" ref="base.module_category_usability"/>

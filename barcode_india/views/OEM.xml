@@ -11,10 +11,10 @@
         <field name="name">OEM &amp; Product Group</field>
         <field name="model">barcode_india.oem_product_group</field>
         <field name="arch" type="xml">
-            <list string="OEM &amp; Product Group" editable="bottom">
+            <tree string="OEM &amp; Product Group" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -29,9 +29,9 @@
         <field name="name">OEM</field>
         <field name="model">barcode_india.oem</field>
         <field name="arch" type="xml">
-            <list string="OEM" editable="bottom">
+            <tree string="OEM" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

@@ -16,13 +16,13 @@
         <field name="name">Contracts Details</field>
         <field name="model">barcode_india.contracts.details</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="bci_partner"/>
                 <field name="bci_startdate"/>
                 <field name="bci_enddate"/>
                 <field name="bci_site_ids" widget="many2many_tags" />
                 <field name="bci_plants_ids" widget="many2many_tags"/>
-            </list>
+            </tree>
         </field>
     </record>
     <record model="ir.ui.view" id="barcode_india_contract_details">

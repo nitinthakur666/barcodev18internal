@@ -4,10 +4,10 @@
             <field name="name">Barcode India Super Category Tree View</field>
             <field name="model">barcode_india.super_category</field>
             <field name="arch" type="xml">
-                <list>
+                <tree>
                     <field name="sequence" invisible="1"/>
                     <field name="name" />
-                </list>
+                </tree>
             </field>
         </record>
 
@@ -25,9 +25,9 @@
                             <notebook>
                                 <page name="LineOfBusiness" string="Line Of Business">
                                     <field name="line_of_business_ids">
-                                        <list>
+                                        <tree>
                                             <field name="name" /> 
-                                        </list>
+                                        </tree>
                                         <form>
                                             <sheet>
                                             <group>
@@ -38,10 +38,10 @@
                                                 <notebook>
                                                     <page name="ERP Category" string="ERP Category">
                                                         <field name="erp_ids">
-                                                            <list>
+                                                            <tree>
                                                                 <field name="name" />
                                                                 <field name="lineof_business_id" invisible="1"/>
-                                                            </list>
+                                                            </tree>
                                                             <form string="ERP Category">
                                                                 <sheet>
                                                                     <group>

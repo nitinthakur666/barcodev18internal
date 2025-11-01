@@ -9,7 +9,6 @@ from . import Masters
 from . import ContractDetails
 from . import CrmTeam
 from . import Users
-from . import StockLocation
 from . import Contracts
 from . import ContractSync
 from . import Assets
@@ -24,6 +23,7 @@ from . import MailingContact
 from . import StockPicking
 from . import StockMove
 from . import ProjectTask
+from . import StockLocation
 from . import PricingCategory
 from . import SaleOrderLine
 from . import Crm

@@ -6,13 +6,13 @@
         <field name="arch" type="xml">
             <form create="0">
                 <header>
-                    <button name="action_compute_cost" string="Compute Cost" type="object" class="oe_highlight" modifiers="{'invisible': [('cost_computed','!=',False)]}" />
-                    <button name="action_update_quote" string="Update Quote" type="object" class="oe_highlight" modifiers="{'invisible': ['|',('cost_computed','=',False),('quote_updated','!=',False)]}" />
+                    <button name="action_compute_cost" string="Compute Cost" type="object" class="oe_highlight" attrs="{'invisible': [('cost_computed','!=',False)]}" />
+                    <button name="action_update_quote" string="Update Quote" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cost_computed','=',False),('quote_updated','!=',False)]}" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_costing" string="Calculation" class="oe_stat_button" type="object" modifiers="{'invisible': [('costing','=',False)]}" />
-                        <button name="action_view_project_cost" string="Outcome" class="oe_stat_button" type="object" modifiers="{'invisible': [('project_cost','=',False)]}" />
+                        <button name="action_view_costing" string="Calculation" class="oe_stat_button" type="object" attrs="{'invisible': [('costing','=',False)]}" />
+                        <button name="action_view_project_cost" string="Outcome" class="oe_stat_button" type="object" attrs="{'invisible': [('project_cost','=',False)]}" />
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -82,12 +82,12 @@
         <field name="name">Cost Estimation Tree View</field>
         <field name="model">cost_estimation.cost_estimation</field>
         <field name="arch" type="xml">
-            <list create="0">
+            <tree create="0">
                 <field name="create_date" />
                 <field name="display_name" />
                 <field name="partner_id" />
                 <field name="order_id" />
-            </list>
+            </tree>
         </field>
     </record>
 

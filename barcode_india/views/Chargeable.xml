@@ -17,14 +17,14 @@
         <field name="name">Chargeable</field>
         <field name="model">barcode_india.chargeable</field>
         <field name="arch" type="xml">
-            <list string="Chargeable">
+            <tree string="Chargeable">
                 <field name="name"/>
                 <field name="bci_case_sub_type"/>
                 <field name="bci_problem_type"/>
                 <field name="bci_problem_sub_type"/>
                 <field name="bci_warranty_status"/>
                 <field name="bci_chargeable"/>
-            </list>
+            </tree>
         </field>
     </record>
 

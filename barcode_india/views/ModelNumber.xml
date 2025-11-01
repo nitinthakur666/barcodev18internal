@@ -11,9 +11,9 @@
         <field name="name">Model Number</field>
         <field name="model">barcode_india.model_number</field>
         <field name="arch" type="xml">
-            <list string="Model NUmber" editable="bottom">
+            <tree string="Model NUmber" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

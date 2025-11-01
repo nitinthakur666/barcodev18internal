@@ -21,23 +21,23 @@
                     <notebook>
                         <page string="Phase Allocation">
                             <field name="phase_allocations">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="resource" />
                                     <field name="allocation" widget="percentage" sum="Total" optional="show" />
                                     <field name="phase" invisible="1" />
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Risk Data">
                             <field name="risk_data">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="factor" />
                                     <field name="type" optional="show" />
                                     <field name="applied" optional="show" />
                                     <field name="phase" invisible="1" />
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
@@ -55,13 +55,13 @@
         <field name="name">Phase Tree View</field>
         <field name="model">cost_estimation.phase</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="type" optional="show" />
                 <field name="calculation_factor" optional="show" />
                 <field name="total" widget="percentage" optional="show" />
-            </list>
+            </tree>
         </field>
     </record>
 

@@ -5,66 +5,66 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='street2']" position="after">
-                <field name="street3" placeholder="Street 3..." class="o_address_street" modifiers="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                <field name="street4" placeholder="Street 4..." class="o_address_street" modifiers="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                <field name="street3" placeholder="Street 3..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                <field name="street4" placeholder="Street 4..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='vat']" position="after">
-                <field name="bci_code" readonly="1" force_save="1" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_site_code" modifiers="{'invisible': [('bci_contact_type', '!=', 'Site')]}"/>
+                <field name="bci_code" readonly="1" force_save="1" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_site_code" attrs="{'invisible': [('bci_contact_type', '!=', 'Site')]}"/>
                 <field name="bci_legal_name"/>
                 <field name="bci_legacy_customer_id"/>
                 <field name="bci_survey_id"/>
-                <field name="bci_contact_type" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_national_account_no" modifiers="{'readonly': [('bci_contact_type', '!=', 'Parent Company')], 'invisible': [('is_company', '=', False)]}" force_save="1"/>
-                <field name="bci_parent_company" modifiers="{'readonly': [('bci_contact_type', '!=', 'Company')],'invisible': [('is_company', '=', False)]}" domain="[('bci_contact_type', '=', 'Parent Company')]" force_save="1"/>
-                <field name="bci_company" modifiers="{'readonly': [('bci_contact_type', '!=', 'Site')],'required': [('bci_contact_type', '=', 'Site')],'invisible': [('is_company', '=', False)]}" domain="[('bci_contact_type', '=', 'Company')]" force_save="1"/>
-                <field name="bci_site" modifiers="{'readonly': [('bci_contact_type', '!=', 'Plant')],'required': [('bci_contact_type', '=', 'Plant')]}" domain="[('bci_contact_type', '=', 'Site')]" force_save="1"/>
-                <field name="bci_region_user" modifiers="{'invisible': [('is_company', '=', True)]}"/>
-                <field name="bci_vertical" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_sub_vertical" modifiers="{'invisible': [('is_company', '=', False)]}" domain="[('vertical_id','=',bci_vertical)]"/>
-                <field name="bci_sub_vertical_category" modifiers="{'invisible': [('is_company', '=', False)]}" domain="[('sub_vertical_id','=',bci_sub_vertical)]"/>
+                <field name="bci_contact_type" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_national_account_no" attrs="{'readonly': [('bci_contact_type', '!=', 'Parent Company')], 'invisible': [('is_company', '=', False)]}" force_save="1"/>
+                <field name="bci_parent_company" attrs="{'readonly': [('bci_contact_type', '!=', 'Company')],'invisible': [('is_company', '=', False)]}" domain="[('bci_contact_type', '=', 'Parent Company')]" force_save="1"/>
+                <field name="bci_company" attrs="{'readonly': [('bci_contact_type', '!=', 'Site')],'required': [('bci_contact_type', '=', 'Site')],'invisible': [('is_company', '=', False)]}" domain="[('bci_contact_type', '=', 'Company')]" force_save="1"/>
+                <field name="bci_site" attrs="{'readonly': [('bci_contact_type', '!=', 'Plant')],'required': [('bci_contact_type', '=', 'Plant')]}" domain="[('bci_contact_type', '=', 'Site')]" force_save="1"/>
+                <field name="bci_region_user" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                <field name="bci_vertical" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_sub_vertical" attrs="{'invisible': [('is_company', '=', False)]}" domain="[('vertical_id','=',bci_vertical)]"/>
+                <field name="bci_sub_vertical_category" attrs="{'invisible': [('is_company', '=', False)]}" domain="[('sub_vertical_id','=',bci_sub_vertical)]"/>
             </xpath>
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="bci_linkedin" widget="url" modifiers="{'invisible': [('is_company', '!=', False)]}"/>
-                <field name="bci_turnover" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_any_other_info" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_department" modifiers="{'invisible': [('is_company', '!=', False)]}"/>
-                <field name="bci_account_type" modifiers="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
-                <field name="bci_group_code" modifiers="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', 'in', ['Parent Company','Company'])]}"/>
-                <field name="bci_tax_group" modifiers="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
-                <field name="bci_terms_code" modifiers="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
-                <field name="bci_outstanding_balance_exceed" modifiers="{'invisible': [('is_company', '=', False)]}"/>
-                <field name="bci_outstanding_balance" modifiers="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_linkedin" widget="url" attrs="{'invisible': [('is_company', '!=', False)]}"/>
+                <field name="bci_turnover" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_any_other_info" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_department" attrs="{'invisible': [('is_company', '!=', False)]}"/>
+                <field name="bci_account_type" attrs="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
+                <field name="bci_group_code" attrs="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', 'in', ['Parent Company','Company'])]}"/>
+                <field name="bci_tax_group" attrs="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
+                <field name="bci_terms_code" attrs="{'invisible': [('is_company', '=', False)],'required': [('bci_contact_type', '=', 'Company')]}"/>
+                <field name="bci_outstanding_balance_exceed" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="bci_outstanding_balance" attrs="{'invisible': [('is_company', '=', False)]}"/>
             </xpath>
             <xpath expr="//span[@name='address_name']" position="inside">
-                <b modifiers="{'invisible': [('type', '!=', 'site')]}">Site</b>
+                <b attrs="{'invisible': [('type', '!=', 'site')]}">Site</b>
             </xpath>
             <xpath expr="//field[@name='category_id']" position="after">
                <field name="bci_child_company_ids" invisible="1"/>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
-                <!-- <button name="action_view_sopf" type="object" class="oe_stat_button" icon="fa-file-text-o" modifiers="{'invisible': [('bci_sopf_count', '=', 0), ('is_company', '=', False)]}">
+                <!-- <button name="action_view_sopf" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible': [('bci_sopf_count', '=', 0), ('is_company', '=', False)]}">
                     <field name="bci_sopf_count" string="SOPF" widget="statinfo"/>
                 </button> -->
-                <button name="action_view_legacy_sopf" title="Legacy SOPF Header" type="object" class="oe_stat_button" icon="fa-file-text-o" modifiers="{'invisible': [('bci_legacy_sopf_count', '=', 0), ('is_company', '=', False)]}">
+                <button name="action_view_legacy_sopf" title="Legacy SOPF Header" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible': [('bci_legacy_sopf_count', '=', 0), ('is_company', '=', False)]}">
                     <field name="bci_legacy_sopf_count" string="L-SOPF Hdr" widget="statinfo"/>
                 </button>
-                <button name="action_view_legacy_sopf_items" title="Legacy SOPF Items" type="object" class="oe_stat_button" icon="fa-list-alt" modifiers="{'invisible': [('bci_legacy_sopf_items_count', '=', 0), ('is_company', '=', False)]}">
+                <button name="action_view_legacy_sopf_items" title="Legacy SOPF Items" type="object" class="oe_stat_button" icon="fa-list-alt" attrs="{'invisible': [('bci_legacy_sopf_items_count', '=', 0), ('is_company', '=', False)]}">
                     <field name="bci_legacy_sopf_items_count" string="L-SOPF Itm" widget="statinfo"/>
                 </button>
-                <button class="oe_stat_button" name="action_view_child_company" icon="fa-user" type="object" modifiers="{'invisible': [('bci_child_company_count', '=', 0)]}">
+                <button class="oe_stat_button" name="action_view_child_company" icon="fa-user" type="object" attrs="{'invisible': [('bci_child_company_count', '=', 0)]}">
                     <field name="bci_child_company_count" string="Child Companies" widget="statinfo"/>
                 </button>
-                <button class="oe_stat_button" name="action_view_site" icon="fa-user" type="object" modifiers="{'invisible': [('bci_site_count', '=', 0)]}">
+                <button class="oe_stat_button" name="action_view_site" icon="fa-user" type="object" attrs="{'invisible': [('bci_site_count', '=', 0)]}">
                     <field name="bci_site_count" string="Site" widget="statinfo"/>
                 </button>
-                <button class="oe_stat_button" name="action_view_plant" icon="fa-user" type="object" modifiers="{'invisible': [('bci_plant_count', '=', 0)]}">
+                <button class="oe_stat_button" name="action_view_plant" icon="fa-user" type="object" attrs="{'invisible': [('bci_plant_count', '=', 0)]}">
                     <field name="bci_plant_count" string="Plant" widget="statinfo"/>
                 </button>
-                <button class="oe_stat_button" name="action_view_contracts" icon="fa-usd" type="object" modifiers="{'invisible': [('bci_contract_count', '=', 0)]}">
+                <button class="oe_stat_button" name="action_view_contracts" icon="fa-usd" type="object" attrs="{'invisible': [('bci_contract_count', '=', 0)]}">
                     <field name="bci_contract_count" string="Contracts" widget="statinfo" />
                 </button>
-                <button class="oe_stat_button" name="action_view_assets" icon="fa-usd" type="object" modifiers="{'invisible': [('bci_assets_count', '=', 0)]}">
+                <button class="oe_stat_button" name="action_view_assets" icon="fa-usd" type="object" attrs="{'invisible': [('bci_assets_count', '=', 0)]}">
                     <field name="bci_assets_count" string="Assets" widget="statinfo" />
                 </button>
             </xpath>
@@ -80,10 +80,10 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Pricing Term" name="pricing_term">
                     <field name="bci_pricing_terms">
-                        <list>
+                        <tree>
                             <field name="bci_quote_type" />
                             <field name="bci_pt_line_ids" widget="many2many_tags"/>
-                        </list>
+                        </tree>
                         <form>
                             <group>
                                 <field name="bci_quote_type" />
@@ -91,12 +91,12 @@
                             <notebook>
                                 <page string="Payment Term Lines" name="paymet_term_line">
                                     <field name="bci_pt_line_ids">
-                                        <list editable="bottom">
+                                        <tree editable="bottom">
                                             <field name="name" />
                                             <field name="sequence" invisible="1" />
                                             <field name="bci_percentage" />
                                             <field name="bci_customer_pt_master_id" invisible="1" />
-                                        </list>
+                                        </tree>
                                     </field>
                                 </page>
                             </notebook>
@@ -113,7 +113,7 @@
             </xpath>
 
             <xpath expr="//sheet" position="before">
-                <div class="alert alert-warning oe_edit_only" role="alert" modifiers="{'invisible': [('bci_parent_company', '=', False)]}">
+                <div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('bci_parent_company', '=', False)]}">
                     Please Update NA with the <field name="bci_code" readonly="1"/> ERP Code in ERP.
                 </div>
             </xpath>

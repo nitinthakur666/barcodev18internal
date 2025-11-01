@@ -4,13 +4,13 @@
             <field name="name">Barcode India ERP Category Tree View</field>
             <field name="model">barcode_india.erp_acc_category</field>
             <field name="arch" type="xml">
-                <list>
+                <tree>
                     <field name="sequence" invisible="1"/>
                     <field name="name" />
                     <field name="lineof_business_id" invisible="1"/>
                     <field name="margin_default" />
                     <field name="product_head" widget="many2many_tags"/>
-                </list>
+                </tree>
             </field>
         </record>
 

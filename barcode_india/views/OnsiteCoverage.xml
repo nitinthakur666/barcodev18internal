@@ -11,10 +11,10 @@
         <field name="name">Onsite Coverage</field>
         <field name="model">barcode_india.onsite_coverage</field>
         <field name="arch" type="xml">
-            <list string="Onsite Coverage" editable="bottom">
+            <tree string="Onsite Coverage" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

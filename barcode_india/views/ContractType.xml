@@ -16,10 +16,10 @@
         <field name="name">Contracts Type</field>
         <field name="model">barcode_india.contracts.type</field>
         <field name="arch" type="xml">
-            <list string="Contracts Type" editable="bottom">
+            <tree string="Contracts Type" editable="bottom">
                 <field name="name"/>
                 <field name="type"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

@@ -11,9 +11,9 @@
         <field name="name">Stages</field>
         <field name="model">barcode_india.stages</field>
         <field name="arch" type="xml">
-            <list string="Stages" editable="bottom">
+            <tree string="Stages" editable="bottom">
                 <field name="name" />
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

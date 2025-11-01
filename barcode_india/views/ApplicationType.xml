@@ -11,9 +11,9 @@
         <field name="name">Application Type</field>
         <field name="model">application.type</field>
         <field name="arch" type="xml">
-            <list string="Application Type" editable="bottom">
+            <tree string="Application Type" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 

@@ -16,11 +16,11 @@
         <field name="name">Resolution Type</field>
         <field name="model">barcode_india.resolution_type</field>
         <field name="arch" type="xml">
-            <list string="Resolution Type" editable="bottom">
+            <tree string="Resolution Type" editable="bottom">
                 <field name="name"/>
                 <field name="active" invisible="1"/>
 
-            </list>
+            </tree>
         </field>
     </record>
     

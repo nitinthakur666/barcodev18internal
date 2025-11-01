@@ -16,11 +16,11 @@
         <field name="name">Cost Sheet View Master Tree View</field>
         <field name="model">barcode_india.view_master</field>
         <field name="arch" type="xml">
-            <list string="Readonly Master" editable="bottom">
+            <tree string="Readonly Master" editable="bottom">
                 <field name="bci_stage" />
                 <field name="bci_role" />
                 <field name="bci_view" domain="[('model','=','sale.order.line'),('type','=','tree')]"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

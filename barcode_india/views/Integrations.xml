@@ -106,12 +106,12 @@
 				<form string="Integrations">
 					<sheet>
 						<div class="oe_button_box" name="button_box">
-                            <button name="toggle_debug" modifiers="{'invisible': [('debug_mode', '=', True)]}" class="oe_stat_button" type="object" icon="fa-code">
+                            <button name="toggle_debug" attrs="{'invisible': [('debug_mode', '=', True)]}" class="oe_stat_button" type="object" icon="fa-code">
                                 <div class="o_stat_info o_field_widget">
                                     <span class="text-danger">No debug</span>
                                 </div>
                             </button>
-                            <button name="toggle_debug" modifiers="{'invisible': [('debug_mode', '=', False)]}" class="oe_stat_button" type="object" icon="fa-code">
+                            <button name="toggle_debug" attrs="{'invisible': [('debug_mode', '=', False)]}" class="oe_stat_button" type="object" icon="fa-code">
                                 <div class="o_stat_info o_field_widget">
                                     <span class="text-success">Debug requests</span>
                                 </div>

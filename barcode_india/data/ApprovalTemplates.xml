@@ -3,7 +3,7 @@
         <record id="bci_pricing_category_template" model="mail.template">
             <field name="name">Category Head Approval</field>
             <field name="model_id" ref="sale.model_sale_order" />
-            <field name="subject">Pricing Request Notification</field>
+            <field name="subject">Pricing Category Notification</field>
             <field name="email_to">{{object.bci_approver.email }}</field>
             <field name="body_html" type="html">
                 <div>
@@ -22,79 +22,6 @@
             <field name="body_html" type="html">
                 <div>
                     <p>Dear Ma'am/Sir,<br /> Products from your Vertical have been added to a quote: <t t-out="object.name" /> and sent for approval. </p>
-                </div>
-            </field>
-        </record>
-
-        <record id="bci_approved_template_" model="mail.template">
-            <field name="name">Approval Message</field>
-            <field name="model_id" ref="approvals.model_approval_request" />
-            <field name="subject">{{object.bci_sale_order_id.name}} Approval accept Notification</field>
-            <field name="email_to">{{}}</field>
-            <field name="body_html" type="html">
-                <div>
-                    <p>Dear Ma'am/Sir,<br /> <t t-out="object.bci_sale_order_id.name" /> order has been approved.</p>
-                </div>
-            </field>
-        </record>
-
-
-        <record id="bci_approval_refuse_template" model="mail.template">
-            <field name="name">Approval Refuse Message</field>
-            <field name="model_id" ref="approvals.model_approval_request" />
-            <field name="subject">{{object.bci_sale_order_id.name}} Approval Refuse Notification</field>
-            <field name="email_to">{{}}</field>
-            <field name="body_html" type="html">
-                <div>
-                    <p>Dear Ma'am/Sir,<br /> <t t-out="object.bci_sale_order_id.name" /> order has been refused.</p>
-                </div>
-            </field>
-        </record>
-
-
-        <record id="bci_approval_cancel_template" model="mail.template">
-            <field name="name">Approval Cancel Message</field>
-            <field name="model_id" ref="approvals.model_approval_request" />
-            <field name="subject">{{object.bci_sale_order_id.name}} Approval Cancel Notification</field>
-            <field name="email_to">{{}}</field>
-            <field name="body_html" type="html">
-                <div>
-                    <p>Dear Ma'am/Sir,<br /> <t t-out="object.bci_sale_order_id.name" /> order has been Canceled.</p>
-                </div>
-            </field>
-        </record>
-
-
-        <record id="bci_approval_withdraw_template" model="mail.template">
-            <field name="name">Approval Withdraw Message</field>
-            <field name="model_id" ref="approvals.model_approval_request" />
-            <field name="subject">{{object.bci_sale_order_id.name}} Approval Withdraw Notification</field>
-            <field name="email_to">{{}}</field>
-            <field name="body_html" type="html">
-                <div>
-                    <p>Dear Ma'am/Sir,<br /><t t-out="object.bci_sale_order_id.name" /> has been withdraw. </p>
-                </div>
-            </field>
-        </record>
-        <record id="email_template_sale_line_approval" model="mail.template">
-            <field name="name">Sale Line Approval Notification</field>
-            <field name="model_id" ref="sale.model_sale_order_line"/>
-            <field name="subject">{{object.product_id.name}} Approval Notification</field>
-            <field name="email_from">{{(object.company_id.email or '')}}</field>
-            <field name="email_to">{{(object.order_id.user_id.email or '')}}</field>
-            <field name="body_html" type="html">
-                <div>
-                    <p>Dear Ma'am/Sir,<br />
-                    <t t-out="object.product_id.name" /> has been approved with following details:
-                    <br/><br/>
-                    <strong>Sale Order:</strong> <t t-out="object.order_id.name" /><br/>
-                    <strong>Product:</strong> <t t-out="object.product_id.name" /><br/>
-                    <strong>Quantity:</strong> <t t-out="object.product_uom_qty" /><br/>
-                    <strong>Unit Price:</strong> <t t-out="object.bci_suggested_price_unit" /><br/>
-                    <t t-if="object.special_price_applicable">
-                    <strong>Special Price:</strong> <t t-out="object.special_price" /><br/>
-                    </t>
-                    </p>
                 </div>
             </field>
         </record>

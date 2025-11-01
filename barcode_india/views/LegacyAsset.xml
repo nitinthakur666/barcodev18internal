@@ -4,7 +4,7 @@
         <field name="name">Legacy Asset</field>
         <field name="model">barcode_india.legacy.asset</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="name"/>
                 <field name="sage_internal_assests"/>
                 <field name="sage_asset_createdby" />
@@ -36,7 +36,7 @@
                 <field name="bci_site_details" />
                 <field name="bci_replaced_with_serial_number" />
                 <field name="bci_kit_name" />
-            </list>
+            </tree>
         </field>
     </record>
 

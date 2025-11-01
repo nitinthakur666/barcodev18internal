@@ -11,7 +11,7 @@
         <field name="name">Location Wise Inventory</field>
         <field name="model">barcode_india.location_inventory</field>
         <field name="arch" type="xml">
-            <list string="Location Wise Inventory" editable="bottom">
+            <tree string="Location Wise Inventory" editable="bottom">
                 <field name="name"/>
                 <field name="item_no"/>
                 <field name="location"/>
@@ -19,7 +19,7 @@
                 <field name="quantity_on_hand"/>
                 <field name="quantity_on_po_order"/>
                 <field name="quantity_on_so"/>
-            </list>
+            </tree>
         </field>
     </record>
 

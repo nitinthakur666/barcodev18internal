@@ -4,11 +4,11 @@
         <field name="name">Freight Type</field>
         <field name="model">barcode_india.freight_types</field>
         <field name="arch" type="xml">
-            <list string="Freight Type" editable="bottom">
+            <tree string="Freight Type" editable="bottom">
                 <field name="name"/>
                 <field name="minimumcharge" />
                 <field name="percentage_ofHardware" />
-            </list>
+            </tree>
         </field>
     </record>
     <record id="action_barcode_india_freight_type" model="ir.actions.act_window">

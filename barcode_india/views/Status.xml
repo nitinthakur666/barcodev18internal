@@ -11,10 +11,10 @@
         <field name="name">Status</field>
         <field name="model">barcode_india.status</field>
         <field name="arch" type="xml">
-            <list string="Status" editable="bottom">
+            <tree string="Status" editable="bottom">
                 <field name="name" />
                 <field name="probability"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

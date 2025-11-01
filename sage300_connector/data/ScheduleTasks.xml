@@ -7,7 +7,7 @@
             <field name="code">model._pt_run_process(max_iterations=100)</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <!-- <field name="numbercall">-1</field> -->
+            <field name="numbercall">-1</field>
         </record>
 
         <record id="sale_order_job" model="ir.cron">
@@ -17,7 +17,7 @@
             <field name="code">model._cron_sale_order_sync()</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <!-- <field name="numbercall">-1</field> -->
+            <field name="numbercall">-1</field>
         </record>
 
         <record id="invoice_job" model="ir.cron">
@@ -27,7 +27,7 @@
             <field name="code">model._invoice_sync()</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <!-- <field name="numbercall">-1</field> -->
+            <field name="numbercall">-1</field>
         </record>
 
          <!-- <record id="product_sync_to_erp" model="ir.cron">
@@ -47,7 +47,7 @@
             <field name="code">model.customer_push_to_erp()</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <!-- <field name="numbercall">-1</field> -->
+            <field name="numbercall">-1</field>
         </record>
 
         <record id="national_account_job" model="ir.cron">
@@ -57,7 +57,7 @@
             <field name="code">model.national_account_push_to_erp()</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <!-- <field name="numbercall">-1</field> -->
+            <field name="numbercall">-1</field>
         </record>
 
     </data>

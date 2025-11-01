@@ -4,10 +4,10 @@
         <field name="name">Bant</field>
         <field name="model">barcode_india.bant</field>
         <field name="arch" type="xml">
-            <list string="BANT" editable="bottom">
+            <tree string="BANT" editable="bottom">
                 <field name="name"/>
                 <field name="weightage" widget="percentage"/>
-            </list>
+            </tree>
         </field>
     </record>
     <record id="action_barcode_india_bant" model="ir.actions.act_window">

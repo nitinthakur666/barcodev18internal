@@ -120,12 +120,12 @@
         <field name="name">Sale Sync Logs</field>
         <field name="model">sage300_connector.sale_logs</field>
         <field name="arch" type="xml">
-            <list string="Logs">
+            <tree string="Logs">
                 <field name="create_date"/>
                 <field name="name"/>
                 <field name="message"/>
                 <field name="ref"/>   
-            </list>
+            </tree>
         </field>
     </record>
 

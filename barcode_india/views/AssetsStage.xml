@@ -16,11 +16,11 @@
         <field name="name">Assets Stage</field>
         <field name="model">barcode_india.assets.stage</field>
         <field name="arch" type="xml">
-            <list string="Assets Stage" editable="bottom">
+            <tree string="Assets Stage" editable="bottom">
                 <field name="name"/>
                 <field name="type" required="1"/>
                 <field name="sequence"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

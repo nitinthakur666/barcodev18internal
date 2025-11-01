@@ -105,11 +105,5 @@ access_barcode_india_test_case_status,barcode_india.test_case_status,model_barco
 access_barcode_india_test_cases,barcode_india.test_cases,model_barcode_india_test_cases,base.group_user,1,1,1,1
 access_barcode_india_sopf_header,barcode_india.sopf_header,model_barcode_india_sopf_header,base.group_user,1,1,1,1
 access_barcode_india_sopf_items,barcode_india.sopf_items,model_barcode_india_sopf_items,base.group_user,1,1,1,1
-access_reject_wizard,reject.wizard.access,model_reject_wizard,base.group_user,1,1,1,1
-access_bci_reference_costsheet,bci.reference.costsheet.access,model_bci_reference_costsheet,base.group_user,1,1,1,1
-access_bci_reference_costsheet_confirmation,bci.reference.costsheet.confirmation.access,model_bci_reference_costsheet_confirmation,base.group_user,1,1,1,1
-access_bci_reference_costsheet_line,bci.reference.costsheet.line.access,model_bci_reference_costsheet_line,base.group_user,1,1,1,1
-access_reference_costsheet_wizard,reference.costsheet.wizard.access,model_reference_costsheet_wizard,base.group_user,1,1,1,1
-access_unset_reference_costsheet_wizard,unset.reference.costsheet.wizard.access,model_unset_reference_costsheet_wizard,base.group_user,1,1,1,1
 access_barcode_india_model_number,barcode_india.model_number,model_barcode_india_model_number,base.group_user,1,1,1,1
 access_barcode_india_oem,barcode_india.oem,model_barcode_india_oem,base.group_user,1,1,1,1

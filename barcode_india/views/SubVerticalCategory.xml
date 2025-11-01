@@ -11,11 +11,11 @@
         <field name="name">Sub Vertical Category</field>
         <field name="model">barcode_india.sub_vertical_category</field>
         <field name="arch" type="xml">
-            <list string="Sub Vertical Category" editable="bottom">
+            <tree string="Sub Vertical Category" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="sub_vertical_id"/>
-            </list>
+            </tree>
         </field>
     </record>
 

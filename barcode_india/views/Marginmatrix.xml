@@ -4,14 +4,14 @@
         <field name="name">Margin Matrix</field>
         <field name="model">barcode_india.margin_matrix</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <tree editable="bottom">
                 <field name="deal_margin"/>
                 <field name="sequence" widget="handle" />
                 <field name="approver_type" />
                 <field name="approver_role" />
                 <field name="approver" />
                 <field name="quotation_type_id" invisible="1"/>
-            </list>
+            </tree>
         </field>
     </record>
 

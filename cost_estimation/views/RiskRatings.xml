@@ -14,12 +14,12 @@
                     <notebook>
                         <page string="Risk Rating">
                             <field name="risk_rating_lines">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="factor" />
                                     <field name="rating" widget="percentage" optional="show" />
                                     <field name="risk_rating" invisible="1" />
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
@@ -37,10 +37,10 @@
         <field name="name">Risk Rating Tree View</field>
         <field name="model">cost_estimation.risk_rating</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
-            </list>
+            </tree>
         </field>
     </record>
 

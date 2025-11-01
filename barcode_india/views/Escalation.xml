@@ -41,11 +41,11 @@
         <field name="name">Escalation</field>
         <field name="model">barcode_india.escalation</field>
         <field name="arch" type="xml">
-            <list string="Escalation">
+            <tree string="Escalation">
                 <field name="name"/>
                 <field name="bci_tat" widget="percentage"/>
                 <field name="bci_sla" widget="many2many_tags"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

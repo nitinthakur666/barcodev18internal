@@ -5,10 +5,10 @@
             <field name="name">Barcode India Pricing Category Tree View</field>
             <field name="model">barcode_india.pricing_category</field>
             <field name="arch" type="xml">
-                <list string="Pricing Category">
+                <tree string="Pricing Category">
                     <field name="name" />
                     <field name="approver" />
-                </list>
+                </tree>
             </field>
         </record>
 
@@ -30,11 +30,11 @@
 <!--                         <notebook>
                             <page string="Payment Terms" name="paymentterms">
                                 <field name="bci_pt_master_ids">
-                                    <list editable="top">
+                                    <tree editable="top">
                                         <field name="sequence" widget="handle" />
                                         <field name="name" />
                                         <field name="bci_percentage" />
-                                    </list>
+                                    </tree>
                                 </field>
                             </page>
                         </notebook> -->

@@ -11,10 +11,10 @@
         <field name="name">Engineer &amp; Standby Equipment</field>
         <field name="model">barcode_india.standby_equipment</field>
         <field name="arch" type="xml">
-            <list string="Engineer &amp; Standby Equipment" editable="bottom">
+            <tree string="Engineer &amp; Standby Equipment" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

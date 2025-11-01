@@ -11,10 +11,10 @@
         <field name="name">Service Category</field>
         <field name="model">barcode_india.service_category</field>
         <field name="arch" type="xml">
-            <list string="Service Category" editable="bottom">
+            <tree string="Service Category" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

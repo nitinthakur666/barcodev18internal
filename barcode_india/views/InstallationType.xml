@@ -4,11 +4,11 @@
         <field name="name">Installation Type</field>
         <field name="model">barcode_india.installation_types</field>
         <field name="arch" type="xml">
-            <list string="Installation Type" editable="bottom">
+            <tree string="Installation Type" editable="bottom">
                 <field name="name"/>
                 <field name="minimum_charge" />
                 <field name="percentage_of_Hardware" />
-            </list>
+            </tree>
         </field>
     </record>
     <record id="action_barcode_india_installation_type" model="ir.actions.act_window">

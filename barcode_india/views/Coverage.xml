@@ -11,11 +11,11 @@
         <field name="name">Coverage</field>
         <field name="model">barcode_india.coverage</field>
         <field name="arch" type="xml">
-            <list string="Coverage" editable="bottom">
+            <tree string="Coverage" editable="bottom">
                 <field name="name"/>
                 <field name="no_of_days"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

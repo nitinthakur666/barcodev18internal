@@ -5,7 +5,7 @@
             <field name="name">Barcode India Payment Term Tree View</field>
             <field name="model">barcode_india.payment_term</field>
             <field name="arch" type="xml">
-                <list string="Payment Terms" expand="1">
+                <tree string="Payment Terms" expand="1">
                     <header>
                         <button name="action_approve" type="object" string="Approve"/>
                     </header>
@@ -15,7 +15,7 @@
                     <field name="order_id" invisible="1" />
                     <field name="bci_is_approved" invisible="1" />
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight" groups="barcode_india.group_payment_term_approver" />
-                </list>
+                </tree>
             </field>
         </record>
 

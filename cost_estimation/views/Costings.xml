@@ -31,7 +31,7 @@
                     <notebook>
                         <page string="Calculation">
                             <field name="calculation">
-                                <list create="0" delete="0">
+                                <tree create="0" delete="0">
                                     <field name="sequence" widget="handle" />
                                     <field name="resource" />
                                     <field name="activity" sum="Total" optional="show" />
@@ -39,7 +39,7 @@
                                     <field name="technical_risk_impact" sum="Total" optional="show" />
                                     <field name="business_risk_impact" sum="Total" optional="show" />
                                     <field name="costing" invisible="1" />
-                                </list>
+                                </tree>
                                 <form create="0" edit="0" delete="0">
                                     <sheet>
                                         <div class="oe_title">
@@ -82,7 +82,7 @@
         <field name="name">Costing Tree View</field>
         <field name="model">cost_estimation.costing</field>
         <field name="arch" type="xml">
-            <list create="0" delete="0">
+            <tree create="0" delete="0">
                 <field name="sequence" widget="handle" />
                 <field name="phase" />
                 <field name="code" optional="show" />
@@ -96,7 +96,7 @@
                 <field name="business_risk" sum="Total" optional="show" />
                 <field name="total" sum="Total" optional="show" />
                 <field name="cost_estimation" invisible="1" />
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

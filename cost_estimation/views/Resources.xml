@@ -46,7 +46,7 @@
         <field name="name">Resource Tree View</field>
         <field name="model">cost_estimation.resource</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="salary" optional="show" />
@@ -62,7 +62,7 @@
                 <field name="margin_n" widget="percentage" optional="show" />
                 <field name="quoted_n" optional="show" />
                 <field name="increase" widget="percentage" optional="show" />
-            </list>
+            </tree>
         </field>
     </record>
 

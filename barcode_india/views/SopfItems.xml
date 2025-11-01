@@ -4,7 +4,7 @@
         <field name="name">sopf.items.tree</field>
         <field name="model">barcode_india.sopf_items</field>
         <field name="arch" type="xml">
-            <list string="Legacy SOPF Items" create="false" edit="false" delete="false">
+            <tree string="Legacy SOPF Items" create="false" edit="false" delete="false">
                 <field name="sopf_id"/>
                 <field name="part_number"/>
                 <field name="item_description"/>
@@ -12,7 +12,7 @@
                 <field name="order_price"/>
                 <field name="amount_after_tax"/>
                 <field name="status"/>
-            </list>
+            </tree>
         </field>
     </record>
 

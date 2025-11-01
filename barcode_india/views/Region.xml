@@ -11,10 +11,10 @@
         <field name="name">Region</field>
         <field name="model">barcode_india.region</field>
         <field name="arch" type="xml">
-            <list string="Region" editable="bottom">
+            <tree string="Region" editable="bottom">
                 <field name="name"/>
                 <field name="region_head"/>
-            </list>
+            </tree>
         </field>
     </record>
 

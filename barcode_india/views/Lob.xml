@@ -11,9 +11,9 @@
         <field name="name">LOB</field>
         <field name="model">barcode_india.lob</field>
         <field name="arch" type="xml">
-            <list string="LOB" editable="bottom">
+            <tree string="LOB" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

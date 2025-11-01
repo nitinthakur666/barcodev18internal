@@ -11,10 +11,10 @@
         <field name="name">Warranty/AMC/Carepack Type</field>
         <field name="model">barcode_india.warranty_amc</field>
         <field name="arch" type="xml">
-            <list string="Warranty/AMC/Carepack Type" editable="bottom">
+            <tree string="Warranty/AMC/Carepack Type" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

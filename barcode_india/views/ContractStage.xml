@@ -16,12 +16,12 @@
         <field name="name">Contracts Stage</field>
         <field name="model">barcode_india.contracts.stage</field>
         <field name="arch" type="xml">
-            <list string="Contracts Stage">
+            <tree string="Contracts Stage">
                 <field name="name"/>
                 <field name="sequence"/>
                 <field name="stage_type"/>
                 <!-- <field name="is_draft_stage"/> -->
-            </list>
+            </tree>
         </field>
     </record>
 

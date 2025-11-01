@@ -26,13 +26,13 @@
             <field name="name">Invoice Sync tree</field>
             <field name="model">sage300_connector.invoice_sync</field>
             <field name="arch" type="xml">
-                <list string="Logs">
+                <tree string="Logs">
                     <field name="s3_invoice_no"/>
                     <field name="s3_sopf_ref"/>
                     <field name="s3_invoice_date"/>
                     <field name="s3_amount"/>  
                     <field name="s3_document"></field> 
-                </list>
+                </tree>
             </field>
         </record>
 

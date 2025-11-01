@@ -11,7 +11,16 @@ class CreateQuotation(models.TransientModel):
 
     def action_confirm(self):
         for record in self:
-            sale_order = self.env['sale.order'].create({'partner_id': record.bci_ticket_id.partner_id.id,'bci_helpdesk': record.bci_ticket_id.id,'bci_location':record.bci_location.id})
+            bypass_quote_type = self.env['barcode_india.quotation_type'].search([('bci_bypass_quote', '=', True)], limit=1)
+            sale_order_vals = {
+                'partner_id': record.bci_ticket_id.partner_id.id,
+                'bci_helpdesk': record.bci_ticket_id.id,
+                'bci_location': record.bci_location.id,
+                'user_id': self.env.user.id,
+            }
+            if bypass_quote_type:
+                sale_order_vals['bci_quote_type'] = bypass_quote_type.id
+            sale_order = self.env['sale.order'].create(sale_order_vals)
             if sale_order:
                 hold_stage = self.env['helpdesk.stage'].search([('bci_hold_stage','=',True)]).filtered(lambda x: record.bci_ticket_id.team_id.id in x.team_ids.ids)
                 if hold_stage:

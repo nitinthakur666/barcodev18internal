@@ -6,13 +6,13 @@
             <field name="name">Barcode India Test Case Tree View</field>
             <field name="model">barcode_india.test_cases</field>
             <field name="arch" type="xml">
-                <list>
+                <tree>
                     <field name="name"/>
                     <field name="test_status"/>
                     <field name="task_id"/>
                     <field name="project_id"/>
                     <field name="tag_ids" widget="many2many_tags"/>
-                </list>
+                </tree>
             </field>
         </record>
 

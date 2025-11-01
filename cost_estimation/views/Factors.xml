@@ -32,13 +32,13 @@
         <field name="name">Factor Tree View</field>
         <field name="model">cost_estimation.factor</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="type" optional="show" />
                 <field name="description" optional="show" />
                 <field name="general_hints" optional="show" />
-            </list>
+            </tree>
         </field>
     </record>
 

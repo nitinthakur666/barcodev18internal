@@ -372,10 +372,9 @@ class Partners(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             contact_type = vals.get('bci_contact_type')
-            if vals.get('company_type') != 'person':
-                if self.env.user.has_group('barcode_india.group_operational_contact_manager'):
-                    if contact_type not in ['Site', 'Plant']:
-                        raise AccessError(_("Operational Contact Managers can only create Site or Plant contacts"))
+            if self.env.user.has_group('barcode_india.group_operational_contact_manager'):
+                if contact_type not in ['Site', 'Plant']:
+                    raise AccessError(_("Operational Contact Managers can only create Site or Plant contacts"))
             if contact_type == 'Parent Company':
                 vals['bci_national_account_no'] = self.env['ir.sequence'].next_by_code('barcode_india.national_account_code')
         return super().create(vals_list)
@@ -386,15 +385,13 @@ class Partners(models.Model):
             return super(Partners, self).write(vals_list)
         user = self.env.user
         original_vals = dict(vals_list)
-        company_records = self.filtered(lambda rec: rec.company_type == 'company')
-        if company_records:
-            if user.has_group('barcode_india.group_corporate_contact_manager'):
-                if set(original_vals.keys()) != {'child_ids'}:
-                    raise AccessError(_("Corporate Contact Managers are only allowed to manage child contacts."))
-            if 'bci_contact_type' in vals_list:
-                if user.has_group('barcode_india.group_operational_contact_manager'):
-                    if vals_list['bci_contact_type'] not in ['Site', 'Plant']:
-                        raise AccessError(_("Operational Contact Managers can only modify contacts to Site or Plant types"))
+        if user.has_group('barcode_india.group_corporate_contact_manager'):
+            if set(original_vals.keys()) != {'child_ids'}:
+                raise AccessError(_("Corporate Contact Managers are only allowed to manage child contacts."))
+        if 'bci_contact_type' in vals_list:
+            if user.has_group('barcode_india.group_operational_contact_manager'):
+                if vals_list['bci_contact_type'] not in ['Site', 'Plant']:
+                    raise AccessError(_("Operational Contact Managers can only modify contacts to Site or Plant types"))
         new_context = dict(self.env.context, skip_corporate_check=True)
         record = super(Partners, self.with_context(new_context)).write(vals_list)
         for rec in self:

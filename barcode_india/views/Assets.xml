@@ -27,7 +27,7 @@
                         <button class="oe_stat_button" name="action_previous_contracts" icon="fa-certificate" type="object" string="Previous Contracts">
                         </button>                        
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" modifiers="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <h1>
                         <field name="name" required="1"/>
                     </h1>
@@ -69,8 +69,8 @@
                             <field name="bci_oem_contract_no"/>
                             <field name="bci_replaced_by"/>
                             <field name="bci_pm"/>
-                            <field name="bci_pm_frequency" modifiers="{'invisible':[('bci_pm','=',False)]}"/>
-                            <field name="bci_pm_next_date" modifiers="{'invisible':[('bci_pm','=',False)]}"/>
+                            <field name="bci_pm_frequency" attrs="{'invisible':[('bci_pm','=',False)]}"/>
+                            <field name="bci_pm_next_date" attrs="{'invisible':[('bci_pm','=',False)]}"/>
                             <field name="bci_opportunity" invisible="1"/>
                         </group>
                     </group>
@@ -88,7 +88,7 @@
         <field name="name">Assets</field>
         <field name="model">barcode_india.assets</field>
         <field name="arch" type="xml">
-            <list string="Assets" multi_edit="1">
+            <tree string="Assets" multi_edit="1">
                 <header>
                     <button name="action_generate_pm_ticket" type="object" string="Create PM Ticket"/>
                 </header>
@@ -103,7 +103,7 @@
                 <field name="bci_invoice_date" readonly="1"/>
                 <field name="bci_end_date" readonly="0"/>
                 <field name="bci_invoice_number" readonly="1"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

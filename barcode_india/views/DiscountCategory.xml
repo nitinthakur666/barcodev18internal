@@ -16,11 +16,11 @@
         <field name="name">Discount Category Master Tree View</field>
         <field name="model">barcode_india.discount_category</field>
         <field name="arch" type="xml">
-            <list string="Discount Category Master" editable="bottom">
+            <tree string="Discount Category Master" editable="bottom">
                 <field name="name" />
                 <field name="bci_discount" />
                 <field name="is_promocode" />
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

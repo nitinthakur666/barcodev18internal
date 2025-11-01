@@ -16,10 +16,10 @@
         <field name="name">RCA Reason Code</field>
         <field name="model">barcode_india.reason_code</field>
         <field name="arch" type="xml">
-            <list string="RCA Reason Code" editable="bottom">
+            <tree string="RCA Reason Code" editable="bottom">
                 <field name="name"/>
                 <field name="active" invisible="1"/>
-            </list>
+            </tree>
         </field>
     </record>
      <record id="barcode_india_rca_reason_code_search_view" model="ir.ui.view">

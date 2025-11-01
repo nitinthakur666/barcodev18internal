@@ -7,14 +7,14 @@
             <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='subject']" position="before">
-                    <label for="cc_partner_ids" string="CC" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
-                    <div groups="base.group_user" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
+                    <label for="cc_partner_ids" string="CC" attrs="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
+                    <div groups="base.group_user" attrs="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
                         <field name="cc_partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..."
                             context="{'force_email':True, 'show_email':True}"/>
                     </div>
                 
-                    <label for="bcc_partner_ids" string="BCC" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
-                    <div groups="base.group_user" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
+                    <label for="bcc_partner_ids" string="BCC" attrs="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
+                    <div groups="base.group_user" attrs="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
                         <field name="bcc_partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..."
                             context="{'force_email':True, 'show_email':True}"/>
                     </div>

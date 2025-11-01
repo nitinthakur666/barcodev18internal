@@ -16,9 +16,9 @@
                         <field name="creation_date" readonly="1" invisible="1"/>
                     </h1>
                 </div>
-                <span class="o_form_label" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">If you need the different customer for this SOPF</span>
-                <group string="Customer" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
-                    <group modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                <span class="o_form_label" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">If you need the different customer for this SOPF</span>
+                <group string="Customer" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                    <group attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
                         <field name="customer_id" domain="[('is_company', '=', True)]"/>
                         <field name="invoice_address_id" domain="[('type', '=', 'invoice')]"/>
                         <field name="delivery_address_id" domain="[('type', '=', 'delivery')]"/>
@@ -49,20 +49,19 @@
                     </group>
 
                     <div style="margin-top: 20px; margin-bottom: 20px; "></div>
-                    <field name="instructions" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}" readonly="1"/>
-                    <div style="margin-bottom: 20px;" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}"></div>
+                    <field name="instructions" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}" readonly="1"/>
+                    <div style="margin-bottom: 20px;" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}"></div>
 
                     <field name="special_instructions" placeholder="Special Instructions...."/>
                     <notebook>
-                        <page name="Lines" string="Lines" modifiers="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
+                        <page name="Lines" string="Lines" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
                             <field name="order_lines_id" no_label="1" options="{'no_create': true}">
-                                <list editable="bottom" create="0">
+                                <tree editable="bottom" create="0">
                                     <field name="product_id" />
                                     <field name="product_uom_qty" />
                                     <field name="price_unit" />
-                                    <field name="special_price" readonly="1"/>
                                     <field name="sale_order_line_id" invisible="1" />
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>

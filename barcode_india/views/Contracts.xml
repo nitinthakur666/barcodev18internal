@@ -23,27 +23,27 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_assets" icon="fa-certificate" type="object" modifiers="{'invisible': [('bci_assets_count','=',0)]}">
+                        <button class="oe_stat_button" name="action_assets" icon="fa-certificate" type="object" attrs="{'invisible': [('bci_assets_count','=',0)]}">
                             <field name="bci_assets_count" string="Assets" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" name="action_view_sites" icon="fa-sitemap" type="object">
                             <field name="bci_site_count" string="Sites" widget="statinfo"/>
                         </button>
-                        <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" modifiers="{'invisible': [('bci_ticket_count', '=', 0)]}">
+                        <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" attrs="{'invisible': [('bci_ticket_count', '=', 0)]}">
                             <field name="bci_ticket_count" string="Tickets" widget="statinfo" />
                         </button>
-                        <button class="oe_stat_button" name="action_view_opportunities" icon="fa-star" type="object" modifiers="{'invisible': [('bci_opportunity_count', '=', 0)]}">
+                        <button class="oe_stat_button" name="action_view_opportunities" icon="fa-star" type="object" attrs="{'invisible': [('bci_opportunity_count', '=', 0)]}">
                             <field name="bci_opportunity_count" string="Opportunities" widget="statinfo" />
                         </button>
-                        <button class="oe_stat_button" name="action_contract_details" icon="fa-star" type="object" modifiers="{'invisible': [('bci_contract_type_find','!=','Software')]}">
+                        <button class="oe_stat_button" name="action_contract_details" icon="fa-star" type="object" attrs="{'invisible': [('bci_contract_type_find','!=','Software')]}">
                             <field name="bci_contract_details_count" widget="statinfo" />
                         </button>
-                        <button class="oe_stat_button" name="action_previous_assets" icon="fa-certificate" type="object" string="Previous Assets" modifiers="{'invisible': ['|','|',('bci_stage_type','!=','Expired'),('bci_contract_id','=',False),('bci_contract_type_find','!=','Hardware')]}">
+                        <button class="oe_stat_button" name="action_previous_assets" icon="fa-certificate" type="object" string="Previous Assets" attrs="{'invisible': ['|','|',('bci_stage_type','!=','Expired'),('bci_contract_id','=',False),('bci_contract_type_find','!=','Hardware')]}">
                         </button>
-                        <button class="oe_stat_button" name="action_draft_assets" icon="fa-certificate" type="object" string="Draft Assets" modifiers="{'invisible': ['|',('bci_renewal_status','!=','To Be Activated'),('bci_contract_type_find','!=','Hardware')]}">
+                        <button class="oe_stat_button" name="action_draft_assets" icon="fa-certificate" type="object" string="Draft Assets" attrs="{'invisible': ['|',('bci_renewal_status','!=','To Be Activated'),('bci_contract_type_find','!=','Hardware')]}">
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" modifiers="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <h1>
                         <field name="name" readonly="1"/>
                     </h1>
@@ -57,11 +57,11 @@
                             <field name="bci_address_verification"/>
                             <field name="bci_preferred_applicable"/>
                             <field name="bci_pm"/>
-                            <field name="bci_pm_frequency" modifiers="{'invisible':[('bci_pm','=',False)]}"/>
+                            <field name="bci_pm_frequency" attrs="{'invisible':[('bci_pm','=',False)]}"/>
                             <field name="bci_amc_required" invisible="1"/>
                             <field name="bci_renewal_status"/>
                             <field name="bci_renewal_opportunity" />
-                            <field name="bci_service_product" modifiers="{'invisible': [('bci_contract_type_find','!=','Software')]}"/>
+                            <field name="bci_service_product" attrs="{'invisible': [('bci_contract_type_find','!=','Software')]}"/>
                             <field name="bci_opportunity" invisible="1"/>
                             <field name="bci_contract_type_find" invisible="1"/>
                             <field name="bci_stage_type" invisible="1"/>
@@ -117,7 +117,7 @@
         <field name="name">Contracts</field>
         <field name="model">barcode_india.contracts</field>
         <field name="arch" type="xml">
-                <list string="Contracts">
+                <tree string="Contracts">
                     <field name="create_date"/>
                     <field name="name"/>
                     <field name="bci_sopf_number"/>
@@ -127,7 +127,7 @@
                     <field name="bci_end"/>
                     <field name="bci_saleperson"/>
                     <field name="bci_team_id"/>
-                </list>
+                </tree>
         </field>
     </record>
 </odoo>

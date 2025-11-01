@@ -11,11 +11,11 @@
         <field name="name">Group Code</field>
         <field name="model">barcode_india.group_code</field>
         <field name="arch" type="xml">
-            <list string="Group Code" editable="bottom">
+            <tree string="Group Code" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="type"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

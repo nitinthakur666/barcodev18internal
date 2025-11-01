@@ -35,7 +35,7 @@
         <field name="name">Quotation Cost Tree View</field>
         <field name="model">cost_estimation.quotation_cost</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <tree editable="bottom">
                 <field name="sequence" widget="handle" />
                 <field name="product_id" options="{'no_create': True, 'no_open': True}" optional="show" domain="[('software','=',True)]"/>
                 <field name="project_cost" options="{'no_create': True, 'no_open': True}" widget="many2many_tags" optional="show" />
@@ -44,7 +44,7 @@
                 <field name="price_unit" optional="show" />
                 <field name="project_costs" widget="many2many_tags" invisible="1" />
                 <field name="cost_estimation" invisible="1" />
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

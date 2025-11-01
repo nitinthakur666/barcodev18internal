@@ -7,11 +7,10 @@
     'description': """
         Cost Estimation
     """,
-    'author': "Squad Software Pvt Ltd",
+    'author': "Ascensive Technologies",
     'website': "https://www.ascensivetechnologies.com",
     'category': 'Sales/Sales',
-    'version': '18.0',
-    'license': 'LGPL-3',
+    'version': '1.0',
     'application': True,
     'depends': [
         'base',
@@ -35,5 +34,4 @@
         'views/ProductCategories.xml',
         'views/MenuItems.xml',
     ],
-    
 }

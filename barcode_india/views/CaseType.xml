@@ -16,11 +16,11 @@
         <field name="name">Case Type</field>
         <field name="model">barcode_india.case_type</field>
         <field name="arch" type="xml">
-            <list string="Case Type" editable="bottom">
+            <tree string="Case Type" editable="bottom">
                 <field name="name"/>
                 <field name="type" />
                 <field name="active" invisible="1"/>
-            </list>
+            </tree>
         </field>
     </record>
     

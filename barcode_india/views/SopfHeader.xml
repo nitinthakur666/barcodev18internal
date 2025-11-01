@@ -5,7 +5,7 @@
         <field name="name">sopf.header.tree</field>
         <field name="model">barcode_india.sopf_header</field>
         <field name="arch" type="xml">
-            <list string="Legacy SOPF" create="false" delete="false">
+            <tree string="Legacy SOPF" create="false" delete="false">
                 <field name="name"/>
                 <field name="sopf_salesperson"/>
                 <field name="company_name"/>
@@ -13,7 +13,7 @@
                 <field name="order_date"/>
                 <field name="sopf_status"/>
                 <field name="sopf_total_amount_with_tax"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -58,7 +58,7 @@
                     <notebook>
                         <page string="Items">
                             <field name="item_ids">
-                                <list>
+                                <tree>
                                     <field name="sopf_number_text" />
                                     <field name="part_number"/>
                                     <field name="item_description"/>
@@ -67,7 +67,7 @@
                                     <field name="total_order_amount"/>
                                     <field name="amount_after_tax"/>
                                     <field name="status"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>

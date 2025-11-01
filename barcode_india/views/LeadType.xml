@@ -11,9 +11,9 @@
         <field name="name">Lead Type</field>
         <field name="model">lead.type</field>
         <field name="arch" type="xml">
-            <list string="Lead Type" editable="bottom">
+            <tree string="Lead Type" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 

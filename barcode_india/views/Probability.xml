@@ -11,9 +11,9 @@
         <field name="name">Probability</field>
         <field name="model">barcode_india.probability</field>
         <field name="arch" type="xml">
-            <list string="Probability" editable="bottom">
+            <tree string="Probability" editable="bottom">
                 <field name="name" />
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

@@ -72,7 +72,7 @@
             <field name="name">Contract Staging Table Sync</field>
             <field name="model">barcode_india.contract_sync</field>
             <field name="arch" type="xml">
-                <list string="Contract Staging Table Tree" decoration-danger="cs_message != False">
+                <tree string="Contract Staging Table Tree" decoration-danger="cs_message != False">
                     <field name="name" />
                     <field name="cs_invoice_number"/>
                     <field name="cs_invoice_date"/>
@@ -81,7 +81,7 @@
                     <field name="cs_sopf_ref"/>
                     <field name="cs_ready_for_sync" />
                     <field name="cs_message"/>
-                </list>
+                </tree>
             </field>
         </record>
 
@@ -91,7 +91,7 @@
             <field name="arch" type="xml">
                 <form string="Contract Staging Table Sync">
                     <sheet>
-                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" modifiers="{'invisible': [('active', '=', True)]}"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                         <h1>
                             <field name="name" />
                         </h1>
@@ -130,7 +130,7 @@
                         <notebook>
                             <page string="Assets/Carepack">
                                 <field name="cs_assets_ids">
-                                    <list>
+                                    <tree>
                                         <field name="name"/>
                                         <field name="cs_product_code"/>
                                         <field name="cs_invoice_date"/>
@@ -144,7 +144,7 @@
                                         <field name="cs_service_product"/>
                                         <field name="cs_careack_product" invisible="1"/>
                                         <field name="cs_care_pack_line" invisible="1"/>
-                                    </list>
+                                    </tree>
                                 </field>
                             </page>
                         </notebook>
@@ -192,13 +192,13 @@
             <field name="name">Contract Sync Logs</field>
             <field name="model">barcode_india.contract_sync_logs</field>
             <field name="arch" type="xml">
-                <list string="Logs">
+                <tree string="Logs">
                     <field name="create_date"/>
                     <field name="cs_sync_name"/>
                     <field name="cs_records"/>
                     <field name="cs_status"/>
                     <field name="cs_error"/>   
-                </list>
+                </tree>
             </field>
         </record>
 

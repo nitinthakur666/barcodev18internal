@@ -11,10 +11,10 @@
         <field name="name">Account Set Code</field>
         <field name="model">barcode_india.account_set_code</field>
         <field name="arch" type="xml">
-            <list string="Account Set Code" editable="bottom">
+            <tree string="Account Set Code" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

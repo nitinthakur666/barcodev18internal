@@ -46,7 +46,6 @@ class ProductTemplates(models.Model):
     bci_carepack_ids = fields.Many2many('product.template', 'care_pack_table', 'name', 'bci_sla_product', string="Carepack Products", copy=False)
     bci_factor_price = fields.Float(string='Factor Price')
     bci_kitting_item = fields.Boolean(string='Kitting Item',default=False)
-    special_price_applicable = fields.Boolean(string='Special Price Applicable',default=False)
     bci_model_number_id = fields.Many2one("barcode_india.model_number",string="Model Number")
     
 

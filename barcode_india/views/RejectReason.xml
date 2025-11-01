@@ -11,9 +11,9 @@
         <field name="name">Reject Reason</field>
         <field name="model">barcode_india.reject_reason</field>
         <field name="arch" type="xml">
-            <list string="Reject Reason" editable="bottom">
+            <tree string="Reject Reason" editable="bottom">
                 <field name="name"/>
-            </list>
+            </tree>
         </field>
     </record>
 </odoo>

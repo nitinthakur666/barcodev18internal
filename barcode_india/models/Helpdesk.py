@@ -54,8 +54,8 @@ class HelpdeskTeam(models.Model):
                 ticket.write({'stage_id': teams_dict[ticket.team_id.id]['to_stage_id'][0]})
 
 
-class HelpdeskTag(models.Model):
-    _inherit = 'helpdesk.tag'
+class HelpdeskTicketType(models.Model):
+    _inherit = 'helpdesk.ticket.type'
 
     active = fields.Boolean('Active', default=True)
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
@@ -294,11 +294,11 @@ class Helpdesk(models.Model):
             else:
                 rec.bci_time_to_resolve_ticket = False
 
-    @api.depends('bci_case_type', 'bci_case_sub_type', 'bci_problem_type', 'tag_ids', 'bci_warranty_status')
+    @api.depends('bci_case_type', 'bci_case_sub_type', 'bci_problem_type', 'ticket_type_id', 'bci_warranty_status')
     def compute_chargeable(self):
         for record in self:
-            if record.bci_case_type or record.bci_case_sub_type or record.bci_problem_type or record.tag_ids or record.bci_warranty_status:
-                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type', 'in', record.tag_ids.ids), ('bci_warranty_status', '=', record.bci_warranty_status)]
+            if record.bci_case_type or record.bci_case_sub_type or record.bci_problem_type or record.ticket_type_id or record.bci_warranty_status:
+                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type', '=', record.ticket_type_id.id), ('bci_warranty_status', '=', record.bci_warranty_status)]
                 chargeable = self.env['barcode_india.chargeable'].search(domain, limit=1)
                 record.bci_chargeable = chargeable.bci_chargeable if chargeable else False
 
@@ -573,7 +573,6 @@ class Helpdesk(models.Model):
 
     def action_bci_rma_transfer(self):
         self.ensure_one()
-        vendor_location = self.env['ir.config_parameter'].sudo().get_param('bci.vendor_location')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create BCI Transfer'),
@@ -583,8 +582,7 @@ class Helpdesk(models.Model):
             'context': {
                 'default_bci_ticket_id': self.id,
                 'default_bci_asset': self.bci_asset.id,
-                'default_bci_partner_id': self.partner_id.id,
-                'default_bci_oem_location_id' : vendor_location and int(vendor_location) or False,
+                'default_bci_partner_id': self.partner_id.id
             }
         }
 
@@ -601,7 +599,6 @@ class Helpdesk(models.Model):
 
     def action_bci_spare_transfer(self):
         self.ensure_one()
-        vendor_location = self.env['ir.config_parameter'].sudo().get_param('bci.vendor_location')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create Spares Transfers'),
@@ -612,8 +609,7 @@ class Helpdesk(models.Model):
                 'default_bci_ticket_id': self.id,
                 'default_bci_asset': self.bci_asset.id,
                 'default_bci_partner_id': self.partner_id.id,
-                'default_bci_spare_transfer': True,
-                'default_bci_oem_location_id' : vendor_location and int(vendor_location) or False,
+                'default_bci_spare_transfer': True
             }
         }
 

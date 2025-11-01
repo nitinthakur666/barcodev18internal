@@ -4,12 +4,12 @@
         <field name="name">Sale Person Limit</field>
         <field name="model">barcode_india.sale_person_limit</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <tree editable="bottom">
                 <field name="user" widget="many2many_tags"/>
                 <field name="quot_type" />
                 <field name="deal_value" />
                 <field name="payment_deal_value" />
-            </list>
+            </tree>
         </field>
     </record>
     <record id="action_sale_person_limit" model="ir.actions.act_window">

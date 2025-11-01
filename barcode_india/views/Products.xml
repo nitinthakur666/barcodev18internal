@@ -36,7 +36,6 @@
                                 <field name="bci_clearing_nd_handling" />
                                 <field name="bci_forex" />
                                 <field name="bci_exchange_rate" force_save="1"/>
-                                <field name="special_price_applicable"/>
                             </group>
                             <group>
                                 <field name="bci_model_number" invisible="1"/>
@@ -54,7 +53,7 @@
                         </group>
                     </page>
 
-                    <page string="Entitlements" name="entitlements" modifiers="{'invisible':[('detailed_type','!=','service')]}">
+                    <page string="Entitlements" name="entitlements" attrs="{'invisible':[('detailed_type','!=','service')]}">
                         <group>
                             <group>
                                 <field name="bci_own_company" />

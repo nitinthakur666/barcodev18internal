@@ -88,17 +88,12 @@ class SaleOrder(models.Model):
     bci_delivery_schedule = fields.Char(string="Delivery Schedule")
     approval_approvers_ids = fields.Many2many('res.users','sale_order_all_approvers_rel',string='All Approvers')
     partner_credit_limit = fields.Float(related='partner_id.bci_outstanding_balance_exceed',string="Customer Credit Limit",store=True)
-    partner_outstanding_balance = fields.Float(related='partner_id.bci_outstanding_balance',string="Customer Outstanding Balance",store=True)
-    advance_100 = fields.Boolean(string="100% Advance", help="If checked, PT Approval is bypassed.")
-    use_reference_costsheet = fields.Boolean(string="Set As Reference Costsheet",tracking=True)
-    is_reference = fields.Boolean(string="Is Reference", help="If checked, the reference cost sheet will be used to populate the current cost sheet.")
-    reference_costsheet_validity = fields.Date(string='Reference Costsheet Validity',tracking=True)
-    reference_company_ids = fields.Many2many('res.partner','bci_reference_company_rel', string='Reference Companys',tracking=True)
+    partner_outstanding_balance = fields.Float(related='partner_id.bci_outstanding_balance',string="Customer Outstanding Balance",store=True,)
 
     @api.model
     def create(self, vals):
-        if 'bci_payment_terms' in vals and vals.get('bci_stage') != 'approved' and not vals.get('advance_100'):
-            vals['bci_pt_approval'] = 'pending'
+        # if 'bci_payment_terms' in vals and vals.get('bci_stage') != 'approved':
+        #     vals['bci_pt_approval'] = 'pending'
         order = super(SaleOrder, self).create(vals)
         if order.bypass_quote == True:
             order.bci_stage = 'approved'
@@ -125,7 +120,8 @@ class SaleOrder(models.Model):
                         actual.percentange != expected_dict['percentange']):
                         is_modified = True
                         break
-            if is_modified and not order.advance_100:
+        
+            if is_modified:
                 order.write({
                     'bci_pt_approval': 'pending'
                 })
@@ -135,28 +131,14 @@ class SaleOrder(models.Model):
                         'bci_pt_approval': 'approved'
                     })
         return order
-            # if is_modified:
-            #     order.write({
-            #         'bci_pt_approval': 'pending'
-            #     })
-            # else:
-            #     if order.bci_pt_approval != 'approved':
-            #         order.write({
-            #             'bci_pt_approval': 'approved'
-            #         })
-        # return order
 
     def write(self, vals):
         for record in self:
             old_terms_list = []
             if 'bci_payment_terms' in vals and record._origin.bci_payment_terms:
                 old_terms_list = [f"{term.name}: {term.percentange}%" for term in record._origin.bci_payment_terms]
-            if 'advance_100' in vals and vals['advance_100'] and record.bci_pt_approval == 'pending':
-                vals['bci_pt_approval'] = 'approved'
-            # if 'bci_payment_terms' in vals and record._origin.bci_payment_terms:
-            #     old_terms_list = [f"{term.name}: {term.percentange}%" for term in record._origin.bci_payment_terms]
             if 'bci_payment_terms' in vals:
-                if record.bci_stage != 'approved' and not record.advance_100:
+                if record.bci_stage != 'approved':
                     vals['bci_pt_approval'] = 'pending'
             if 'order_line' in vals:
                 if vals['order_line'] and (line.bci_approval_stage != 'approved' for line in record.order_line):
@@ -193,17 +175,11 @@ class SaleOrder(models.Model):
                     )
                     
                     record.message_post(body=body)
-            return res
+        return res
         
     def copy(self, default=None):
         self = self.with_context(is_duplicating=True)
         return super(SaleOrder, self).copy(default)
-
-    @api.depends('partner_id')
-    def _compute_user_id(self):
-        for order in self:
-            if order.partner_id and not (order._origin.id and order.user_id):
-                order.user_id = self.env.user
 
     @api.depends('bci_payment_period')
     def _compute_payment_message(self):
@@ -224,7 +200,7 @@ class SaleOrder(models.Model):
     def _compute_validity_expired_message(self):
         for order in self:
             if order.bci_validity_expired:
-                order.validity_expired_message = "BCI Quote Validity has expired for this Quotation. Please take action."
+                order.validity_expired_message = "BCI Order Validity has expired for this sale order. Please take action."
             else:
                 order.validity_expired_message = None
     
@@ -285,14 +261,16 @@ class SaleOrder(models.Model):
                 margin_lines = self.env['barcode_india.pt_matrix'].sudo().search([('quotations_type_id', '=', rec.bci_quote_type.id),'|',('value','>=',price_subtotal),'|',('customer_type', '=', rec.partner_id.bci_customer_type),('customer_type', '=', 'all'),'|',('customer_category', '=', rec.partner_id.bci_customer_category),('customer_category', '=', 'all')],order='sequence asc')
                 if margin_lines:
                     for margin_line in margin_lines:
-                        sale_person = rec.user_id
-                        sale_person_limit = self.env['barcode_india.sale_person_limit'].sudo().search([('quot_type', '=', quote_type.id),('user', '=', sale_person.id),('payment_deal_value', '>', rec.amount_total)], limit=1)
-                        if sale_person_limit:
-                            rec.bci_pt_approval = 'approved'
-                            break
                         if margin_line.recommending_authority == 'sale_person' or margin_line.approving_authority == 'sale_person':
+                            sale_person = rec.user_id
+                            sale_person_limit = self.env['barcode_india.sale_person_limit'].sudo().search([('quot_type', '=', quote_type.id),('user','=',sale_person.id),('payment_deal_value','>',rec.amount_total)])
                             if not sale_person_limit:
                                 continue
+                                # sale_person_id = extract_user_ids([sale_person])
+                                # approver_ids.extend(sale_person_id)
+                                # all_approvers.update(sale_person_id)
+                            # else:
+                                # continue
                         if margin_line.recommending_authority == 'user':
                             recommender_user_ids = extract_user_ids(margin_line.recommending_approvers)
                             if not recommender_user_ids:
@@ -336,26 +314,26 @@ class SaleOrder(models.Model):
                         break
                 else:
                     raise UserError("Please Add atleast 1 User to approve your request!!!!!")
-                if approver_ids:
-                    unique_user_ids = []
-                    seen = set()
-                    for user_id in approver_ids:
-                        if user_id not in seen:
-                            unique_user_ids.append(user_id)
-                            seen.add(user_id)
-                    if unique_user_ids:
-                        approval_requests_exist = True               
-                    approval_request = request_model.create({
-                        'name': f'Payment Term Approval for {rec.name}',
-                        'category_id': pt_category_id.id or False,
-                        'bci_sale_order_id': rec.id or False,
-                        'request_owner_id': self.env.user.id,
-                        'request_status': 'pending',
-                        'date_confirmed': fields.Datetime.now()
-                    })
-                    approval_request.approver_ids.unlink()
-                    approval_request.approver_ids = [(0, 0, {'user_id': user_id,'required': True}) for user_id in unique_user_ids]
-                    approval_request.action_confirm()
+
+                unique_user_ids = []
+                seen = set()
+                for user_id in approver_ids:
+                    if user_id not in seen:
+                        unique_user_ids.append(user_id)
+                        seen.add(user_id)
+                if unique_user_ids:
+                    approval_requests_exist = True               
+                approval_request = request_model.create({
+                    'name': f'Payment Term Approval for {rec.name}',
+                    'category_id': pt_category_id.id or False,
+                    'bci_sale_order_id': rec.id or False,
+                    'request_owner_id': self.env.user.id,
+                    'request_status': 'pending',
+                    'date_confirmed': fields.Datetime.now()
+                })
+                approval_request.approver_ids.unlink()
+                approval_request.approver_ids = [(0, 0, {'user_id': user_id,'required': True}) for user_id in unique_user_ids]
+                approval_request.action_confirm()
             # margin approval
             if not rec.bci_margin_approval or rec.bci_margin_approval == 'approved' or rec.bypass_quote:
                 continue
@@ -567,12 +545,10 @@ class SaleOrder(models.Model):
                     if freight_product_template:
                         freight_price = max(freight_amount, order.bci_freight_type.minimumcharge)
                         new_lines.append((0, 0, {
-                            'product_template_id': freight_product_template.id,
                             'product_id': freight_product_template.product_variant_id.id,
                             'product_uom_qty': 1.0,
                             'price_unit': freight_price,
                             'bci_suggested_price_unit' : freight_price,
-                            'bci_approval_stage': 'approved',
                             'sequence': max_sequence + 1,
                         }))
                     else:
@@ -583,12 +559,10 @@ class SaleOrder(models.Model):
                     if installation_product_template:
                         installation_price = max(installation_amount, order.bci_installation_type.minimum_charge)
                         new_lines.append((0, 0, {
-                            'product_template_id': installation_product_template.id,
                             'product_id': installation_product_template.product_variant_id.id,
                             'product_uom_qty': 1.0,
                             'price_unit': installation_price,
                             'bci_suggested_price_unit' : installation_price,
-                            'bci_approval_stage': 'approved',
                             'sequence': max_sequence + 1,
                         }))
                     else:
@@ -624,12 +598,22 @@ class SaleOrder(models.Model):
             if order.bci_pt_approval == 'approved' and order.bci_margin_approval == 'approved' and order.bci_special_approval == 'approved' and order.bci_stage == 'pending_approval':
                 order.bci_stage = 'approved'
     
-    @api.depends('order_line.price_unit','order_line.bci_landed_cost','order_line.product_uom_qty','order_line.bci_discount', 'order_line.special_price', 'order_line.special_price_applicable')
+    # @api.depends('order_line.price_unit','order_line.bci_landed_cost','order_line.product_uom_qty','order_line.bci_discount')
+    # def _compute_deal_margin(self):
+    #     for order in self:
+    #         print('------compute--------------------')
+    #         freight_product_id = int(self.env['ir.config_parameter'].sudo().get_param('bci.freight_product'))
+    #         installation_product_id = int(self.env['ir.config_parameter'].sudo().get_param('bci.installation_product'))
+    #         landed_price_total = sum(order.order_line.filtered(lambda line: line.product_template_id.id not in [freight_product_id, installation_product_id]).mapped(lambda line: (line.bci_suggested_price_unit * (100 - line.bci_target_margin) / (100 - line.bci_discount or 0.01))* line.product_uom_qty)) or 0.00
+    #         price_subtotal = sum(order.order_line.filtered(lambda line: line.product_template_id.id not in [freight_product_id, installation_product_id]).mapped(lambda line: line.price_unit * line.product_uom_qty)) or 0.00
+    #         order.bci_deal_margin = ((price_subtotal-landed_price_total)/price_subtotal)*100 if price_subtotal != 0 else 0
+
+    @api.depends('order_line.price_unit','order_line.bci_landed_cost','order_line.product_uom_qty','order_line.bci_discount')
     def _compute_deal_margin(self):
         for order in self:
             freight_product_id = int(self.env['ir.config_parameter'].sudo().get_param('bci.freight_product'))
             installation_product_id = int(self.env['ir.config_parameter'].sudo().get_param('bci.installation_product'))
-            landed_price_total = sum(order.order_line.filtered(lambda line: line.product_template_id.id not in [freight_product_id, installation_product_id]).mapped(lambda line: (line.special_price * line.product_uom_qty if line.special_price_applicable or line.special_price > 0 else line.bci_purchase_cost * line.product_uom_qty))) or 0.00
+            landed_price_total = sum(order.order_line.filtered(lambda line: line.product_template_id.id not in [freight_product_id, installation_product_id]).mapped(lambda line: (line.bci_purchase_cost * line.product_uom_qty))) or 0.00
             price_total = sum(order.order_line.filtered(lambda line: line.product_template_id.id not in [freight_product_id, installation_product_id]).mapped(lambda line: (line.price_unit * line.product_uom_qty))) or 0.01
             order.bci_deal_margin = (1 - (landed_price_total / price_total))*100 or 0
 
@@ -691,41 +675,6 @@ class SaleOrder(models.Model):
                 self.bci_user_role = 'guest'
             else:
                 self.bci_user_role = False
-
-    def action_use_reference_costsheet(self):
-        return {
-            'name': 'Select Reference Costsheet',
-            'type': 'ir.actions.act_window',
-            'res_model': 'bci.reference_costsheet',
-            'view_mode': 'form',
-            'view_id': self.env.ref('barcode_india.view_bci_reference_costsheet_wizard_form').id,
-            'target': 'new', 
-            'context': {
-                'default_current_sale_order_id': self.id,
-                'default_user_id': self.user_id.id,
-            },
-        }
-
-    def action_confirm_reference_costsheet(self):
-        return {
-            'name': _('Set Reference Costsheet'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'reference.costsheet.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_sale_order_id': self.id,
-                        'default_validity_days': 15,},
-        }
-
-    def action_unset_reference_costsheet(self):
-        return {
-            'name': _('Unset Reference Costsheet'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'unset.reference.costsheet.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_sale_order_id': self.id},
-        }
                 
         
     def action_view_cost_sheet(self):
@@ -918,19 +867,15 @@ class SaleOrder(models.Model):
     def action_send_for_pricing(self):
         for record in self:
             if record.order_line:
-                sent_approvers = set()
                 for line in record.order_line:
                     if line.bci_approval_stage == 'pending' and line.bci_approver:
-                        approver_email = line.bci_approver.partner_id.email
-                        if approver_email and approver_email not in sent_approvers:
-                            mail_template = record.env.ref('barcode_india.bci_pricing_category_template')
-                            if mail_template:
-                                mail_template.write({'email_to': approver_email})
-                                mail_template.send_mail(self.id, force_send=False)
-                                record.message_post(body=f"Sent pricing request email to {approver_email}")
-                                sent_approvers.add(approver_email)
-                if sent_approvers:
-                    record.bci_stage = 'pricing_request'
+                        mail_template = record.env.ref('barcode_india.bci_pricing_category_template')
+                        if mail_template:
+                            mail_template.write({'email_to': line.bci_approver.partner_id.email})
+                            mail_template.send_mail(self.id,force_send = True)
+                            record.message_post(
+                            body="Sent pricing request email to %s" % line.bci_approver.partner_id.email)
+                record.bci_stage = 'pricing_request'
             else:
                 raise UserError("Please Add Order Lines")
 

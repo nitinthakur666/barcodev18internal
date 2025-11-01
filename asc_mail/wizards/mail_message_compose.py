@@ -5,7 +5,7 @@ import re
 from odoo import _, api, fields, models, tools, Command
 from odoo.exceptions import UserError
 from odoo.osv import expression
-#from odoo.tools import email_re
+from odoo.tools import email_re
 
 class MailComposeMessage(models.TransientModel):
     _inherit = 'mail.compose.message'

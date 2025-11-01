@@ -5,21 +5,18 @@
             <field name="name">Barcode India Order Line Tree View Second</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
-                <list string="Sales Order Lines" expand="1" editable="bottom">
-                    <field name="product_id" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
+                <tree string="Sales Order Lines" expand="1" editable="bottom">
+                    <field name="product_id" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
                     <field name="company_id" invisible="1"/>
-                    <field name="bci_part_number" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                    <field name="bci_model_number" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                    <field name="product_uom_qty" string="Qty" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                    <field name="name" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                    <field name="special_price_locked" invisible="1"/>
-                    <field name="special_price_applicable" />
-                    <field name="special_price" modifiers="{'readonly': [('special_price_locked', '=', True)],'required': [('special_price_applicable', '=', True)]}" force_save="1"/>
-                    <field name="bci_suggested_price_unit" force_save="1" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_line_pricing_provider','=',False)]}" />
-                    <field name="bci_discount" modifiers="{'readonly':['|',('is_line_approver','=',False),('bci_approval_stage','!=','pending'),('is_sales_person','=',False)]}" />                    
+                    <field name="bci_part_number" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
+                    <field name="bci_model_number" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
+                    <field name="product_uom_qty" string="Qty" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
+                    <field name="name" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
+                    <field name="bci_suggested_price_unit" force_save="1" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_line_pricing_provider','=',False)]}" />
+                    <field name="bci_discount" attrs="{'readonly':['|',('is_line_approver','=',False),('bci_approval_stage','!=','pending'),('is_sales_person','=',False)]}" />                    
                     <field name="bci_target_margin" readonly="1" invisible="1"/>
                     <field name="bci_approved_margin" readonly="1" force_save="1" />
-                    <field name="price_unit" force_save="1" modifiers="{'readonly':['|','|',('bci_suggested_price_unit','=',0.00),('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_sales_person','=',False)]}" />                    
+                    <field name="price_unit" force_save="1" attrs="{'readonly':['|','|',('bci_suggested_price_unit','=',0.00),('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_sales_person','=',False)]}" />                    
                     <field name="bci_pricing_factor" invisible="1"/>
                     <field name="bci_discount_category" invisible="1"/>
                     <field name="bci_landed_cost" readonly="1" force_save="1"/>
@@ -35,38 +32,17 @@
                     <field name="is_line_pricing_provider" invisible="1"/>
                     <field name="is_line_approver" invisible="1" />
                     <field name="is_sales_person" invisible="1"/>
-                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" modifiers="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}"/>
-                    <button name="action_reject" type="object" string="Reject" class="oe_highlight" modifiers="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                </list>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" attrs="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}"/>
+                </tree>
             </field>
         </record>
 
-        <record id="bci_view_order_lines_tree" model="ir.ui.view">
-            <field name="name">bci.order.lines.tree</field>
-            <field name="model">sale.order.line</field>
-            <field name="arch" type="xml">
-                <list string="Order Lines Custom View">
-                    <field name="related_sopf_sequence" string="Order Reference"/>
-                    <field name="salesman_id" string="Customer"/>
-                    <field name="related_creation_date"/>
-                    <field name="related_po_number" />
-                    <field name="name" string="Name"/>
-                    <field name="product_id" string="Product"/>
-                    <field name="price_unit" string="Unit Price"/>
-                    <field name="product_uom_qty" string="Quantity"/>
-                    <field name="price_subtotal" string="Subtotal"/>
-                    <field name="price_tax" string="Taxes"/>
-                    <field name="related_order_untaxed_amount" />
-                    <field name="related_order_total" />
-                </list>
-            </field>
-        </record>
-
+        
         <record id="barcode_india_pricing_provider_tree_view" model="ir.ui.view">
             <field name="name">Pricing Provider Tree View</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
-                <list string="Sales Order Lines" expand="1" editable="bottom" default_order="create_date desc, id desc">
+                <tree string="Sales Order Lines" expand="1" editable="bottom" default_order="create_date desc, id desc">
                     <field name="order_partner_id" />
                     <field name="product_id" readonly="1"/>
                     <field name="company_id" invisible="1" readonly="1"/>
@@ -74,18 +50,15 @@
                     <field name="bci_model_number" readonly="1"/>
                     <field name="product_uom_qty" string="Qty" readonly="1"/>
                     <field name="name" readonly="1"/>
-                    <field name="special_price_locked" invisible="1"/>
-                    <field name="special_price_applicable" />
-                    <field name="special_price" modifiers="{'readonly': [('special_price_locked', '=', True)],'required': [('special_price_applicable', '=', True)]}" force_save="1"/>
                     <field name="currency_id" invisible="1" />
                     <field name="bci_pricing_category" readonly="1"/>
                     <field name="bci_approver" />
                     <field name="bci_pricing_provider"  widget="many2many_tags"/>
-                    <field name="bci_suggested_price_unit" force_save="1" modifiers="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_line_pricing_provider','=',False)]}" />
+                    <field name="bci_suggested_price_unit" force_save="1" attrs="{'readonly':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False),('is_line_pricing_provider','=',False)]}" />
                     <field name="price_unit" readonly="1" force_save="1"/>
                     <field name="bci_pricing_factor" invisible="1"/>
                     <field name="bci_discount_category" invisible="1"/>
-                    <field name="bci_discount" modifiers="{'readonly':['|',('is_line_approver','=',False),('bci_approval_stage','!=','pending'),('is_sales_person','=',False)]}" />
+                    <field name="bci_discount" attrs="{'readonly':['|',('is_line_approver','=',False),('bci_approval_stage','!=','pending'),('is_sales_person','=',False)]}" />
                     <field name="bci_landed_cost" invisible="1" force_save="1"/>
                     <field name="bci_duty" invisible="1"/>
                     <field name="bci_freight" invisible="1"/>
@@ -104,9 +77,8 @@
                     <field name="price_tax" optional="hide" readonly="1"/>
                     <field name="is_line_approver" invisible="1" />
                     <field name="is_sales_person" invisible="1"/>
-                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" modifiers="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}"/>
-                    <button name="action_reject" type="object" string="Reject" class="oe_highlight" modifiers="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}" />
-                </list>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" attrs="{'invisible':['|',('bci_approval_stage','!=','pending'),('is_line_approver','=',False)]}"/>
+                </tree>
             </field>
         </record>
 
@@ -120,13 +92,6 @@
                 'search_default_group_by_date': 1,
                 'search_default_group_by_order': 2
             }</field>
-        </record>
-
-        <record id="sale_order_line_custom_action" model="ir.actions.act_window">
-            <field name="name">Order Lines Custom View</field>
-            <field name="res_model">sale.order.line</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="bci_view_order_lines_tree"/>
         </record>
 
         <record id="sale_order_line_search_baarcode" model="ir.ui.view">

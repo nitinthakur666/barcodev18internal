@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button string="Copy Operations" name="action_copy_moves" type="object" modifiers="{'invisible': [('bci_moves_to_copy','=',False)]}"/>
-                    <button string="Change Asset" name="action_change_asset" type="object" modifiers="{'invisible': [('bci_spare_transfer','=',True)]}"/>
+                    <button string="Copy Operations" name="action_copy_moves" type="object" attrs="{'invisible': [('bci_moves_to_copy','=',False)]}"/>
+                    <button string="Change Asset" name="action_change_asset" type="object" attrs="{'invisible': [('bci_spare_transfer','=',True)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="bci_source_ticket"/>
@@ -20,7 +20,7 @@
                 <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside">
                     <field name="bci_product" invisible="1"/>
                     <field name="bci_spare_transfer" invisible="1"/>
-                    <field name="bci_rma_request_no" optional="show" modifiers="{'invisible': [('bci_spare_transfer','=',False)]}"/>
+                    <field name="bci_rma_request_no" optional="show" attrs="{'invisible': [('bci_spare_transfer','=',False)]}"/>
                 </xpath>
             </field>
         </record>

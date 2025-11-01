@@ -15,9 +15,9 @@
         <field name="name">Pricing Factor Master Tree View</field>
         <field name="model">barcode_india.pricing_factor</field>
         <field name="arch" type="xml">
-            <list string="Pricing Factor">
+            <tree string="Pricing Factor">
                 <field name="name" />
-            </list>
+            </tree>
         </field>
     </record>
     <record model="ir.ui.view" id="barcode_india_pricing_factor_form_view">
