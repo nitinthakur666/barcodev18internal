@@ -46,7 +46,7 @@
         <field name="name">Resource Tree View</field>
         <field name="model">cost_estimation.resource</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="salary" optional="show" />
@@ -62,14 +62,14 @@
                 <field name="margin_n" widget="percentage" optional="show" />
                 <field name="quoted_n" optional="show" />
                 <field name="increase" widget="percentage" optional="show" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="action_resource" model="ir.actions.act_window">
         <field name="name">Resource</field>
         <field name="res_model">cost_estimation.resource</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Resource

@@ -4,7 +4,7 @@
         <field name="name">RMA Master</field>
         <field name="model">barcode_india.rma_masters</field>
         <field name="arch" type="xml">
-            <tree string="RMA Master">
+            <list string="RMA Master">
                 <field name="sequence" widget="handle"/>
                 <field name="bci_rma"/>
                 <field name="bci_receive_at_bci"/>
@@ -13,7 +13,7 @@
                 <field name="bci_oem_involved" />
                 <field name="bci_spare_transfer"/>
                 <field name="bci_operation_types" widget="many2many_tags"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -32,11 +32,11 @@
                         <field name="bci_spare_transfer"/>
                         <field name="sequence" invisible="1"/>
                         <field name="bci_operation_types">
-                            <tree editable="bottom" >
+                            <list editable="bottom" >
                                 <field name="sequence" widget="handle"/>
                                 <field name="name" required="1"/>
                                 <field name="bci_rma" invisible="1"/>
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </sheet>
@@ -48,7 +48,7 @@
         <field name="name">RMA Master</field>
         <field name="res_model">barcode_india.rma_masters</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
     </record>
 </odoo>

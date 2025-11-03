@@ -4,10 +4,10 @@
             <field name="name">Barcode India Super Category Tree View</field>
             <field name="model">barcode_india.super_category</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="sequence" invisible="1"/>
                     <field name="name" />
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -25,9 +25,9 @@
                             <notebook>
                                 <page name="LineOfBusiness" string="Line Of Business">
                                     <field name="line_of_business_ids">
-                                        <tree>
+                                        <list>
                                             <field name="name" /> 
-                                        </tree>
+                                        </list>
                                         <form>
                                             <sheet>
                                             <group>
@@ -38,10 +38,10 @@
                                                 <notebook>
                                                     <page name="ERP Category" string="ERP Category">
                                                         <field name="erp_ids">
-                                                            <tree>
+                                                            <list>
                                                                 <field name="name" />
                                                                 <field name="lineof_business_id" invisible="1"/>
-                                                            </tree>
+                                                            </list>
                                                             <form string="ERP Category">
                                                                 <sheet>
                                                                     <group>
@@ -75,7 +75,7 @@
             <field name="name">Super Category</field>
             <field name="res_model">barcode_india.super_category</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain"></field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

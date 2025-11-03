@@ -4,7 +4,7 @@
         <field name="name">Contracts Stage</field>
         <field name="res_model">barcode_india.contracts.stage</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
         <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -16,12 +16,12 @@
         <field name="name">Contracts Stage</field>
         <field name="model">barcode_india.contracts.stage</field>
         <field name="arch" type="xml">
-            <tree string="Contracts Stage">
+            <list string="Contracts Stage">
                 <field name="name"/>
                 <field name="sequence"/>
                 <field name="stage_type"/>
                 <!-- <field name="is_draft_stage"/> -->
-            </tree>
+            </list>
         </field>
     </record>
 

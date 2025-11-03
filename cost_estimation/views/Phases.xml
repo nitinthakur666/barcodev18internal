@@ -21,23 +21,23 @@
                     <notebook>
                         <page string="Phase Allocation">
                             <field name="phase_allocations">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="resource" />
                                     <field name="allocation" widget="percentage" sum="Total" optional="show" />
                                     <field name="phase" invisible="1" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Risk Data">
                             <field name="risk_data">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="factor" />
                                     <field name="type" optional="show" />
                                     <field name="applied" optional="show" />
                                     <field name="phase" invisible="1" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -55,20 +55,20 @@
         <field name="name">Phase Tree View</field>
         <field name="model">cost_estimation.phase</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="type" optional="show" />
                 <field name="calculation_factor" optional="show" />
                 <field name="total" widget="percentage" optional="show" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="action_phase" model="ir.actions.act_window">
         <field name="name">Phase</field>
         <field name="res_model">cost_estimation.phase</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Phase

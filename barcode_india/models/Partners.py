@@ -115,7 +115,7 @@ class Partners(models.Model):
     #         'name': 'SOPF Records',
     #         'type': 'ir.actions.act_window',
     #         'res_model': 'barcode_india.sopf_header',
-    #         'view_mode': 'tree,form',
+    #         'view_mode': 'list,form',
     #         'domain': [('id', 'in', sopf_records.ids)],
     #         'context': {'default_company_id': self.bci_code},
     #     }
@@ -128,7 +128,7 @@ class Partners(models.Model):
             'name': 'Legacy SOPF Records',
             'type': 'ir.actions.act_window',
             'res_model': 'barcode_india.sopf_header',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('id', 'in', sopf_records.ids)],
             'context': {
             'default_sopf_legacycompanyid': self.bci_legacy_customer_id,
@@ -144,7 +144,7 @@ class Partners(models.Model):
             'name': 'Legacy SOPF Items',
             'type': 'ir.actions.act_window',
             'res_model': 'barcode_india.sopf_items',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('id', 'in', sopf_items.ids)],
             'context': {
                 'default_sopf_legacycompanyid': self.bci_legacy_customer_id,

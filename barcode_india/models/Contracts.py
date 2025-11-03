@@ -126,7 +126,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Sites',
             'res_model': 'barcode_india.site',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('bci_contract_id', '=', self.id)],
             'context': {'default_bci_contract_id': self.id,'default_bci_customer': self.bci_customer and self.bci_customer.id}
         }
@@ -145,7 +145,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_id', '=', self.id)],
             'context': {'default_bci_customer': self.bci_customer.id,'default_bci_contract_id': self.id,'default_bci_site': self.bci_site.id}
         }
@@ -156,7 +156,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_ids', '=', self.id)]
         }
 
@@ -166,7 +166,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_id.bci_contract_id', '=', self.id)]
         }
     

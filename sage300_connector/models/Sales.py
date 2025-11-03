@@ -230,7 +230,7 @@ class SaleOrder(models.Model):
                 'name': 'IncoiceSync',
                 'type': 'ir.actions.act_window',
                 'res_model': 'sage300_connector.invoice_sync',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('s3_sale_order', '=', self.id)],
                       
             })

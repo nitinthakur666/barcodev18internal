@@ -27,7 +27,7 @@
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="bci_cr" string="CR"/>
-                    <field name="bci_parent_project" string="Parent Project" attrs="{'invisible': [['bci_cr','=',False]]}"/>
+                    <field name="bci_parent_project" string="Parent Project" invisible="not bci_cr"/>
                     <field name="is_presales_project" />
                     <field name="bci_is_bug"/>
                 </xpath>
@@ -45,13 +45,13 @@
                 <xpath expr="//notebook" position="inside">
                     <page name="contract" string="Contract">
                         <field name="bci_contract_ids">
-                            <tree string="Contracts">
+                            <list string="Contracts">
                                 <field name="name"/>
                                 <field name="bci_customer"/>
                                 <field name="bci_site"/>
                                 <field name="bci_start"/>
                                 <field name="bci_end"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>

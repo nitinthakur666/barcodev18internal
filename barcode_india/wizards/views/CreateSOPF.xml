@@ -56,12 +56,12 @@
                     <notebook>
                         <page name="Lines" string="Lines" attrs="{'invisible': [('sopf_type', '!=', 'Multiple SOPF')]}">
                             <field name="order_lines_id" no_label="1" options="{'no_create': true}">
-                                <tree editable="bottom" create="0">
+                                <list editable="bottom" create="0">
                                     <field name="product_id" />
                                     <field name="product_uom_qty" />
                                     <field name="price_unit" />
                                     <field name="sale_order_line_id" invisible="1" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>

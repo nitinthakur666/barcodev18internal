@@ -4,17 +4,17 @@
         <field name="name">Region</field>
         <field name="res_model">barcode_india.region</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
         <field name="domain"></field>
     </record>
     <record model="ir.ui.view" id="barcode_india_region">
         <field name="name">Region</field>
         <field name="model">barcode_india.region</field>
         <field name="arch" type="xml">
-            <tree string="Region" editable="bottom">
+            <list string="Region" editable="bottom">
                 <field name="name"/>
                 <field name="region_head"/>
-            </tree>
+            </list>
         </field>
     </record>
 

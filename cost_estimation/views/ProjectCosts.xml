@@ -39,7 +39,7 @@
         <field name="name">Project Cost Tree View</field>
         <field name="model">cost_estimation.project_cost</field>
         <field name="arch" type="xml">
-            <tree create="0" delete="0">
+            <list create="0" delete="0">
                 <field name="sequence" widget="handle" />
                 <field name="phase" />
                 <field name="man_hours" sum="Total" optional="show" />
@@ -50,7 +50,7 @@
                 <field name="risk_buffered" avg="Total" widget="percentage" optional="show" />
                 <field name="quotation_cost" invisible="1" />
                 <field name="cost_estimation" invisible="1" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

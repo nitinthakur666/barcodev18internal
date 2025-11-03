@@ -77,7 +77,7 @@ class HelpdeskSla(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Escalation',
             'res_model': 'barcode_india.escalation',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_sla', '=', self.id)],
         }
     
@@ -458,7 +458,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Sale Order',
             'res_model': 'sale.order',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_helpdesk', '=', self.id)],
         }
 
@@ -487,7 +487,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Approval Request',
             'res_model': 'approval.request',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_helpdesk_ticket', '=', self.id)],
         }
 
@@ -592,7 +592,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': ('RMA Transfers'),
             'res_model': 'stock.picking',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_source_ticket', '=', self.id), ('bci_spare_transfer', '=', False)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id)
         }
@@ -619,7 +619,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': ('Spares Transfers'),
             'res_model': 'stock.picking',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_source_ticket', '=', self.id), ('bci_spare_transfer', '!=', False)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id)
         }

@@ -11,7 +11,7 @@
                         <label for="bci_survey_id"/>
                         <div class="o_row">
                             <field name="bci_survey_id"/>
-                            <button name="action_update_survey" type="object" class="btn btn-primary fa fa-refresh" role="img" string="Update Survey on Recipients" title="Update Survey on Recipients" attrs="{'invisible': [('bci_survey_id', '=', False)]}"/>
+                            <button name="action_update_survey" type="object" class="btn btn-primary fa fa-refresh" role="img" string="Update Survey on Recipients" title="Update Survey on Recipients" invisible="not bci_survey_id"/>
                         </div>
                     </group>
                   </xpath>

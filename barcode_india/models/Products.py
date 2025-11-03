@@ -60,7 +60,7 @@ class ProductTemplates(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Spares',
             'res_model': 'barcode_india.spare',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('product_tmpl_id', '=', self.id)],
             'context': {
                 'default_product_tmpl_id': self.id,
@@ -194,7 +194,7 @@ class ProductProduct(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Spares',
             'res_model': 'barcode_india.spare',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('product_id', '=', self.id)],
             'context': {
                 'default_product_tmpl_id': self.product_tmpl_id.id,

@@ -32,20 +32,20 @@
         <field name="name">Factor Tree View</field>
         <field name="model">cost_estimation.factor</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="type" optional="show" />
                 <field name="description" optional="show" />
                 <field name="general_hints" optional="show" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="action_factor" model="ir.actions.act_window">
         <field name="name">Factor</field>
         <field name="res_model">cost_estimation.factor</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Factor

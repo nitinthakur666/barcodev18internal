@@ -7,12 +7,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <field name="display_helpdesk_ticket_button" invisible="1" />
-                    <button string="Ticket" class="oe_stat_button" name="action_view_ticket" type="object" icon="fa-life-ring" attrs="{'invisible': [('display_helpdesk_ticket_button', '=', False)]}" help="Ticket from this task"/>
-                    <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" attrs="{'invisible': [('bci_bulk_import', '=', False)]}">
-                        <field name="bci_ticket_count" string="Bulk Tickets" widget="statinfo" />
+                    <button string="Ticket" class="oe_stat_button" name="action_view_ticket" type="object" icon="fa-life-ring" help="Ticket from this task" invisible="display_helpdesk_ticket_button == False"/>
+                    <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" invisible="not bci_bulk_import">
+                        <field name="bci_ticket_count" string="Bulk Tickets" widget="statinfo"/>
                     </button>
-                    <button class="oe_stat_button" string="Assets" name="action_pm_status" icon="fa-certificate" type="object" attrs="{'invisible': [('bci_is_pm','=',False)]}"/>
-                    <button class="oe_stat_button" type="object" name="action_show_related_quotations" icon="fa-pencil-square-o" attrs="{'invisible': [('bci_quotation_count', '=', 0)]}">
+                    <button class="oe_stat_button" string="Assets" name="action_pm_status" icon="fa-certificate" type="object" invisible="not bci_is_pm"/>
+                    <button class="oe_stat_button" type="object" name="action_show_related_quotations" icon="fa-pencil-square-o" invisible="bci_quotation_count == 0">
                         <field name="bci_quotation_count" widget="statinfo" string="Quotations"/>
                     </button>
                     <button name="action_show_bugs" string="Bugs" type="object" icon="fa-usd">
@@ -30,31 +30,31 @@
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="bci_is_bug" invisible="1"/>
-                    <field name="bci_reported_project" attrs="{'invisible': [('bci_is_bug', '!=', True)]}"  domain="[('partner_id', '=', partner_id)]"/>
-                    <field name="bci_reported_task" attrs="{'invisible': [('bci_is_bug', '!=', True)]}" domain="[('project_id', '=', bci_reported_project)]"/>
+                    <field name="bci_reported_project" invisible="not bci_is_bug" domain="[('partner_id', '=', partner_id)]"/>
+                    <field name="bci_reported_task" invisible="not bci_is_bug" domain="[('project_id', '=', bci_reported_project)]"/>
                 </xpath>
+
                 <xpath expr="//field[@name='user_ids']" position="after">
-                    <field name="bci_issue_resolved" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_bulk_import" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_asset_id" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_product_id" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_is_pm" invisible="1" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="lead_id" attrs="{'invisible': [('hide_fields', '=', True)]}"/>
+                    <field name="bci_issue_resolved" invisible="hide_fields"/>
+                    <field name="bci_bulk_import" invisible="hide_fields"/>
+                    <field name="bci_asset_id" invisible="hide_fields"/>
+                    <field name="bci_product_id" invisible="hide_fields"/>
+                    <field name="bci_is_pm" invisible="1"/>
+                    <field name="lead_id" invisible="hide_fields"/>
                     <field name="hide_fields" invisible="1"/>
-                <!-- </xpath>
-                <xpath expr="//field[@name='partner_phone']" position="after"> -->
                     <field name="bci_site_id" widget="res_partner_many2one" options="{'always_reload': True}" context="{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}"/>
                     <field name="bci_address"/>
-                    <field name="bci_site_phone" widget="phone" attrs="{'invisible': [('bci_site_id', '=', False)]}"/>
+                    <field name="bci_site_phone" widget="phone" invisible="not bci_site_id"/>
                 </xpath>
+
                 <xpath expr="//page[@name='description_page']" position="after">
-                    <page string="Final Resolution" attrs="{'invisible': [('is_fsm','=',False)]}">
+                    <page string="Final Resolution" invisible="not is_fsm">
                         <field name="bci_final_resolution">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="name" type="html"/>
                                 <field name="bci_task_id" invisible="1"/>
                                 <field name="bci_ticket_id" invisible="1"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -90,7 +90,7 @@
                     <attribute name="context">{'search_view_ref' : 'project.view_task_search_form_extended','default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id, 'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'search_default_display_project_id': project_id }</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='child_ids']/tree/field[@name='activity_ids']" position="after">
+                <xpath expr="//field[@name='child_ids']/list/field[@name='activity_ids']" position="after">
                     <field name="planned_date_begin"/>
                     <field name="planned_date_end"/>
                 </xpath>
@@ -122,7 +122,7 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm" />
             <field name="arch" type="xml">
-                <xpath expr="//tree" position="attributes">
+                <xpath expr="//list" position="attributes">
                     <attribute name="multi_edit">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='project_id']" position="before">

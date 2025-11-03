@@ -3,7 +3,7 @@
         <field name="name">Pricing Factor</field>
         <field name="res_model">barcode_india.pricing_factor</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -15,9 +15,9 @@
         <field name="name">Pricing Factor Master Tree View</field>
         <field name="model">barcode_india.pricing_factor</field>
         <field name="arch" type="xml">
-            <tree string="Pricing Factor">
+            <list string="Pricing Factor">
                 <field name="name" />
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="barcode_india_pricing_factor_form_view">

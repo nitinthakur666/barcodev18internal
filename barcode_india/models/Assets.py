@@ -151,6 +151,6 @@ class Assets(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.contracts',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('id', 'in', self.bci_contract_ids.ids)]
         }

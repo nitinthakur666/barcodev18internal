@@ -4,7 +4,7 @@
         <field name="name">Assign Reports</field>
         <field name="model">barcode_india.assign_report</field>
         <field name="arch" type="xml">
-            <tree string="Assign Reports">
+            <list string="Assign Reports">
                 <field name="updated_user" />
                 <field name="bci_support_type"/>
                 <field name="team_id"/>
@@ -14,7 +14,7 @@
                 <field name="previous_user" invisible="1" />
                 <field name="ticket_id" invisible="1"/>
                 <field name="resolved_on" readonly="1" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 

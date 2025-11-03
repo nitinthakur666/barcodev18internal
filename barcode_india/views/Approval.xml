@@ -5,8 +5,8 @@
         <field name="inherit_id" ref="approvals.approval_request_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="bci_approval_for" attrs="{'invisible':[('approval_type','not in',['RemoteSupport','Field Service and Remote Support','Complete Process'])]}" />
-                <field name="bci_sale_order_id" readonly="1" />
+                <field name="bci_approval_for" invisible="approval_type not in ['RemoteSupport','Field Service and Remote Support','Complete Process']"/>
+                <field name="bci_sale_order_id" readonly="1"/>
                 <field name="bci_sale_partner_id" string="Customer"/>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">

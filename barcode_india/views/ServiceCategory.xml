@@ -4,17 +4,17 @@
         <field name="name">Service Category</field>
         <field name="res_model">barcode_india.service_category</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
         <field name="domain"></field>
     </record>
     <record model="ir.ui.view" id="barcode_india_service_category_tree_view">
         <field name="name">Service Category</field>
         <field name="model">barcode_india.service_category</field>
         <field name="arch" type="xml">
-            <tree string="Service Category" editable="bottom">
+            <list string="Service Category" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

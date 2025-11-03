@@ -4,7 +4,7 @@
         <field name="name">sopf.items.tree</field>
         <field name="model">barcode_india.sopf_items</field>
         <field name="arch" type="xml">
-            <tree string="Legacy SOPF Items" create="false" edit="false" delete="false">
+            <list string="Legacy SOPF Items" create="false" edit="false" delete="false">
                 <field name="sopf_id"/>
                 <field name="part_number"/>
                 <field name="item_description"/>
@@ -12,7 +12,7 @@
                 <field name="order_price"/>
                 <field name="amount_after_tax"/>
                 <field name="status"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -65,7 +65,7 @@
     <record id="action_sopf_items" model="ir.actions.act_window">
         <field name="name">Legacy SOPF Items</field>
         <field name="res_model">barcode_india.sopf_items</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_sopfitems_status_posted' : 1}</field>
     </record>
 </odoo>

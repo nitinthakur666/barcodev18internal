@@ -53,7 +53,7 @@ class ProjectTask(models.Model):
             'name': 'Quotations',
             'type': 'ir.actions.act_window',
             'res_model': 'sale.order',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('opportunity_id', '=', self.lead_id.id)],
             'target': 'current',
             'context' : self.lead_id._prepare_opportunity_quotation_context()
@@ -119,7 +119,7 @@ class ProjectTask(models.Model):
             'name': 'PM Status',
             'type': 'ir.actions.act_window',
             'res_model': 'barcode_india.pm_status',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('task_id', '=', self.id)],
             'target': 'current',
         }
