@@ -58,19 +58,19 @@
                         </field>
                     </page>
                 </xpath>
-                <xpath expr="//div[@class='w-100']" position="replace">
-                </xpath>
-                <xpath expr="//label[@for='planned_date_begin']" position="replace">
-                    <label for="planned_date_begin" string="Planned Date" />
-                    <div class="w-100">
-                        <div class="o_row">
-                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
-                    </div>
-                    </div>
-                </xpath>
+<!--                <xpath expr="//div[@class='w-100']" position="replace"> #Need to discuss-->
+<!--                </xpath>-->
+<!--                <xpath expr="//label[@for='planned_date_begin']" position="replace"> Need to discuss -->
+<!--                    <label for="planned_date_begin" string="Planned Date" />-->
+<!--                    <div class="w-100">-->
+<!--                        <div class="o_row">-->
+<!--                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>-->
+<!--                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>-->
+<!--                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>-->
+<!--                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                </xpath>-->
                 <xpath expr="//field[@name='project_id']" position="attributes">
                     <attribute name="required">1</attribute>
                 </xpath>
@@ -78,21 +78,21 @@
                     <label for="bci_actual_start_date" string="Actual Date" />
                     <div class="w-100" >
                         <div class="o_row">
-                            <field name="bci_actual_start_date" widget="daterange" options="{'related_end_date': 'bci_actual_end_date'}" attrs="{'required': [('bci_actual_end_date', '!=', False)]}"/>
+                            <field name="bci_actual_start_date" widget="daterange" options="{'related_end_date': 'bci_actual_end_date'}" required="bci_actual_end_date"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                            <field name="bci_actual_end_date" widget="daterange" options="{'related_start_date': 'bci_actual_start_date'}" attrs="{'required': [('bci_actual_start_date', '!=', False)]}"/>
+                            <field name="bci_actual_end_date" widget="daterange" options="{'related_start_date': 'bci_actual_start_date'}" required="bci_actual_start_date"/>
                         </div>
                     </div>
                 </xpath>
 
-                <xpath expr="//field[@name='child_ids']" position="attributes">
-                    <attribute name="context">{'search_view_ref' : 'project.view_task_search_form_extended','default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id, 'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'search_default_display_project_id': project_id }</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='child_ids']" position="attributes"> Need to discuss-->
+<!--                    <attribute name="context">{'search_view_ref' : 'project.view_task_search_form_extended','default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id, 'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'search_default_display_project_id': project_id }</attribute>-->
+<!--                </xpath>-->
 
                 <xpath expr="//field[@name='child_ids']/list/field[@name='activity_ids']" position="after">
                     <field name="planned_date_begin"/>
-                    <field name="planned_date_end"/>
+<!--                    <field name="planned_date_end"/> Need to discuss-->
                 </xpath>
 
             </field>

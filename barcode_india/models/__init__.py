@@ -12,6 +12,7 @@ from . import Users
 from . import Contracts
 from . import ContractSync
 from . import Assets
+from . import StockLocation
 from . import Sales
 from . import Helpdesk
 from . import Projects
@@ -23,7 +24,6 @@ from . import MailingContact
 from . import StockPicking
 from . import StockMove
 from . import ProjectTask
-from . import StockLocation
 from . import PricingCategory
 from . import SaleOrderLine
 from . import Crm
@@ -35,3 +35,4 @@ from . import LegacyAsset
 from . import TestCaseStatus
 from . import TestCases
 from . import AccountTaxes
+from . import WorksheetTemplate

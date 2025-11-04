@@ -58,7 +58,8 @@
                     <widget name="web_ribbon" text="In Grace" bg_color="bg-warning" invisible="bci_warranty_status != 'In Grace'"/>
                     <widget name="web_ribbon" text="Out of Warranty" bg_color="bg-danger" invisible="bci_warranty_status != 'Out of Warranty'"/>
                 </xpath>
-                <xpath expr="//field[@name='ticket_type_id']" position="before">
+                <xpath expr="//field[@name='tag_ids']" position="before">
+                    <field name="ticket_type_id"/>
                     <field name="bci_severity"/>
                     <field name="bci_support_type" />
                     <field name="bci_case_type"/>
@@ -84,7 +85,7 @@
                     <field name="bci_plant" invisible="bci_barcode_case_type_find != 'custom software'" domain="[('bci_contact_type','=','Plant')]"/>
                     <field name="bci_site" invisible="bci_barcode_case_type_find != 'custom software'" domain="[('bci_contact_type','=','Site')]"/>
                 </xpath>
-                <xpath expr="//field[@name='partner_name']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="bci_project" domain="[('partner_id','=',partner_id)]" invisible="bci_barcode_case_type_find != 'custom software'" required="bci_barcode_case_type_find == 'custom software'"/>
                 </xpath>
                 <xpath expr="//field[@name='email_cc']" position="attributes">
@@ -145,17 +146,17 @@
                     <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='partner_email']" position="attributes">
-                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='partner_email']" position="attributes">Need to discuss-->
+<!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
+<!--                </xpath>-->
 
                 <xpath expr="//field[@name='partner_phone']" position="attributes">
                     <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='partner_name']" position="attributes">
-                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='partner_name']" position="attributes"> Need to discuss-->
+<!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
+<!--                </xpath>-->
                 <xpath expr="//field[@name='description']" position="after">
                     <notebook>
                         <page string="Final Resolution">
@@ -296,15 +297,15 @@
 			</field>
 		</record>
 
-        <record id="helpdesk_ticket_type_view_tree_barcode" model="ir.ui.view">
-	        <field name="name">helpdesk.ticket.type.tree.barcode</field>
+        <record id="helpdesk_ticket_type_list_view_barcode" model="ir.ui.view">
+	        <field name="name">helpdesk.ticket.type.list.barcode</field>
 	        <field name="model">helpdesk.ticket.type</field>
-	        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
 	        <field name="arch" type="xml">
-	        	<xpath expr="//field[@name='name']" position="after">
+                <list editable="bottom" string="Ticket Types">
+                    <field name="name"/>
                     <field name="active" invisible="1"/>
-                    <field name="bci_problem_type" />
-                </xpath>
+                    <field name="bci_problem_type"/>
+                </list>
 	        </field>
 	    </record>
 

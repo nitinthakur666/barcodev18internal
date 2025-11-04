@@ -53,7 +53,7 @@
                         </group>
                     </page>
 
-                    <page string="Entitlements" name="entitlements" invisible="detailed_type != 'service'">
+                    <page string="Entitlements" name="entitlements" invisible="type != 'service'">
                         <group>
                             <group>
                                 <field name="bci_own_company" />

@@ -55,8 +55,10 @@ class HelpdeskTeam(models.Model):
 
 
 class HelpdeskTicketType(models.Model):
-    _inherit = 'helpdesk.ticket.type'
+    _name = 'helpdesk.ticket.type'
+    _description = 'Helpdesk Ticket Type'
 
+    name = fields.Char('Name', required=True)
     active = fields.Boolean('Active', default=True)
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
 
@@ -86,6 +88,7 @@ class HelpdeskSla(models.Model):
 class Helpdesk(models.Model):
     _inherit = 'helpdesk.ticket'
 
+    ticket_type_id = fields.Many2one('helpdesk.ticket.type', 'Ticket Type')
     bci_project = fields.Many2one('project.project', 'Project')
     bci_contract_id = fields.Many2one('barcode_india.contracts', 'Contract')
     bci_preferred_applicable = fields.Selection(Preferred_Selection, 'Preferred and Applicable Options')

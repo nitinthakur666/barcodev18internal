@@ -259,7 +259,7 @@
                 <attribute name="invisible">bci_lead_status_value == 'MQL'</attribute>
             </xpath>
 
-            <xpath expr="//button[@name='action_set_lost']" position="attributes">
+            <xpath expr='//button[@name="%(crm.crm_lead_lost_action)d"]' position="attributes">
                 <attribute name="string">Lost/Technical rejected</attribute>
                 <attribute name="invisible">bci_lead_status_value == 'MQL'</attribute>
             </xpath>
