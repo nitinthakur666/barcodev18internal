@@ -11,7 +11,7 @@
                 <field name="status"/>
                 <field name="comments"/>
                 <field name="task_id" invisible="1"/>
-                <button string="Create Ticket" class="oe_stat_button" name="action_create_ticket" type="object" help="Ticket from this task" invisible="ticket_id != False or status != 'PM Complete - Issue Found'"/>
+                <button string="Create Ticket" class="oe_stat_button" name="action_create_ticket" type="object" help="Ticket from this task" column_invisible="ticket_id != False or status != 'PM Complete - Issue Found'"/>
                 <field name="ticket_id" readonly="1"/>
             </list>
         </field>

@@ -8,7 +8,7 @@
                 <field name="street3" placeholder="Street 3..." class="o_address_street" readonly="type == 'contact' and parent_id != False"/>
                 <field name="street4" placeholder="Street 4..." class="o_address_street" readonly="type == 'contact' and parent_id != False"/>
             </xpath>
-            <xpath expr="//field[@name='vat']" position="after">
+            <xpath expr="//div[@name='vat_vies_container']" position="after">
                 <field name="bci_code" readonly="1" force_save="1" invisible="not is_company"/>
                 <field name="bci_site_code" invisible="bci_contact_type != 'Site'"/>
                 <field name="bci_legal_name"/>

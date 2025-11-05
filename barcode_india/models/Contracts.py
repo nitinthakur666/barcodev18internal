@@ -82,7 +82,7 @@ class Contract(models.Model):
     bci_amc_required = fields.Boolean('AMC Required', compute="_compute_amc_required", store=True)
     bci_opportunity_ids = fields.One2many('crm.lead', 'bci_contract_id', string='Opportunities')
     bci_opportunity_count = fields.Integer('Opportunity Count', compute='_compute_opportunity_count')
-    bci_contract_details_count = fields.Integer('Contract Detauls Count', compute='_compute_contract_details_count')
+    bci_contract_details_count = fields.Integer('Contract Details Count', compute='_compute_contract_details_count')
     bci_renewal_opportunity = fields.Many2one('crm.lead','Renewal Opportunity')
     bci_contract_type_find = fields.Selection(related='bci_type.type',string="Type of Contract", store=True)
     bci_stage_type = fields.Selection(related='bci_stage_id.stage_type',string="Stage Type")
@@ -170,10 +170,26 @@ class Contract(models.Model):
             'domain': [('bci_contract_id.bci_contract_id', '=', self.id)]
         }
     
+    # @api.depends('bci_ticket_ids')
+    # def _compute_ticket_count(self):
+    #     ticket_data = self.env['helpdesk.ticket']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
+    #     data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in ticket_data}
+    #     for contract in self:
+    #         contract.bci_ticket_count = data_map.get(contract.id, 0)
+
     @api.depends('bci_ticket_ids')
     def _compute_ticket_count(self):
-        ticket_data = self.env['helpdesk.ticket']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
-        data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in ticket_data}
+        # Use the modern read_group pattern in Odoo 18
+        ticket_data = self.env['helpdesk.ticket']._read_group(
+            domain=[('bci_contract_id', 'in', self.ids)],
+            groupby=['bci_contract_id'],
+            aggregates=['__count'],
+        )
+
+        # Build a map: {contract_id: count}
+        data_map = {contract.id: count for contract, count in ticket_data}
+
+        # Assign computed value
         for contract in self:
             contract.bci_ticket_count = data_map.get(contract.id, 0)
 
@@ -188,10 +204,24 @@ class Contract(models.Model):
             'domain': [('bci_contract_id', '=', self.id)],
         }
     
+    # @api.depends('bci_opportunity_ids')
+    # def _compute_opportunity_count(self):
+    #     opportunity_data = self.env['crm.lead']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
+    #     data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in opportunity_data}
+    #     for contract in self:
+    #         contract.bci_opportunity_count = data_map.get(contract.id, 0)
+
     @api.depends('bci_opportunity_ids')
     def _compute_opportunity_count(self):
-        opportunity_data = self.env['crm.lead']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
-        data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in opportunity_data}
+        opportunity_data = self.env['crm.lead']._read_group(
+            domain=[('bci_contract_id', 'in', self.ids)],
+            groupby=['bci_contract_id'],
+            aggregates=['__count'],  # count records per group
+        )
+
+        # Build a mapping: {contract_id: count}
+        data_map = {contract.id: count for contract, count in opportunity_data}
+
         for contract in self:
             contract.bci_opportunity_count = data_map.get(contract.id, 0)
 

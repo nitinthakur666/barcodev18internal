@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <list string="RCA Reason Code" editable="bottom">
                 <field name="name"/>
-                <field name="active" invisible="1"/>
+                <field name="active" column_invisible="1"/>
             </list>
         </field>
     </record>
