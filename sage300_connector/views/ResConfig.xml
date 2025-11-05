@@ -5,8 +5,8 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('settings')]" position="inside" >
-                <div class="app_settings_block" data-string="sage300_connector" data-key="sage300_connector" string="Sage300 Connector">
+             <xpath expr="//form" position="inside">
+                <app data-string="sage300_connector" string="Sage300 Connector" name="barcode_india">
                     <h2>Sage300 Integrations</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="col-12 col-lg-6 o_setting_box">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </app>
             </xpath>
         </field>
     </record>

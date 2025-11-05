@@ -117,7 +117,7 @@
         'views/SopfItems.xml',
         'views/ModelNumber.xml',
         'views/MenuItems.xml',
-        'reports/SaleOrder.xml',
+        # 'reports/SaleOrder.xml',
         # 'reports/Sopf_report.xml',
         # 'reports/Worksheet_template.xml',
         # 'reports/crm_report.xml',

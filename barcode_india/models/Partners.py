@@ -10,7 +10,7 @@ class Partners(models.Model):
     street4 = fields.Char('Street 4')
     bci_code = fields.Char("Code")
     bci_survey_id = fields.Many2one('survey.survey', string='Survey')
-    bci_parent_company = fields.Many2one('res.partner','Parent Company',groups="barcode_india.group_barcode_india_na")
+    bci_parent_company = fields.Many2one('res.partner', 'Parent Company')
     bci_child_company_count = fields.Integer('Child Company Count',compute="_compute_child_company_count")
     bci_child_company_ids = fields.One2many("res.partner","bci_parent_company",string="Child Companies")
     bci_pricing_terms = fields.One2many('barcode_india.customer_pt_master','partner_id',string='Pricing Term')
@@ -232,37 +232,98 @@ class Partners(models.Model):
             }
 
     # Sales
-    def _compute_sale_order_count(self):
-        all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
-        all_partners.read(['parent_id'])
-        sale_order_groups = self.env['sale.order']._read_group(
-            domain=expression.AND([self._get_sale_order_domain_count(), [('partner_id', 'in', all_partners.ids)]]),
-            fields=['partner_id'], groupby=['partner_id']
-        )
-        partners = self.browse()
-        for group in sale_order_groups:
-            partner = self.browse(group['partner_id'][0])
-            while partner:
-                if partner in self:
-                    partner.sale_order_count += group['partner_id_count'] + self.get_parent_partner_sales_count(partner.bci_child_company_ids)
-                    partners |= partner
-                partner = partner.parent_id
-        (self - partners).sale_order_count = 0
+    # def _compute_sale_order_count(self):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
+    #     all_partners.read(['parent_id'])
+    #     sale_order_groups = self.env['sale.order']._read_group(
+    #         domain=expression.AND([self._get_sale_order_domain_count(), [('partner_id', 'in', all_partners.ids)]]),
+    #         fields=['partner_id'], groupby=['partner_id']
+    #     )
+    #     partners = self.browse()
+    #     for group in sale_order_groups:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             if partner in self:
+    #                 partner.sale_order_count += group['partner_id_count'] + self.get_parent_partner_sales_count(partner.bci_child_company_ids)
+    #                 partners |= partner
+    #             partner = partner.parent_id
+    #     (self - partners).sale_order_count = 0
+    #
+    # def get_parent_partner_sales_count(self, bci_parent_company):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
+    #     all_partners.read(['parent_id'])
+    #     sale_order_groups = self.env['sale.order']._read_group(
+    #         domain=expression.AND([self._get_sale_order_domain_count(), [('partner_id', 'in', all_partners.ids)]]),
+    #         fields=['partner_id'], groupby=['partner_id']
+    #     )
+    #     sale_order_count = 0
+    #     for group in sale_order_groups:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             sale_order_count += group['partner_id_count']
+    #             partner = partner.parent_id
+    #     return sale_order_count
 
-    def get_parent_partner_sales_count(self, bci_parent_company):
-        all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
-        all_partners.read(['parent_id'])
-        sale_order_groups = self.env['sale.order']._read_group(
-            domain=expression.AND([self._get_sale_order_domain_count(), [('partner_id', 'in', all_partners.ids)]]),
-            fields=['partner_id'], groupby=['partner_id']
+    @api.depends('child_ids', 'bci_child_company_ids')
+    def _compute_sale_order_count(self):
+        """Compute total number of sales orders including child and bci linked companies."""
+        self.sale_order_count = 0
+
+        # Fetch all partners including descendants
+        all_partners = self.with_context(active_test=False).search_fetch(
+            [('id', 'child_of', self.ids)], ['parent_id']
         )
-        sale_order_count = 0
-        for group in sale_order_groups:
-            partner = self.browse(group['partner_id'][0])
+
+        # Aggregate sale order counts by partner
+        sale_order_groups = self.env['sale.order'].with_context(active_test=False)._read_group(
+            domain=expression.AND([
+                self._get_sale_order_domain_count(),
+                [('partner_id', 'in', all_partners.ids)],
+            ]),
+            groupby=['partner_id'],
+            aggregates=['__count'],
+        )
+
+        self_ids = set(self._ids)
+        processed_partners = self.browse()
+
+        for partner, count in sale_order_groups:
             while partner:
-                sale_order_count += group['partner_id_count']
+                if partner.id in self_ids:
+                    # Count from child companies
+                    partner.sale_order_count += count
+                    # Add count from linked bci child companies
+                    partner.sale_order_count += self.get_parent_partner_sales_count(partner.bci_child_company_ids)
+                    processed_partners |= partner
                 partner = partner.parent_id
-        return sale_order_count            
+
+        # Set remaining partners (not matched in results) to 0
+        (self - processed_partners).sale_order_count = 0
+
+    def get_parent_partner_sales_count(self, bci_parent_companies):
+        """Get sale order count for all related bci child companies."""
+        if not bci_parent_companies:
+            return 0
+
+        all_partners = self.with_context(active_test=False).search_fetch(
+            [('id', 'child_of', bci_parent_companies.ids)], ['parent_id']
+        )
+
+        sale_order_groups = self.env['sale.order'].with_context(active_test=False)._read_group(
+            domain=expression.AND([
+                self._get_sale_order_domain_count(),
+                [('partner_id', 'in', all_partners.ids)],
+            ]),
+            groupby=['partner_id'],
+            aggregates=['__count'],
+        )
+
+        total_count = 0
+        for partner, count in sale_order_groups:
+            while partner:
+                total_count += count
+                partner = partner.parent_id
+        return total_count
 
     def action_view_sale_order(self):
         action = super(Partners, self).action_view_sale_order()
@@ -318,35 +379,90 @@ class Partners(models.Model):
         return action
 
     # Opportunities
+    # def _compute_opportunity_count(self):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
+    #     all_partners.read(['parent_id'])
+    #     opportunity_data = self.env['crm.lead'].with_context(active_test=False)._read_group(
+    #         domain=[('partner_id', 'in', all_partners.ids)],
+    #         fields=['partner_id'], groupby=['partner_id']
+    #     )
+    #     self.opportunity_count = 0
+    #     for group in opportunity_data:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             if partner in self:
+    #                 partner.opportunity_count += group['partner_id_count'] + self.get_parent_partner_opportunity_count(partner.bci_child_company_ids)
+    #             partner = partner.parent_id
+
+    @api.depends('child_ids', 'bci_child_company_ids')
     def _compute_opportunity_count(self):
-        all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
-        all_partners.read(['parent_id'])
+        """Compute total opportunities including child companies and bci_child_company links."""
+        self.opportunity_count = 0
+        if not self.env.user._has_group('sales_team.group_sale_salesman'):
+            return
+
+        # Retrieve all children partners and prefetch parent_id
+        all_partners = self.with_context(active_test=False).search_fetch(
+            [('id', 'child_of', self.ids)], ['parent_id']
+        )
+
+        # Aggregate CRM opportunities grouped by partner
         opportunity_data = self.env['crm.lead'].with_context(active_test=False)._read_group(
             domain=[('partner_id', 'in', all_partners.ids)],
-            fields=['partner_id'], groupby=['partner_id']
+            groupby=['partner_id'],
+            aggregates=['__count'],
         )
-        self.opportunity_count = 0
-        for group in opportunity_data:
-            partner = self.browse(group['partner_id'][0])
+
+        self_ids = set(self._ids)
+
+        for partner, count in opportunity_data:
             while partner:
-                if partner in self:
-                    partner.opportunity_count += group['partner_id_count'] + self.get_parent_partner_opportunity_count(partner.bci_child_company_ids)
+                if partner.id in self_ids:
+                    # Add count from normal children
+                    partner.opportunity_count += count
+                    # Add count from bci_child_company_ids
+                    partner.opportunity_count += self.get_parent_partner_opportunity_count(
+                        partner.bci_child_company_ids)
                 partner = partner.parent_id
 
-    def get_parent_partner_opportunity_count(self, bci_parent_company):
-        all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
-        all_partners.read(['parent_id'])
-        groups = self.env['crm.lead'].with_context(active_test=False)._read_group(
-            [('partner_id', 'in', all_partners.ids)],
-            fields=['partner_id'], groupby=['partner_id'],
+    def get_parent_partner_opportunity_count(self, bci_parent_companies):
+        """Count opportunities for bci_child_company_ids recursively."""
+        if not bci_parent_companies:
+            return 0
+
+        # Include all descendants of these companies
+        all_partners = self.with_context(active_test=False).search_fetch(
+            [('id', 'child_of', bci_parent_companies.ids)], ['parent_id']
         )
-        opportunity_count = 0
-        for group in groups:
-            partner = self.browse(group['partner_id'][0])
+
+        # Aggregate CRM leads for these related partners
+        groups = self.env['crm.lead'].with_context(active_test=False)._read_group(
+            domain=[('partner_id', 'in', all_partners.ids)],
+            groupby=['partner_id'],
+            aggregates=['__count'],
+        )
+
+        total_count = 0
+        for partner, count in groups:
             while partner:
-                opportunity_count += group['partner_id_count']
+                total_count += count
                 partner = partner.parent_id
-        return opportunity_count
+        return total_count
+
+    # def get_parent_partner_opportunity_count(self, bci_parent_company):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
+    #     all_partners.read(['parent_id'])
+    #     groups = self.env['crm.lead'].with_context(active_test=False)._read_group(
+    #         [('partner_id', 'in', all_partners.ids)],
+    #         fields=['partner_id'], groupby=['partner_id'],
+    #     )
+    #     opportunity_count = 0
+    #     for group in groups:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             opportunity_count += group['partner_id_count']
+    #             partner = partner.parent_id
+    #     return opportunity_count
 
     def action_view_opportunity(self):
         action = super(Partners, self).action_view_opportunity()

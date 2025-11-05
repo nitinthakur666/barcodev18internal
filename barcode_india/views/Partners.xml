@@ -16,7 +16,7 @@
                 <field name="bci_survey_id"/>
                 <field name="bci_contact_type" invisible="not is_company"/>
                 <field name="bci_national_account_no" readonly="bci_contact_type != 'Parent Company'" invisible="not is_company" force_save="1"/>
-                <field name="bci_parent_company" readonly="bci_contact_type != 'Company'" invisible="not is_company" domain="[('bci_contact_type', '=', 'Parent Company')]" force_save="1"/>
+                <field name="bci_parent_company" readonly="bci_contact_type != 'Company'" invisible="not is_company" domain="[('bci_contact_type', '=', 'Parent Company')]" force_save="1" groups="barcode_india.group_barcode_india_na"/>
                 <field name="bci_company" readonly="bci_contact_type != 'Site'" required="bci_contact_type == 'Site'" invisible="not is_company" domain="[('bci_contact_type', '=', 'Company')]" force_save="1"/>
                 <field name="bci_site" readonly="bci_contact_type != 'Plant'" required="bci_contact_type == 'Plant'" domain="[('bci_contact_type', '=', 'Site')]" force_save="1"/>
                 <field name="bci_region_user" invisible="is_company"/>
