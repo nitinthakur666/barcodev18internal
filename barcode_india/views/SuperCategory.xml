@@ -4,7 +4,7 @@
             <field name="name">Barcode India Super Category Tree View</field>
             <field name="model">barcode_india.super_category</field>
             <field name="arch" type="xml">
-                <list>
+                <list >
                     <field name="sequence" invisible="1"/>
                     <field name="name" />
                 </list>
