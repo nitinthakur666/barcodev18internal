@@ -107,3 +107,4 @@ access_barcode_india_sopf_header,barcode_india.sopf_header,model_barcode_india_s
 access_barcode_india_sopf_items,barcode_india.sopf_items,model_barcode_india_sopf_items,base.group_user,1,1,1,1
 access_barcode_india_model_number,barcode_india.model_number,model_barcode_india_model_number,base.group_user,1,1,1,1
 access_barcode_india_oem,barcode_india.oem,model_barcode_india_oem,base.group_user,1,1,1,1
+access_helpdesk_ticket_type_user,access_helpdesk_ticket_type_user,model_helpdesk_ticket_type,base.group_user,1,1,1,1

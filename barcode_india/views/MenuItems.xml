@@ -96,4 +96,6 @@
     <menuitem id="menu_sopf_header" name="Legacy SOPF" parent="sale.sale_order_menu" sequence="109" action="action_sopf_header"/>
     <menuitem id="menu_sopf_items" name="Legacy SOPF Items" parent="sale.sale_order_menu" sequence="110" action="action_sopf_items"/>
 
+    <!-- <menuitem id="helpdesk_ticket_type_menu" string="Problem Sub Type" action="helpdesk_ticket_type_action" sequence="10" parent="helpdesk.helpdesk_menu_config"/> -->
+
 </odoo>

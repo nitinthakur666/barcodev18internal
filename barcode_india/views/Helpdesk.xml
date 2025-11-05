@@ -59,12 +59,12 @@
                     <widget name="web_ribbon" text="Out of Warranty" bg_color="bg-danger" invisible="bci_warranty_status != 'Out of Warranty'"/>
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="before">
-                    <field name="ticket_type_id"/>
                     <field name="bci_severity"/>
                     <field name="bci_support_type" />
                     <field name="bci_case_type"/>
                     <field name="bci_case_sub_type" domain="[('bci_case_type','=',bci_case_type)]" required="bci_barcode_case_type_find == 'custom software'"/>
                     <field name="bci_problem_type" required="bci_barcode_case_type_find == 'custom software'"/>
+                    <field name="ticket_type_id" domain="[('bci_problem_type','=',bci_problem_type)]" required="bci_barcode_case_type_find == 'custom software'"/>
                     <field name="bci_barcode_case_type_find" invisible="1"/>
                     <field name="bci_asset_ids" invisible="1"/>
                     <field name="bci_hold_stage" invisible="1"/>
@@ -296,30 +296,6 @@
 				</xpath>
 			</field>
 		</record>
-
-        <record id="helpdesk_ticket_type_list_view_barcode" model="ir.ui.view">
-	        <field name="name">helpdesk.ticket.type.list.barcode</field>
-	        <field name="model">helpdesk.ticket.type</field>
-	        <field name="arch" type="xml">
-                <list editable="bottom" string="Ticket Types">
-                    <field name="name"/>
-                    <field name="active" invisible="1"/>
-                    <field name="bci_problem_type"/>
-                </list>
-	        </field>
-	    </record>
-
-        <record id="barcode_india_problem_type_search_view" model="ir.ui.view">
-            <field name="name">helpdesk.ticket.type.search.view</field>
-            <field name="model">helpdesk.ticket.type</field>
-            <field name="arch" type="xml">
-                <search string="Search Problem type">
-                    <field name="name" />
-                    <separator/>
-                    <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
-                </search>
-            </field>
-          </record>
 
         <record id ="helpdesk_sla_view_form_barcode" model="ir.ui.view">
 			<field name="name">helpdesk.sla.form.inherited</field>

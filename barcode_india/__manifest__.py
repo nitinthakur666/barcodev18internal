@@ -30,6 +30,7 @@
         'views/ConfigurationSettings.xml',
         'views/Integrations.xml',
         'views/AccountSetCode.xml',
+        'views/TicketType.xml',
         'views/Partners.xml',
         'views/Products.xml',
         'views/RejectReason.xml',
