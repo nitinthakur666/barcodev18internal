@@ -6,13 +6,13 @@
         <field name="arch" type="xml">
             <form create="0">
                 <header>
-                    <button name="action_compute_cost" string="Compute Cost" type="object" class="oe_highlight" attrs="{'invisible': [('cost_computed','!=',False)]}" />
-                    <button name="action_update_quote" string="Update Quote" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cost_computed','=',False),('quote_updated','!=',False)]}" />
+                    <button name="action_compute_cost" string="Compute Cost" type="object" class="oe_highlight" invisible="cost_computed != False"/>
+                    <button name="action_update_quote" string="Update Quote" type="object" class="oe_highlight" invisible="cost_computed == False or quote_updated != False"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_costing" string="Calculation" class="oe_stat_button" type="object" attrs="{'invisible': [('costing','=',False)]}" />
-                        <button name="action_view_project_cost" string="Outcome" class="oe_stat_button" type="object" attrs="{'invisible': [('project_cost','=',False)]}" />
+                        <button name="action_view_costing" string="Calculation" class="oe_stat_button" type="object" invisible="costing == False"/>
+                        <button name="action_view_project_cost" string="Outcome" class="oe_stat_button" type="object" invisible="project_cost == False"/>
                     </div>
                     <div class="oe_title">
                         <h1>

@@ -124,7 +124,7 @@
                     </group>
                 </div>          
             </xpath>
-            <xpath expr="//field[@name='picking_policy']" position="after">
+            <xpath expr="//field[@name='source_id']" position="after">
                 <field name="bci_location" required="1"/>
             </xpath>
             <xpath expr="//field[@name='validity_date']" position="before">
