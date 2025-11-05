@@ -332,36 +332,78 @@ class Partners(models.Model):
         return action
 
     # Tickets
+    # def _compute_ticket_count(self):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
+    #     all_partners.read(['parent_id'])
+    #     groups = self.env['helpdesk.ticket'].read_group(
+    #         [('partner_id', 'in', all_partners.ids)],
+    #         fields=['partner_id'], groupby=['partner_id'],
+    #     )
+    #     self.ticket_count = 0
+    #     for group in groups:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             if partner in self:
+    #                 partner.ticket_count += group['partner_id_count'] + self.get_parent_partner_ticket_count(partner.bci_child_company_ids)
+    #             partner = partner.parent_id
+    #
+    # def get_parent_partner_ticket_count(self, bci_parent_company):
+    #     all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
+    #     all_partners.read(['parent_id'])
+    #     groups = self.env['helpdesk.ticket']._read_group(
+    #         [('partner_id', 'in', all_partners.ids)],
+    #         fields=['partner_id'], groupby=['partner_id'],
+    #     )
+    #     ticket_count = 0
+    #     for group in groups:
+    #         partner = self.browse(group['partner_id'][0])
+    #         while partner:
+    #             ticket_count += group['partner_id_count']
+    #             partner = partner.parent_id
+    #     return ticket_count
+
     def _compute_ticket_count(self):
+        # Fetch all partners including their children
         all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
         all_partners.read(['parent_id'])
-        groups = self.env['helpdesk.ticket'].read_group(
-            [('partner_id', 'in', all_partners.ids)],
-            fields=['partner_id'], groupby=['partner_id'],
+
+        # Use new Odoo 18 _read_group syntax
+        groups = self.env['helpdesk.ticket']._read_group(
+            domain=[('partner_id', 'in', all_partners.ids)],
+            groupby=['partner_id'],
+            aggregates=['__count'],
         )
+
+        # Initialize ticket_count
         self.ticket_count = 0
-        for group in groups:
-            partner = self.browse(group['partner_id'][0])
-            while partner:
-                if partner in self:
-                    partner.ticket_count += group['partner_id_count'] + self.get_parent_partner_ticket_count(partner.bci_child_company_ids)
-                partner = partner.parent_id
+
+        # Build mapping of partner_id → ticket_count
+        data_map = {partner.id: count for partner, count in groups}
+
+        # Iterate and compute ticket count hierarchy
+        for record in self:
+            total = 0
+            partner_ids = self.with_context(active_test=False).search([('id', 'child_of', record.id)])
+            for partner in partner_ids:
+                total += data_map.get(partner.id, 0)
+            total += self.get_parent_partner_ticket_count(record.bci_child_company_ids)
+            record.ticket_count = total
 
     def get_parent_partner_ticket_count(self, bci_parent_company):
+        # Compute ticket count for parent companies
         all_partners = self.with_context(active_test=False).search([('id', 'child_of', bci_parent_company.ids)])
         all_partners.read(['parent_id'])
+
         groups = self.env['helpdesk.ticket']._read_group(
-            [('partner_id', 'in', all_partners.ids)],
-            fields=['partner_id'], groupby=['partner_id'],
+            domain=[('partner_id', 'in', all_partners.ids)],
+            groupby=['partner_id'],
+            aggregates=['__count'],
         )
-        ticket_count = 0
-        for group in groups:
-            partner = self.browse(group['partner_id'][0])
-            while partner:
-                ticket_count += group['partner_id_count']
-                partner = partner.parent_id
-        return ticket_count      
-    
+
+        # Sum all related ticket counts
+        ticket_count = sum(count for partner, count in groups)
+        return ticket_count
+
     def action_open_helpdesk_ticket(self):
         action = super(Partners, self).action_open_helpdesk_ticket()
         all_child = self.with_context(active_test=False).search(['|',('id', 'child_of', self.ids),('id', 'child_of', self.bci_child_company_ids.ids)])

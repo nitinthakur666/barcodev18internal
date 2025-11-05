@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'web','sale_management', 'sale','contacts','product','stock','helpdesk','helpdesk_fsm','project','survey','mass_mailing','sale_crm','base_automation','cost_estimation','approvals','purchase','worksheet','l10n_in','asc_mail','sales_team','mail', 'delivery'],
+    'depends': ['base', 'web','sale_management', 'sale','contacts','product','stock','helpdesk','helpdesk_fsm','project','survey','mass_mailing','sale_crm','base_automation','cost_estimation','approvals','purchase','worksheet','l10n_in','asc_mail','sales_team','mail', 'delivery', 'sale_project', 'sale_timesheet'],
 
     # always loaded
     'data': [

@@ -192,7 +192,7 @@
             </xpath>
             <xpath expr="//page[@name='order_lines']/field[@name='order_line']" position="attributes">
                 <attribute name="readonly">(not bypass_quote) and (state in ['done', 'cancel'] or bci_stage == 'approved' or not bci_quote_type)</attribute>
-                <attribute name="options">{'no_create': bci_is_estimation == True}</attribute>
+<!--                <attribute name="options">{'no_create': bci_is_estimation == True}</attribute> Need to discuss -->
             </xpath>
             <xpath expr="//field[@name='payment_term_id']" position="attributes">
                 <attribute name="invisible">1</attribute>

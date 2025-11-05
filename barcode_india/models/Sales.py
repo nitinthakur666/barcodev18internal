@@ -906,14 +906,29 @@ class SaleOrder(models.Model):
             order.amount_tax = amount_tax
             order.amount_total = order.amount_untaxed + order.amount_tax
 
-    @api.depends('order_line.tax_id', 'order_line.price_unit', 'amount_total', 'amount_untaxed', 'currency_id')
+    # @api.depends('order_line.tax_id', 'order_line.price_unit', 'amount_total', 'amount_untaxed', 'currency_id')
+    # def _compute_tax_totals(self):
+    #     super(SaleOrder, self)._compute_tax_totals()
+    #     for order in self:
+    #         order_lines = order.order_line.filtered(lambda x: not x.display_type and not x.bci_is_optional)
+    #         order.tax_totals = self.env['account.tax']._prepare_tax_totals(
+    #             [x._convert_to_tax_base_line_dict() for x in order_lines],
+    #             order.currency_id or order.company_id.currency_id,
+    #         )
+
+    @api.depends('order_line.price_subtotal', 'currency_id', 'company_id', 'payment_term_id')
     def _compute_tax_totals(self):
-        super(SaleOrder, self)._compute_tax_totals()
+        AccountTax = self.env['account.tax']
         for order in self:
             order_lines = order.order_line.filtered(lambda x: not x.display_type and not x.bci_is_optional)
-            order.tax_totals = self.env['account.tax']._prepare_tax_totals(
-                [x._convert_to_tax_base_line_dict() for x in order_lines],
-                order.currency_id or order.company_id.currency_id,
+            base_lines = [line._prepare_base_line_for_taxes_computation() for line in order_lines]
+            base_lines += order._add_base_lines_for_early_payment_discount()
+            AccountTax._add_tax_details_in_base_lines(base_lines, order.company_id)
+            AccountTax._round_base_lines_tax_details(base_lines, order.company_id)
+            order.tax_totals = AccountTax._get_tax_totals_summary(
+                base_lines=base_lines,
+                currency=order.currency_id or order.company_id.currency_id,
+                company=order.company_id,
             )
             
     @api.constrains('bci_payment_terms')

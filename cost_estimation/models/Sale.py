@@ -10,10 +10,26 @@ class SaleOrder(models.Model):
     cost_estimation_ids = fields.One2many('cost_estimation.cost_estimation', 'order_id', string='Cost Estimations')
     cost_estimation_count = fields.Integer(string='Cost Estimation Count', compute='_compute_cost_estimation_count')
 
+    # @api.depends('cost_estimation_ids')
+    # def _compute_cost_estimation_count(self):
+    #     cost_estimation_data = self.env['cost_estimation.cost_estimation']._read_group([('order_id', 'in', self.ids)], ['order_id'], ['order_id'])
+    #     data_map = {data['order_id'][0]: data['order_id_count']for data in cost_estimation_data}
+    #     for order in self:
+    #         order.cost_estimation_count = data_map.get(order.id, 0)
+
     @api.depends('cost_estimation_ids')
     def _compute_cost_estimation_count(self):
-        cost_estimation_data = self.env['cost_estimation.cost_estimation']._read_group([('order_id', 'in', self.ids)], ['order_id'], ['order_id'])
-        data_map = {data['order_id'][0]: data['order_id_count']for data in cost_estimation_data}
+        # Read grouped data from cost_estimation model using Odoo 18 _read_group syntax
+        cost_estimation_data = self.env['cost_estimation.cost_estimation']._read_group(
+            domain=[('order_id', 'in', self.ids)],
+            groupby=['order_id'],
+            aggregates=['__count'],
+        )
+
+        # Map partner/order ID to count
+        data_map = {order.id: count for order, count in cost_estimation_data}
+
+        # Assign the computed count to each record
         for order in self:
             order.cost_estimation_count = data_map.get(order.id, 0)
 
