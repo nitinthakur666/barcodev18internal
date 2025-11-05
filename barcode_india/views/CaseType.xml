@@ -19,7 +19,7 @@
             <list string="Case Type" editable="bottom">
                 <field name="name"/>
                 <field name="type" />
-                <field name="active" invisible="1"/>
+                <field name="active" column_invisible="1"/>
             </list>
         </field>
     </record>

@@ -19,7 +19,7 @@
             <list string="Case Sub Type" editable="bottom">
                 <field name="name"/>
                 <field name="bci_case_type"/>
-                <field name="active" invisible="1"/>
+                <field name="active" column_invisible="True"/>
             </list>
         </field>
     </record>
