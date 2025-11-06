@@ -5,7 +5,7 @@
             <field name="model">barcode_india.super_category</field>
             <field name="arch" type="xml">
                 <list >
-                    <field name="sequence" invisible="1"/>
+                    <field name="sequence" column_invisible="1"/>
                     <field name="name" />
                 </list>
             </field>
