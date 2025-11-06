@@ -76,7 +76,7 @@ class MailThread(models.AbstractModel):
 
         model = msg_vals.get('model') if msg_vals else message.model
         model_name = model_description or (self.env['ir.model']._get(model).display_name if model else False) # one query for display name
-        recipients_groups_data = self._notify_get_recipients_classify(partners_data, model_name, msg_vals=msg_vals)
+        recipients_groups_data = self._notify_get_recipients_classify(message, partners_data, model_name, msg_vals=msg_vals)
 
         if not recipients_groups_data:
             return True
