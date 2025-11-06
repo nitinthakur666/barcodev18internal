@@ -38,7 +38,7 @@
                                     <field name="baseline_costing" sum="Total" optional="show" />
                                     <field name="technical_risk_impact" sum="Total" optional="show" />
                                     <field name="business_risk_impact" sum="Total" optional="show" />
-                                    <field name="costing" invisible="1" />
+                                    <field name="costing" column_invisible="1" />
                                 </list>
                                 <form create="0" edit="0" delete="0">
                                     <sheet>
@@ -59,21 +59,13 @@
                                             </group>
                                         </group>
                                     </sheet>
-                                    <div class="oe_chatter">
-                                        <field name="message_follower_ids" />
-                                        <field name="activity_ids" />
-                                        <field name="message_ids" />
-                                    </div>
+                                    <chatter />
                                 </form>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="activity_ids" />
-                    <field name="message_ids" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>
@@ -95,7 +87,7 @@
                 <field name="technical_risk" sum="Total" optional="show" />
                 <field name="business_risk" sum="Total" optional="show" />
                 <field name="total" sum="Total" optional="show" />
-                <field name="cost_estimation" invisible="1" />
+                <field name="cost_estimation" column_invisible="1" />
             </list>
         </field>
     </record>

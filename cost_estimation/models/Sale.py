@@ -53,7 +53,7 @@ class SaleOrder(models.Model):
             action['view_mode'] = 'form'
         else:
             action['domain'] = [('id', 'in', self.cost_estimation_ids.ids)]
-            action['view_mode'] = 'tree,form'
+            action['view_mode'] = 'list,form'
         return action
 
     def copy_data(self, default=None):

@@ -11,7 +11,7 @@
                 <field name="correction_days" sum="Total" optional="show" groups="!barcode_india.group_barcode_india_cat_head" readonly="1"/>
                 <field name="correction_days" sum="Total" optional="show" groups="barcode_india.group_barcode_india_cat_head"/>
                 <field name="total_days" sum="Total" optional="show" />
-                <field name="cost_estimation" invisible="1" />
+                <field name="cost_estimation" column_invisible="1" />
             </list>
         </field>
     </record>

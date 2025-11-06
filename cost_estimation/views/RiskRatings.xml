@@ -18,17 +18,13 @@
                                     <field name="sequence" widget="handle" />
                                     <field name="factor" />
                                     <field name="rating" widget="percentage" optional="show" />
-                                    <field name="risk_rating" invisible="1" />
+                                    <field name="risk_rating" column_invisible="1" />
                                 </list>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="activity_ids" />
-                    <field name="message_ids" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>

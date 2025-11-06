@@ -25,7 +25,7 @@
                                     <field name="sequence" widget="handle" />
                                     <field name="resource" />
                                     <field name="allocation" widget="percentage" sum="Total" optional="show" />
-                                    <field name="phase" invisible="1" />
+                                    <field name="phase" column_invisible="1" />
                                 </list>
                             </field>
                         </page>
@@ -36,17 +36,13 @@
                                     <field name="factor" />
                                     <field name="type" optional="show" />
                                     <field name="applied" optional="show" />
-                                    <field name="phase" invisible="1" />
+                                    <field name="phase" column_invisible="1"/>
                                 </list>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="activity_ids" />
-                    <field name="message_ids" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>
