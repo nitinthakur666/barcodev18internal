@@ -153,8 +153,8 @@
                             <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="percentange" />
-                            <field name="order_id" invisible="1" />
-                            <field name="bci_is_approved" invisible="1" />
+                            <field name="order_id" column_invisible="1" />
+                            <field name="bci_is_approved" column_invisible="1" />
                         </list>
                     </field>
                 </page>
@@ -199,27 +199,27 @@
             </xpath>
             <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="after">
                 <field name="bci_discount" />
-                <field name="bci_price_with_discount" invisible="1"/>                
+                <field name="bci_price_with_discount" column_invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/list" position="inside">
                     <field name="bci_section"  />
                     <field name="bci_subsection"  />
                     <field name="bci_is_optional"  />
-                    <field name="bci_pricing_factor" invisible="1" />
-                    <field name="bci_discount_category" invisible="1"/>
-                    <field name="bci_duty" invisible="1"/>
-                    <field name="bci_freight" invisible="1" />
-                    <field name="bci_exchange_rate" invisible="1"/>
-                    <field name="bci_purchase_cost" invisible="1"/>
-                    <field name="bci_purchase_currency" invisible="1" />
-                    <field name="bci_discount" invisible="1" />
-                    <field name="bci_landed_cost" invisible="1" />
-                    <field name="bci_suggested_price_unit" invisible="1" />
-                    <field name="bci_principal_cost" invisible="1"/>
-                    <field name="bci_target_margin" invisible="1" />
-                    <field name="sopf_done_quantity" invisible="1"/>
-                    <field name="sopf_done_amount" invisible="1"/>
-                    <field name="bci_principal_cost" invisible="1"/>
+                    <field name="bci_pricing_factor" column_invisible="1" />
+                    <field name="bci_discount_category" column_invisible="1"/>
+                    <field name="bci_duty" column_invisible="1"/>
+                    <field name="bci_freight" column_invisible="1" />
+                    <field name="bci_exchange_rate" column_invisible="1"/>
+                    <field name="bci_purchase_cost" column_invisible="1"/>
+                    <field name="bci_purchase_currency" column_invisible="1" />
+                    <field name="bci_discount" column_invisible="1" />
+                    <field name="bci_landed_cost" column_invisible="1" />
+                    <field name="bci_suggested_price_unit" column_invisible="1" />
+                    <field name="bci_principal_cost" column_invisible="1"/>
+                    <field name="bci_target_margin" column_invisible="1" />
+                    <field name="sopf_done_quantity" column_invisible="1"/>
+                    <field name="sopf_done_amount" column_invisible="1"/>
+                    <field name="bci_principal_cost" column_invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/list/field[@name='bci_is_optional']" position="after">
                 <button name="open_product_last_sale_popup" type="object" icon="fa-ellipsis-h" string=" "/>

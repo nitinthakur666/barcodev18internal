@@ -7,31 +7,31 @@
             <field name="arch" type="xml">
                 <list string="Sales Order Lines" expand="1" editable="bottom">
                     <field name="product_id" readonly="bci_approval_stage != 'pending' or not is_line_approver"/>
-                    <field name="company_id" invisible="1"/>
+                    <field name="company_id" column_invisible="1"/>
                     <field name="bci_part_number" readonly="bci_approval_stage != 'pending' or not is_line_approver"/>
                     <field name="bci_model_number" readonly="bci_approval_stage != 'pending' or not is_line_approver"/>
                     <field name="product_uom_qty" string="Qty" readonly="bci_approval_stage != 'pending' or not is_line_approver"/>
                     <field name="name" readonly="bci_approval_stage != 'pending' or not is_line_approver"/>
                     <field name="bci_suggested_price_unit" force_save="1" readonly="bci_approval_stage != 'pending' or not is_line_approver or not is_line_pricing_provider"/>
                     <field name="bci_discount" readonly="bci_approval_stage != 'pending' or not is_line_approver or not is_sales_person"/>
-                    <field name="bci_target_margin" readonly="1" invisible="1"/>
+                    <field name="bci_target_margin" readonly="1" column_invisible="1"/>
                     <field name="bci_approved_margin" readonly="1" force_save="1"/>
                     <field name="price_unit" force_save="1" readonly="bci_suggested_price_unit == 0.00 or bci_approval_stage != 'pending' or not is_line_approver or not is_sales_person"/>
-                    <field name="bci_pricing_factor" invisible="1"/>
-                    <field name="bci_discount_category" invisible="1"/>
+                    <field name="bci_pricing_factor" column_invisible="1"/>
+                    <field name="bci_discount_category" column_invisible="1"/>
                     <field name="bci_landed_cost" readonly="1" force_save="1"/>
-                    <field name="bci_duty" invisible="1"/>
-                    <field name="bci_freight" invisible="1"/>
+                    <field name="bci_duty" column_invisible="1"/>
+                    <field name="bci_freight" column_invisible="1"/>
                     <field name="bci_exchange_rate" force_save="1" readonly="1"/>
-                    <field name="bci_purchase_cost" force_save="1" readonly="1" invisible="1"/>
+                    <field name="bci_purchase_cost" force_save="1" readonly="1" column_invisible="1"/>
                     <field name="bci_principal_cost" readonly="1"/>
                     <field name="bci_pricing_category" readonly="1"/>
                     <field name="bci_approval_stage" force_save="1" readonly="1"/>
                     <field name="bci_approver"/>
                     <field name="bci_pricing_provider" widget="many2many_tags"/>
-                    <field name="is_line_pricing_provider" invisible="1"/>
-                    <field name="is_line_approver" invisible="1"/>
-                    <field name="is_sales_person" invisible="1"/>
+                    <field name="is_line_pricing_provider" column_invisible="1"/>
+                    <field name="is_line_approver" column_invisible="1"/>
+                    <field name="is_sales_person" column_invisible="1"/>
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight" invisible="bci_approval_stage != 'pending' or not is_line_approver"/>
                 </list>
             </field>
@@ -45,23 +45,23 @@
                 <list string="Sales Order Lines" expand="1" editable="bottom" default_order="create_date desc, id desc">
                     <field name="order_partner_id"/>
                     <field name="product_id" readonly="1"/>
-                    <field name="company_id" invisible="1" readonly="1"/>
+                    <field name="company_id" column_invisible="1" readonly="1"/>
                     <field name="bci_part_number" readonly="1"/>
                     <field name="bci_model_number" readonly="1"/>
                     <field name="product_uom_qty" string="Qty" readonly="1"/>
                     <field name="name" readonly="1"/>
-                    <field name="currency_id" invisible="1"/>
+                    <field name="currency_id" column_invisible="1"/>
                     <field name="bci_pricing_category" readonly="1"/>
                     <field name="bci_approver"/>
                     <field name="bci_pricing_provider" widget="many2many_tags"/>
                     <field name="bci_suggested_price_unit" force_save="1" readonly="bci_approval_stage != 'pending' or not is_line_approver or not is_line_pricing_provider"/>
                     <field name="price_unit" readonly="1" force_save="1"/>
-                    <field name="bci_pricing_factor" invisible="1"/>
-                    <field name="bci_discount_category" invisible="1"/>
+                    <field name="bci_pricing_factor" column_invisible="1"/>
+                    <field name="bci_discount_category" column_invisible="1"/>
                     <field name="bci_discount" readonly="bci_approval_stage != 'pending' or not is_line_approver or not is_sales_person"/>
-                    <field name="bci_landed_cost" invisible="1" force_save="1"/>
-                    <field name="bci_duty" invisible="1"/>
-                    <field name="bci_freight" invisible="1"/>
+                    <field name="bci_landed_cost" column_invisible="1" force_save="1"/>
+                    <field name="bci_duty" column_invisible="1"/>
+                    <field name="bci_freight" column_invisible="1"/>
                     <field name="bci_exchange_rate" readonly="1"/>
                     <field name="bci_purchase_cost" readonly="1" force_save="1"/>
                     <field name="bci_applied_discount" readonly="1"/>
@@ -73,9 +73,9 @@
                     <field name="salesman_id" optional="hide" readonly="1"/>
                     <field name="bci_approval_stage" readonly="1" optional="hide"/>
                     <field name="bci_approved_margin" readonly="1" force_save="1"/>
-                    <field name="is_line_pricing_provider" invisible="1"/>
-                    <field name="is_line_approver" invisible="1"/>
-                    <field name="is_sales_person" invisible="1"/>
+                    <field name="is_line_pricing_provider" column_invisible="1"/>
+                    <field name="is_line_approver" column_invisible="1"/>
+                    <field name="is_sales_person" column_invisible="1"/>
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight" invisible="bci_approval_stage != 'pending' or not is_line_approver"/>
                 </list>
             </field>

@@ -150,7 +150,8 @@ class ProductTemplates(models.Model):
 
                         rec.bci_discount = discount
                         rec.bci_discount_category = vendor_discount_category or False
-                        rec.bci_exchange_rate = vendor_currency.compute(1, base_currency_id) or False
+                        rec.bci_exchange_rate = vendor_currency._convert(1.0,base_currency_id, rec.company_id or
+                                                                         self.env.company,fields.Date.today()) or False
                         forex_amount = (rec.bci_exchange_rate * (100 + forex)) / 100
                         ins_amount = (forex_amount * (100 + ins)) / 100
                         freight_amount = (ins_amount * (100 +freight)) / 100
