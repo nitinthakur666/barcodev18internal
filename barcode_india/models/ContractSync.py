@@ -29,8 +29,10 @@ class ContractSyncLogs(models.Model):
             'cs_sync_name':sync_name
         })
 
+
 class AssetsSync(models.Model):    
     _name = 'barcode_india.assets_sync'
+    _description = 'Assets Sync'
 
     cs_contract_sync = fields.Many2one("barcode_india.contract_sync","Contract Sync", ondelete='cascade')
     name = fields.Char("Name")

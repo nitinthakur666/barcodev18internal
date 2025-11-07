@@ -48,6 +48,7 @@ class Chargeable(models.Model):
     
 class HelpdeskTicketTimespent(models.Model):
     _name = 'helpdesk.stage_timespent'
+    _description = 'Helpdesk Ticket Stage Timespent'
     _order = 'id desc'
     
     active = fields.Boolean('Active', default=True)
@@ -93,14 +94,18 @@ class Sparedata(models.Model):
     product_id = fields.Many2one('product.product',string="Product",domain="[('product_tmpl_id', '=', product_tmpl_id)]")
     product_tmpl_id = fields.Many2one('product.template',string="Product Template")
 
+
 class LeadType(models.Model):
-    _name = 'lead.type' 
+    _name = 'lead.type'
+    _description = 'Lead Type'
 
     name = fields.Char('Lead Type')
     active = fields.Boolean("Active", default=True)
 
+
 class Region(models.Model):
-    _name = 'barcode_india.region' 
+    _name = 'barcode_india.region'
+    _description = 'Region'
 
     name = fields.Char('Region')
     region_head = fields.Many2one('res.users', string='Region Head')
@@ -108,39 +113,50 @@ class Region(models.Model):
 
 
 class Vertical(models.Model):
-    _name = 'barcode_india.vertical' 
+    _name = 'barcode_india.vertical'
+    _description = 'Vertical'
 
     name = fields.Char('Vertical', required="1")
     code = fields.Char(string="Code", required="1")
     vertical_head = fields.Many2one('res.users',string="Vertical Head")
     active = fields.Boolean("Active", default=True)
 
+
 class ApplicationType(models.Model):
-    _name = 'application.type' 
+    _name = 'application.type'
+    _description = 'Application Type'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Application Type')
 
+
 class Probability(models.Model):
-    _name = 'barcode_india.probability' 
+    _name = 'barcode_india.probability'
+    _description = 'Probability'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Probability')
 
+
 class Activities(models.Model):
-    _name = 'barcode_india.activities' 
+    _name = 'barcode_india.activities'
+    _description = 'Activities'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Activity Name')
 
+
 class Stages(models.Model):
-    _name = 'barcode_india.stages' 
+    _name = 'barcode_india.stages'
+    _description = 'Stages'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Stage Name')
 
+
 class Sites(models.Model):
-    _name = 'barcode_india.site' 
+    _name = 'barcode_india.site'
+    _description = 'Sites'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Many2one('res.partner','Site')
@@ -578,8 +594,10 @@ class RejectReason(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char(string="Name", required="1")
 
+
 class Status(models.Model):
-    _name = 'barcode_india.status' 
+    _name = 'barcode_india.status'
+    _description = 'Status'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Stage Name')
@@ -650,24 +668,30 @@ class StandbyEquipment(models.Model):
     name = fields.Char(string="Name", required="1")
     code = fields.Char(string="Code", required="1")
 
+
 class InstallationTypes(models.Model):
-    _name = 'barcode_india.installation_types' 
+    _name = 'barcode_india.installation_types'
+    _description = 'Installation Types'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Type')
     minimum_charge = fields.Float("Minimum Charge")
     percentage_of_Hardware = fields.Float("Percentage of Hardware(%)")
 
+
 class FreightTypes(models.Model):
-    _name = 'barcode_india.freight_types' 
+    _name = 'barcode_india.freight_types'
+    _description = 'Freight Types'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Type')
     minimumcharge = fields.Float("Minimum Charge")
     percentage_ofHardware = fields.Float("Percentage of Hardware(%)")
 
+
 class BanCRMt(models.Model):
-    _name = 'barcode_india.bant_crm' 
+    _name = 'barcode_india.bant_crm'
+    _description = 'BANT CRM'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name')
@@ -682,15 +706,19 @@ class BanCRMt(models.Model):
         for record in self:
             record.weightage_value = record.requirement_score * record.weightage
 
+
 class Bant(models.Model):
-    _name = 'barcode_india.bant' 
+    _name = 'barcode_india.bant'
+    _description = 'BANT'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name')
     weightage = fields.Float('Weightage(%)')
 
+
 class AssignReports(models.Model):
-    _name = 'barcode_india.assign_report' 
+    _name = 'barcode_india.assign_report'
+    _description = 'Assign Reports'
 
     active = fields.Boolean('Active', default=True)
     updated_by = fields.Many2one('res.users', string='Updated By')

@@ -2,6 +2,7 @@ from odoo import fields, models, api, _,exceptions
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 
+
 class CreateSOPF(models.TransientModel):
     _name = 'bci.create_sopf'
     _description = 'Create SOPF'
@@ -42,7 +43,7 @@ class CreateSOPF(models.TransientModel):
     po_date = fields.Date(string='PO Date', default=fields.Date.context_today)
     po_number = fields.Char(string="PO Number")
     creation_date = fields.Date(string='SOPF Date', default=fields.Date.context_today)
-    sopf_sequence = fields.Char(string='Name', required=True, copy=False,tracking=True,default=lambda self: _('New'))
+    sopf_sequence = fields.Char(string='Name', required=True, copy=False, default=lambda self: _('New'))
     delivery_schedule = fields.Char(string="Delivery Schedule")
 
     # @api.model_create_multi

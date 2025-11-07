@@ -3,6 +3,7 @@ from odoo import fields, models, api, _
 
 class PaymentTerms(models.Model):
     _name = 'barcode_india.payment_term'
+    _description = 'Payment Terms'
 
     name = fields.Char('Milestone')
     sequence = fields.Integer("Sequence", default=1)
