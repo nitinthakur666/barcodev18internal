@@ -42,7 +42,7 @@ class Chargeable(models.Model):
     name = fields.Many2one('barcode_india.case_type', 'Case Type')
     bci_case_sub_type = fields.Many2one('barcode_india.case_sub_type', 'Case Sub Type')
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
-    bci_problem_sub_type = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type')
+    bci_problem_sub_type_id = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type') #Need to check
     bci_warranty_status = fields.Selection([('In Warranty','In Warranty'),('In Grace','In Grace'),('Out of Warranty','Out of Warranty')],'Warranty Status')
     bci_chargeable = fields.Boolean('Chargeable')
     

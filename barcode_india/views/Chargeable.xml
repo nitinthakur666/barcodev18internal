@@ -21,7 +21,7 @@
                 <field name="name"/>
                 <field name="bci_case_sub_type"/>
                 <field name="bci_problem_type"/>
-                <field name="bci_problem_sub_type"/>
+                <field name="bci_problem_sub_type_id"/>
                 <field name="bci_warranty_status"/>
                 <field name="bci_chargeable"/>
             </list>
@@ -42,7 +42,7 @@
                         </group>
                         <group>
                             <field name="bci_problem_type"/>
-                            <field name="bci_problem_sub_type" domain="[('bci_problem_type','=',bci_problem_type)]"/>
+                            <field name="bci_problem_sub_type_id" domain="[('bci_problem_type','=',bci_problem_type)]"/>
                             <field name="bci_chargeable"/>
                         </group>
                     </group>

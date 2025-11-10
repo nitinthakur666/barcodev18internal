@@ -307,7 +307,7 @@ class Helpdesk(models.Model):
     def compute_chargeable(self):
         for record in self:
             if record.bci_case_type or record.bci_case_sub_type or record.bci_problem_type or record.ticket_type_id or record.bci_warranty_status:
-                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type', '=', record.ticket_type_id.id), ('bci_warranty_status', '=', record.bci_warranty_status)]
+                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type_id', '=', record.ticket_type_id.id), ('bci_warranty_status', '=', record.bci_warranty_status)]
                 chargeable = self.env['barcode_india.chargeable'].search(domain, limit=1)
                 record.bci_chargeable = chargeable.bci_chargeable if chargeable else False
 
