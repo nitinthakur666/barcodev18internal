@@ -10,9 +10,9 @@
                     
                     <!-- CC Field -->
                     <label for="cc_partner_ids" string="CC"
-                           invisible="message_type == 'comment' or composition_mode != 'comment'"/>
+                           invisible="composition_mode != 'comment' or subtype_is_log"/>
                     <div groups="base.group_user"
-                         invisible="message_type == 'comment' or composition_mode != 'comment'">
+                         invisible="composition_mode != 'comment' or subtype_is_log">
                         <field name="cc_partner_ids"
                                widget="many2many_tags_email"
                                placeholder="Add contacts to notify..."
@@ -22,9 +22,9 @@
 
                     <!-- BCC Field -->
                     <label for="bcc_partner_ids" string="BCC"
-                           invisible="composition_mode != 'comment'"/>
+                           invisible="composition_mode != 'comment' or subtype_is_log"/>
                     <div groups="base.group_user"
-                         invisible="message_type == 'comment' or composition_mode != 'comment'">
+                         invisible="composition_mode != 'comment' or subtype_is_log">
                         <field name="bcc_partner_ids"
                                widget="many2many_tags_email"
                                placeholder="Add contacts to notify..."
