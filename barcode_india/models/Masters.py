@@ -42,7 +42,7 @@ class Chargeable(models.Model):
     name = fields.Many2one('barcode_india.case_type', 'Case Type')
     bci_case_sub_type = fields.Many2one('barcode_india.case_sub_type', 'Case Sub Type')
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
-    bci_problem_sub_type_id = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type') #Need to check
+    bci_problem_sub_type_id = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type')
     bci_warranty_status = fields.Selection([('In Warranty','In Warranty'),('In Grace','In Grace'),('Out of Warranty','Out of Warranty')],'Warranty Status')
     bci_chargeable = fields.Boolean('Chargeable')
     
@@ -286,19 +286,19 @@ class QuotationType(models.Model):
     _order = 'sequence,id'
 
     active = fields.Boolean('Active', default=True)
-    name = fields.Char('Name', tracking='1')
-    sequence = fields.Integer("Sequence", default=1, tracking='1')
-    estimation = fields.Boolean(string='Estimation', tracking='1')
-    auto_approval = fields.Float("Auto Approval Margin(%)", tracking='1')
+    name = fields.Char('Name', tracking=1)
+    sequence = fields.Integer("Sequence", default=1, tracking=1)
+    estimation = fields.Boolean(string='Estimation', tracking=1)
+    auto_approval = fields.Float("Auto Approval Margin(%)", tracking=1)
     pt_margin_ids = fields.One2many('barcode_india.pt_matrix', 'quotations_type_id', string='PaymentTerms Matrix')
     margin_ids = fields.One2many('barcode_india.margin_matrix', 'quotation_type_id', string='Approval Matrix')
     payment_terms_ids = fields.One2many('barcode_india.pt_master', 'quote_type_id', string='Payment Terms IDs')
-    erp_category = fields.Many2many('barcode_india.erp_acc_category',string='ERP Category',tracking='1')
-    bci_bypass_quote = fields.Boolean(string='Pricing & Approvals not Required', tracking='1')
-    special_approval = fields.Many2one('res.users',string='Non Standard PT Approver', tracking='1')
-    bg_pbg_approval = fields.Many2one('res.users',string='BG/PBG Approver', tracking='1')
-    ld_clause_approval = fields.Many2one('res.users',string='LD Clause Approver', tracking='1')
-    apply_quotetype_limit = fields.Boolean(string='Apply QuoteType Limit', tracking='1')
+    erp_category = fields.Many2many('barcode_india.erp_acc_category',string='ERP Category',tracking=1)
+    bci_bypass_quote = fields.Boolean(string='Pricing & Approvals not Required', tracking=1)
+    special_approval = fields.Many2one('res.users',string='Non Standard PT Approver', tracking=1)
+    bg_pbg_approval = fields.Many2one('res.users',string='BG/PBG Approver', tracking=1)
+    ld_clause_approval = fields.Many2one('res.users',string='LD Clause Approver', tracking=1)
+    apply_quotetype_limit = fields.Boolean(string='Apply QuoteType Limit', tracking=1)
     quote_limit = fields.Float(string='Quote Limit', tracking=1)
     quotetype_after_limit = fields.Many2one('barcode_india.quotation_type', string='QuoteType After Limit', domain="[('id', '!=', id), ('id', '!=', False)]")
     

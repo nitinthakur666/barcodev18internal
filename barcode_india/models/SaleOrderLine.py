@@ -1,5 +1,6 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError,ValidationError
+from markupsafe import Markup
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -122,10 +123,15 @@ class SaleOrderLine(models.Model):
             new_values = {field: getattr(record, field) for field in vals.keys() if field in record}
             changes = {key: {'old': old_values.get(key), 'new': new_values.get(key)} for key in vals.keys()}
             if changes and not is_duplicating:
-                change_list = "\n".join([f"<li>{key}: From <b>{change['old']}</b> to <b>{change['new']}</b></li>" for key, change in changes.items()])
-                body = f"<ul>{change_list}</ul>"
+                change_list = "\n".join([
+                    f"<li>{key}: From <b>{str(change['old'])}</b> to <b>{str(change['new'])}</b></li>"
+                    for key, change in changes.items()
+                ])
+
+                body_html = Markup(f"<ul>{change_list}</ul>")
+
                 record.order_id.message_post(
-                    body=f"Changes in Order Line {record.id}:\n{body}",
+                    body=Markup(f"Changes in Order Line {record.id}:<br/>{body_html}"),
                 )
             if not record.order_id.bypass_quote and not is_duplicating:
                 if result and 'bci_suggested_price_unit' in vals.keys() and vals['bci_suggested_price_unit'] < record.bci_list_price and record.display_type == False:
@@ -195,7 +201,7 @@ class SaleOrderLine(models.Model):
                     exist_record.unlink()
         return super(SaleOrderLine, self).unlink()
 
-    
+
     @api.depends('product_id', 'product_uom', 'product_uom_qty')
     def _compute_price_unit(self):
         super(SaleOrderLine, self)._compute_price_unit()
@@ -217,7 +223,7 @@ class SaleOrderLine(models.Model):
             # line.bci_discount = line.product_id.bci_discount
             line.bci_target_margin = line.product_id.bci_erp_category and line.product_id.bci_erp_category.margin_default
             line.bci_approved_margin = line.product_id.bci_erp_category and line.product_id.bci_erp_category.margin_default
-            # discounted_price = line.bci_landed_cost - ((line.bci_landed_cost * line.bci_discount)/100 or 0.00 )  
+            # discounted_price = line.bci_landed_cost - ((line.bci_landed_cost * line.bci_discount)/100 or 0.00 )
             line.bci_suggested_price_unit = line.bci_landed_cost #* (100 - line.bci_discount) / (100 - line.bci_target_margin)
             line.price_unit = round(line.bci_suggested_price_unit,2)
 
@@ -250,3 +256,14 @@ class SaleOrderLine(models.Model):
                 landed_cost = (purchase_cost * 100) / (100-line.bci_target_margin)
                 line.bci_suggested_price_unit = landed_cost
                 line.price_unit = line.bci_suggested_price_unit
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if not self.product_id:
+            return
+        self.with_context(bci_custom_price=True)._compute_price_unit()
+
+    def _reset_price_unit(self):
+        if self.env.context.get('bci_custom_price'):
+            return
+        return super()._reset_price_unit()

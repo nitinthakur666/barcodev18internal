@@ -175,7 +175,7 @@ class SaleOrder(models.Model):
                     )
                     
                     record.message_post(body=body)
-        return res
+            return res
         
     def copy(self, default=None):
         self = self.with_context(is_duplicating=True)

@@ -23,7 +23,7 @@
             <xpath expr="//button[@name='action_confirm']" position="after">
                 <button string="Send for Approval" name="send_for_approval" type="object" class="oe_highlight" invisible="bci_stage in ['draft','pricing_request','pending_approval','approved','rejected'] or state == 'cancel'"/>
                 <button string="Send For Pricing" name="action_send_for_pricing" type="object" class="oe_highlight" invisible="bci_stage in ['pricing_updated','pricing_request','pending_approval','approved','rejected'] or not is_send_for_pricing or state == 'cancel' or bci_is_estimation"/>
-                <button string="Add Freight and Installation" name="action_freight_and_installation" type="object" class="oe_highlight" invisible="bci_stage in ['draft','pricing_request','pending_approval','approved','rejected'] or not bci_is_estimation or state == 'cancel'"/>
+                <button string="Add Freight and Installation" name="action_freight_and_installation" type="object" class="oe_highlight" invisible="bci_stage in ['draft','pricing_request','pending_approval','approved','rejected'] or state == 'cancel'"/> <!-- not bci_is_estimation => Need to Check -->
                 <button string="Create SOPF" name="view_bci_create_sopf_form" type="object" class="oe_highlight" invisible="bci_stage != 'approved' or state in ['sale','done','cancel','SOPF'] or not is_sopf_button_visible"/>
                 <button name="action_create_new_quotation" string="Create New Version" type="object" invisible="bypass_quote or state in ['sale','done','cancel','SOPF']"/>
                 <button string="Re-Price" name="view_bci_sales_repricing_form" type="object" invisible="state == 'cancel' or bci_stage in ['pending_approval','approved','SOPF']"/>
@@ -132,7 +132,7 @@
                 <field name="bci_quote_type" required="1" readonly="bci_stage == 'approved'"/>
                 <field name="bci_readonly_fields" invisible="1"/>
             </xpath>
-            <xpath expr="//button[@name='action_preview_sale_order']" position="before">
+            <xpath expr="//div[@name='button_box']" position="inside">
                 <button type="object" name="action_view_cost_sheet" string="Cost Sheet" class="oe_stat_button" icon="fa-puzzle-piece" invisible="bypass_quote"/>
                 <button type="object" name="action_view_approval" string="Approvals" class="oe_stat_button" icon="fa-check" invisible="bypass_quote"/>
                 <button type="object" name="action_view_sopf_order" string="SOPF" class="oe_stat_button" icon="fa-list" invisible="bci_sopf_count == 0">

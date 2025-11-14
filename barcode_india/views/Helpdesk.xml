@@ -146,7 +146,7 @@
                     <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
 
-<!--                <xpath expr="//field[@name='partner_email']" position="attributes">Need to discuss-->
+<!--                <xpath expr="//field[@name='partner_email']" position="attributes">Need to discuss with NitinT-->
 <!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
 <!--                </xpath>-->
 
@@ -154,7 +154,7 @@
                     <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
 
-<!--                <xpath expr="//field[@name='partner_name']" position="attributes"> Need to discuss-->
+<!--                <xpath expr="//field[@name='partner_name']" position="attributes"> Need to discuss with NitinT-->
 <!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
 <!--                </xpath>-->
                 <xpath expr="//field[@name='description']" position="after">
