@@ -6,10 +6,10 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_confirm']" position="after">
-                <button name="action_generate_cost_estimation" class="oe_highlight" string="Generate Cost Estimation" type="object" modifiers="{'invisible': ['|',('estimation','=',False),('cost_estimation_count','!=',0)]}" />
+                <button name="action_generate_cost_estimation" class="oe_highlight" string="Generate Cost Estimation" type="object" invisible="estimation == False or cost_estimation_count != 0" />
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_cost_estimation" type="object" class="oe_stat_button" icon="fa-dollar" modifiers="{'invisible': [('cost_estimation_count','=',0)]}">
+                <button name="action_view_cost_estimation" type="object" class="oe_stat_button" icon="fa-dollar" invisible="cost_estimation_count == 0">
                     <field class="o_stat_info" name="cost_estimation_count" />
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_text">Cost</span>

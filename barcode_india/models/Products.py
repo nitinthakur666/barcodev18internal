@@ -46,7 +46,6 @@ class ProductTemplates(models.Model):
     bci_carepack_ids = fields.Many2many('product.template', 'care_pack_table', 'name', 'bci_sla_product', string="Carepack Products", copy=False)
     bci_factor_price = fields.Float(string='Factor Price')
     bci_kitting_item = fields.Boolean(string='Kitting Item',default=False)
-    special_price_applicable = fields.Boolean(string='Special Price Applicable',default=False)
     bci_model_number_id = fields.Many2one("barcode_india.model_number",string="Model Number")
     
 
@@ -61,7 +60,7 @@ class ProductTemplates(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Spares',
             'res_model': 'barcode_india.spare',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('product_tmpl_id', '=', self.id)],
             'context': {
                 'default_product_tmpl_id': self.id,
@@ -151,7 +150,7 @@ class ProductTemplates(models.Model):
 
                         rec.bci_discount = discount
                         rec.bci_discount_category = vendor_discount_category or False
-                        rec.bci_exchange_rate = vendor_currency.compute(1, base_currency_id) or False
+                        rec.bci_exchange_rate = vendor_currency._convert(1.0,base_currency_id, rec.company_id or self.env.company,fields.Date.today())  or False
                         forex_amount = (rec.bci_exchange_rate * (100 + forex)) / 100
                         ins_amount = (forex_amount * (100 + ins)) / 100
                         freight_amount = (ins_amount * (100 +freight)) / 100
@@ -195,7 +194,7 @@ class ProductProduct(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Spares',
             'res_model': 'barcode_india.spare',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('product_id', '=', self.id)],
             'context': {
                 'default_product_tmpl_id': self.product_tmpl_id.id,

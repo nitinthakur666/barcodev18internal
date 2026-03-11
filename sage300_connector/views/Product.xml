@@ -20,7 +20,7 @@
             <field name="name">Product Sync</field>
             <field name="res_model">product.template</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('pt_state','in',['pending'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -33,7 +33,7 @@
             <field name="name">Product Sync</field>
             <field name="res_model">product.template</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -46,7 +46,7 @@
             <field name="name">Product Sync</field>
             <field name="res_model">product.template</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('pt_state','in',['pending'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -59,7 +59,7 @@
             <field name="name">Product Sync</field>
             <field name="res_model">product.template</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('pt_state','in',['done'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -72,7 +72,7 @@
             <field name="name">Product Sync</field>
             <field name="res_model">product.template</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('pt_state','in',['fail'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -87,7 +87,7 @@
         <field name="name">Product Sync Logs</field>
         <field name="res_model">sage300_connector.product_logs</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

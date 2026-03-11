@@ -9,4 +9,5 @@ class InvoiceSync(models.Model):
     s3_invoice_date = fields.Date('Invoice Date')
     s3_amount = fields.Float('Amount')
     s3_document = fields.Binary('Document')
+    s3_document_filename = fields.Char("Document Filename")
     s3_sale_order = fields.Many2one('sale.order','Sale Order')

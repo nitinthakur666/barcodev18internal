@@ -5,10 +5,10 @@
             <field name="model">stock.location</field>
             <field name="inherit_id" ref="stock.view_location_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='return_location']" position="after">
+                <field name='replenish_location' position="after">
                     <field name="bci_engineer_location"/>
                     <field name="bci_defective_location"/>
-                </xpath>
+                </field>
                 <xpath expr="//h2" position="after">
                     <label for="bci_code"/>
                     <h3><field name="bci_code"/></h3>

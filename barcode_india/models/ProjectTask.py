@@ -31,33 +31,6 @@ class ProjectTask(models.Model):
     bci_test_case = fields.One2many('barcode_india.test_cases', 'task_id', string='Test Cases')
     bci_test_case_count = fields.Integer("Test Cases Count", compute='_compute_test_case_count')
 
-    task_category = fields.Selection([
-        ('epic', 'Epic'),
-        ('task', 'Task'),
-        ('sub_task', 'Sub-Task'),
-    ], string="Task Category", required=True)
-    is_tied_to_sprint = fields.Boolean(
-        string="Tied to Sprint?",
-        default=False
-    )
-    tied_to_sprint = fields.Selection([
-        ('sprint_1', 'Sprint 1'),
-        ('sprint_2', 'Sprint 2'),
-        ('sprint_3', 'Sprint 3'),
-        ('sprint_4', 'Sprint 4'),
-        ('sprint_5', 'Sprint 5'),
-        ('sprint_6', 'Sprint 6'),
-        ('sprint_7', 'Sprint 7'),
-        ('sprint_8', 'Sprint 8'),
-    ], string="Sprint")
-    
-    task_type = fields.Selection([
-        ('project', 'Project'),
-        ('product', 'Product'),
-        ('adhoc', 'Adhoc'),
-        ('misc', 'Misc'),
-    ], string="Task Type", required=True)
-
     @api.depends('bci_bug_task')
     def _compute_bugs_count(self):
         for rec in self:
@@ -80,7 +53,7 @@ class ProjectTask(models.Model):
             'name': 'Quotations',
             'type': 'ir.actions.act_window',
             'res_model': 'sale.order',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('opportunity_id', '=', self.lead_id.id)],
             'target': 'current',
             'context' : self.lead_id._prepare_opportunity_quotation_context()
@@ -146,7 +119,7 @@ class ProjectTask(models.Model):
             'name': 'PM Status',
             'type': 'ir.actions.act_window',
             'res_model': 'barcode_india.pm_status',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('task_id', '=', self.id)],
             'target': 'current',
         }

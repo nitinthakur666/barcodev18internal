@@ -16,7 +16,7 @@
                     <field name="bci_kitting_item"/>
                     <!-- <field name="bci_parent_product" invisible="1"/> -->
                 </xpath>
-                <xpath expr="//field[@name='uom_po_id']" position="after">
+                <xpath expr="//field[@name='categ_id']" position="before">
                     <field name="bci_account_set_code" required="1"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
@@ -36,7 +36,6 @@
                                 <field name="bci_clearing_nd_handling" />
                                 <field name="bci_forex" />
                                 <field name="bci_exchange_rate" force_save="1"/>
-                                <field name="special_price_applicable"/>
                             </group>
                             <group>
                                 <field name="bci_model_number" invisible="1"/>
@@ -54,7 +53,7 @@
                         </group>
                     </page>
 
-                    <page string="Entitlements" name="entitlements" modifiers="{'invisible':[('detailed_type','!=','service')]}">
+                    <page string="Entitlements" name="entitlements" invisible="type != 'service'">
                         <group>
                             <group>
                                 <field name="bci_own_company" />

@@ -71,6 +71,17 @@ class SaleOrder(models.Model):
                     if all(line.product_id.pt_state == 'done' for line in rec.order_line if not line.display_type):
                         partner_id = rec.partner_id and rec.partner_id.parent_id or rec.partner_id
                         if pricelist and partner_id.bci_code and rec.bci_location and rec.bci_location.bci_code:
+                            gpos_value = "00"
+                            customer_url = url + "/AR/ARCustomers('%s')" %partner_id.bci_code.strip()
+                            cust_response = requests.get(customer_url,auth=token,headers=headers)
+                            if cust_response and cust_response.ok:
+                                cust_data = cust_response.json()
+                                gpos_value = next(
+                                    (item.get("Value") or item.get("TextValue") for item in cust_data["CustomerOptionalFieldValues"]
+                                    if item.get("OptionalField") == "GPOS"),
+                                    "00"
+                                )
+
                             order_line = [{
 
                                         "LineType": "Item",
@@ -155,7 +166,7 @@ class SaleOrder(models.Model):
                                             {
                                                 
                                                 "OptionalField": "GPOS",
-                                                "Value": "00",
+                                                "Value": gpos_value,
                                                 "OrderOptionalFieldType": "Text",
                                                 "Length": 60,
                                                 "Decimals": 0,
@@ -163,7 +174,7 @@ class SaleOrder(models.Model):
                                                 "Validate": "false",
                                                 "ValueSet": "Yes",
                                                 "TypedValueFieldIndex": 0,
-                                                "TextValue": "00"
+                                                "TextValue": gpos_value
                                             }
 
                                         ],
@@ -230,7 +241,7 @@ class SaleOrder(models.Model):
                 'name': 'IncoiceSync',
                 'type': 'ir.actions.act_window',
                 'res_model': 'sage300_connector.invoice_sync',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('s3_sale_order', '=', self.id)],
                       
             })

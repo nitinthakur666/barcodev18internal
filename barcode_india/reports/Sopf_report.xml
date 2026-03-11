@@ -34,6 +34,15 @@
                         <t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST No'" />: 
                         <span t-field="doc.partner_invoice_id.vat" />
                     </p>
+                    <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                        <strong>Ship to:</strong>
+                        <div t-field="doc.partner_shipping_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": True, "phone_icons": True}' />
+                        <p t-if="doc.partner_shipping_id.vat">
+                            <t t-out="doc.company_id.account_fiscal_country_id.vat_label or 'GST No'" />: 
+                            <span t-field="doc.partner_shipping_id.vat" />
+                        </p>
+                    </t>
                 </t>
             </t>
             
@@ -199,45 +208,24 @@
                     </div>
                 </div>                
 
-                <t t-if="not doc.advance_100">
-                    <t t-if="doc.bci_payment_terms">
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table table-condensed">
-                                    <h3>Payment Terms</h3>
-                                    <thead>
-                                        <tr>
-                                            <th>Milestone</th>
-                                            <th style="text-align: center;">Percentage</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="doc.bci_payment_terms" t-as="tnc_line">
-                                            <tr>
-                                                <td>
-                                                    <span t-field="tnc_line.name" />
-                                                </td>
-                                                <td style="text-align: center;">
-                                                    <span t-field="tnc_line.percentange" />% </td>
-                                            </tr>
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </t>
-                </t>
-                <div t-if="doc.advance_100" class="row mt-4">
-                    <div class="col-12">
-                        <div class="o_payment_terms p-3 border border-dark rounded">
-                            <h4 class="mb-3 border-bottom border-dark pb-2">Payment Terms</h4>
-                            <div class="d-flex align-items-center">
-                                <span class="font-weight-bold">100% Advance</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+                <table class="table table-condensed" t-if="doc.bci_payment_terms">
+                    <h3>Payment Terms</h3>
+                    <thead>
+                        <tr>
+                            <th>Milestone</th>
+                            <th style="text-align: center;">Percentage</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.bci_payment_terms" t-as="tnc_line">
+                            <tr>
+                                <td><span t-esc="tnc_line.name"/></td>
+                                <td style="text-align: center;"><span t-esc="tnc_line.percentange"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
                 
                 <table class="table table-bordered table-condensed mt-4" style="page-break-inside: avoid;">                    
                     <tbody class="sale_tbody">

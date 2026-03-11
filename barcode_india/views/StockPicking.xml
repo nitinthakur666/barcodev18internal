@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
         <record id="bci_stock_picking_form" model="ir.ui.view">
@@ -6,8 +7,8 @@
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button string="Copy Operations" name="action_copy_moves" type="object" modifiers="{'invisible': [('bci_moves_to_copy','=',False)]}"/>
-                    <button string="Change Asset" name="action_change_asset" type="object" modifiers="{'invisible': [('bci_spare_transfer','=',True)]}"/>
+                    <button string="Copy Operations" name="action_copy_moves" type="object" invisible="not bci_moves_to_copy"/>
+                    <button string="Change Asset" name="action_change_asset" type="object" invisible="bci_spare_transfer"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="bci_source_ticket"/>
@@ -17,10 +18,10 @@
                     <field name="bci_moves_to_copy" invisible="1"/>
                     <field name="bci_oem"/>
                 </xpath>
-                <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside">
+                <xpath expr="//field[@name='move_ids']/list" position="inside">
                     <field name="bci_product" invisible="1"/>
                     <field name="bci_spare_transfer" invisible="1"/>
-                    <field name="bci_rma_request_no" optional="show" modifiers="{'invisible': [('bci_spare_transfer','=',False)]}"/>
+                    <field name="bci_rma_request_no" optional="show" invisible="not bci_spare_transfer"/>
                 </xpath>
             </field>
         </record>

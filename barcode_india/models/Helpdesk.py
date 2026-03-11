@@ -54,11 +54,19 @@ class HelpdeskTeam(models.Model):
                 ticket.write({'stage_id': teams_dict[ticket.team_id.id]['to_stage_id'][0]})
 
 
-class HelpdeskTag(models.Model):
-    _inherit = 'helpdesk.tag'
+class HelpdeskTicketType(models.Model):
+    _name = 'helpdesk.ticket.type'
+    _description = 'Helpdesk Ticket Type'
+    _order = 'sequence, name'
 
+    name = fields.Char('Name', required=True)
     active = fields.Boolean('Active', default=True)
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
+    sequence = fields.Integer(default=10)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "A type with the same name already exists."),
+    ]
 
 
 class HelpdeskStage(models.Model):
@@ -77,7 +85,7 @@ class HelpdeskSla(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Escalation',
             'res_model': 'barcode_india.escalation',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_sla', '=', self.id)],
         }
     
@@ -86,6 +94,7 @@ class HelpdeskSla(models.Model):
 class Helpdesk(models.Model):
     _inherit = 'helpdesk.ticket'
 
+    ticket_type_id = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type')
     bci_project = fields.Many2one('project.project', 'Project')
     bci_contract_id = fields.Many2one('barcode_india.contracts', 'Contract')
     bci_preferred_applicable = fields.Selection(Preferred_Selection, 'Preferred and Applicable Options')
@@ -156,6 +165,12 @@ class Helpdesk(models.Model):
     bci_remarks = fields.Text('Remarks')
     bci_hold_stage = fields.Boolean(related='stage_id.bci_hold_stage', string="hold Stage")
     bci_cancelled_stage = fields.Boolean(related='stage_id.bci_cancelled_stage', string='Cancel Stage')
+    bci_region = fields.Many2one('barcode_india.region', string='Region')
+
+    @api.onchange('partner_id')
+    def _onchange_partner_region(self):
+        for rec in self:
+            rec.bci_region = rec.partner_id and rec.partner_id.bci_region_user.id or False
 
     @api.onchange('stage_id')
     def _onchange_stage_id(self):
@@ -294,11 +309,11 @@ class Helpdesk(models.Model):
             else:
                 rec.bci_time_to_resolve_ticket = False
 
-    @api.depends('bci_case_type', 'bci_case_sub_type', 'bci_problem_type', 'tag_ids', 'bci_warranty_status')
+    @api.depends('bci_case_type', 'bci_case_sub_type', 'bci_problem_type', 'ticket_type_id', 'bci_warranty_status')
     def compute_chargeable(self):
         for record in self:
-            if record.bci_case_type or record.bci_case_sub_type or record.bci_problem_type or record.tag_ids or record.bci_warranty_status:
-                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type', 'in', record.tag_ids.ids), ('bci_warranty_status', '=', record.bci_warranty_status)]
+            if record.bci_case_type or record.bci_case_sub_type or record.bci_problem_type or record.ticket_type_id or record.bci_warranty_status:
+                domain = [('name', '=', record.bci_case_type.id), ('bci_case_sub_type', '=', record.bci_case_sub_type.id), ('bci_problem_type', '=', record.bci_problem_type.id), ('bci_problem_sub_type_id', '=', record.ticket_type_id.id), ('bci_warranty_status', '=', record.bci_warranty_status)]
                 chargeable = self.env['barcode_india.chargeable'].search(domain, limit=1)
                 record.bci_chargeable = chargeable.bci_chargeable if chargeable else False
 
@@ -355,7 +370,7 @@ class Helpdesk(models.Model):
                 'updated_by' : self.env.user,
                 'previous_user': self.previous_user_id.id,
                 'updated_user': self.user_id.id,
-                'ticket_id': self.id,
+                'ticket_id': self._origin.id,
             })]
             self.previous_user_id = self.user_id.id
         else:
@@ -458,7 +473,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Sale Order',
             'res_model': 'sale.order',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_helpdesk', '=', self.id)],
         }
 
@@ -487,7 +502,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Approval Request',
             'res_model': 'approval.request',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_helpdesk_ticket', '=', self.id)],
         }
 
@@ -573,7 +588,6 @@ class Helpdesk(models.Model):
 
     def action_bci_rma_transfer(self):
         self.ensure_one()
-        vendor_location = self.env['ir.config_parameter'].sudo().get_param('bci.vendor_location')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create BCI Transfer'),
@@ -583,8 +597,7 @@ class Helpdesk(models.Model):
             'context': {
                 'default_bci_ticket_id': self.id,
                 'default_bci_asset': self.bci_asset.id,
-                'default_bci_partner_id': self.partner_id.id,
-                'default_bci_oem_location_id' : vendor_location and int(vendor_location) or False,
+                'default_bci_partner_id': self.partner_id.id
             }
         }
 
@@ -594,14 +607,13 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': ('RMA Transfers'),
             'res_model': 'stock.picking',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_source_ticket', '=', self.id), ('bci_spare_transfer', '=', False)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id)
         }
 
     def action_bci_spare_transfer(self):
         self.ensure_one()
-        vendor_location = self.env['ir.config_parameter'].sudo().get_param('bci.vendor_location')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create Spares Transfers'),
@@ -612,8 +624,7 @@ class Helpdesk(models.Model):
                 'default_bci_ticket_id': self.id,
                 'default_bci_asset': self.bci_asset.id,
                 'default_bci_partner_id': self.partner_id.id,
-                'default_bci_spare_transfer': True,
-                'default_bci_oem_location_id' : vendor_location and int(vendor_location) or False,
+                'default_bci_spare_transfer': True
             }
         }
 
@@ -623,7 +634,7 @@ class Helpdesk(models.Model):
             'type': 'ir.actions.act_window',
             'name': ('Spares Transfers'),
             'res_model': 'stock.picking',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_source_ticket', '=', self.id), ('bci_spare_transfer', '!=', False)],
             'context': dict(self._context, create=False, default_company_id=self.company_id.id)
         }

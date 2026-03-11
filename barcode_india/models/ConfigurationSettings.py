@@ -22,8 +22,11 @@ class ResConfigSettings(models.TransientModel):
     bci_cost_threshold = fields.Float(string='Cost Threshold',config_parameter='bci.cost_threshold')
     bci_use_latest_price = fields.Boolean(string='Use latest vendor price',config_parameter='bci.bci_use_latest_price')
 
-    bci_location = fields.Many2one('stock.location',string="Vendor Location:",config_parameter='bci.vendor_location')
-    
+    contract_renewal_email = fields.Char(
+        string="Contract Renewal Email",
+        config_parameter="contract.renewal.notification.email"
+    )
+
     def set_values(self):
         res = super(ResConfigSettings, self).set_values()
         self.env['ir.config_parameter'].sudo().set_param('bci.hardware_tags', repr(self.bci_hardware_tags.ids))

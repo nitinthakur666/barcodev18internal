@@ -2,6 +2,7 @@ from odoo import fields, models, api, _,exceptions
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 
+
 class CreateSOPF(models.TransientModel):
     _name = 'bci.create_sopf'
     _description = 'Create SOPF'
@@ -42,7 +43,7 @@ class CreateSOPF(models.TransientModel):
     po_date = fields.Date(string='PO Date', default=fields.Date.context_today)
     po_number = fields.Char(string="PO Number")
     creation_date = fields.Date(string='SOPF Date', default=fields.Date.context_today)
-    sopf_sequence = fields.Char(string='Name', required=True, copy=False,tracking=True,default=lambda self: _('New'))
+    sopf_sequence = fields.Char(string='Name', required=True, copy=False, default=lambda self: _('New'))
     delivery_schedule = fields.Char(string="Delivery Schedule")
 
     # @api.model_create_multi
@@ -61,8 +62,6 @@ class CreateSOPF(models.TransientModel):
                 'product_id': line.product_id.id,
                 'product_uom_qty': (line.product_uom_qty - line.sopf_done_quantity),
                 'price_unit': (line.price_unit - line.sopf_done_amount),
-                'special_price': line.special_price,
-                'special_price_locked': line.special_price_locked,
                 'sale_order_line_id': line.id,
             }) for line in order_lines if ((line.product_uom_qty - line.sopf_done_quantity) != 0.0 and (
                         line.price_unit - line.sopf_done_amount) != 0.0)]
@@ -98,6 +97,14 @@ class CreateSOPF(models.TransientModel):
                     #     % line.product_id.name
                     # )
 
+    @api.constrains('po_number')
+    def _check_po_number_unique(self):
+        for record in self:
+            if record.po_number:
+                existing = self.env['sale.order'].search([('po_number', '=', record.po_number)], limit=1)
+                if existing:
+                    raise ValidationError(_("PO Number must be unique. '%s' is already used.") % record.po_number)
+    
     def action_confirm(self):
         new_order = None
 
@@ -144,8 +151,8 @@ class CreateSOPF(models.TransientModel):
                         "Unit Price entered for Product '%s' exceeds the remaining amount '%s' in the sale order line." % (
                             line.product_id.name, (original_price_unit - line.sale_order_line_id.sopf_done_amount)))
                 if not new_order:
-                    new_order = self.order_id.with_context(bypass_freight_installation_check=True).copy()
-                    new_order.with_context(bypass_freight_installation_check=True).write({
+                    new_order = self.order_id.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).copy()
+                    new_order.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).write({
                         'order_line': [(5, 0, 0)],
                         'state': 'SOPF',
                         'sopf_order': self.order_id.id,
@@ -177,50 +184,36 @@ class CreateSOPF(models.TransientModel):
                         'bci_stage' : 'approved',
                     })
                 if (line.product_id.product_tmpl_id.id != bci_freight_product and line.product_id.product_tmpl_id.id != bci_installation_product):
-                    self.env['sale.order.line'].with_context(bypass_freight_installation_check=True).create({
+                    self.env['sale.order.line'].with_context(bypass_freight_installation_check=True, skip_corporate_check=True).create({
                         'order_id': new_order.id,
                         'product_id': line.product_id.id,
-                        'product_template_id': line.product_id.product_tmpl_id.id,
                         'product_uom_qty': line.product_uom_qty,
                         'price_unit': line.price_unit,
                         'bci_suggested_price_unit': line.price_unit,
-                        'bci_purchase_cost' : line.product_id.bci_purchase_cost,
-                        'bci_landed_cost' : line.product_id.bci_landed_cost,
-                        'special_price_applicable' : line.product_id.special_price_applicable,
-                        'special_price' : line.special_price,
-                        'bci_approval_stage': 'approved',
-                        'special_price_locked' : line.special_price_locked,
                     })
-                    line.sale_order_line_id.with_context(bypass_freight_installation_check=True).sopf_done_quantity += line.product_uom_qty
+                    line.sale_order_line_id.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).sopf_done_quantity += line.product_uom_qty
 
                 elif (
                         line.product_id.product_tmpl_id.id == bci_freight_product or line.product_id.product_tmpl_id.id == bci_installation_product):
-                    self.env['sale.order.line'].with_context(bypass_freight_installation_check=True).create({
+                    self.env['sale.order.line'].with_context(bypass_freight_installation_check=True, skip_corporate_check=True).create({
                         'order_id': new_order.id,
                         'product_id': line.product_id.id,
-                        'product_template_id': line.product_id.product_tmpl_id.id,
                         'product_uom_qty': line.product_uom_qty,
                         'price_unit': line.price_unit,
                         'bci_suggested_price_unit': line.price_unit,
-                        'bci_purchase_cost' : line.product_id.bci_purchase_cost,
-                        'bci_landed_cost' : line.product_id.bci_landed_cost,
-                        'special_price_applicable' : line.product_id.special_price_applicable,
-                        'special_price' : line.special_price,
-                        'bci_approval_stage': 'approved',
-                        'special_price_locked' : line.special_price_locked,
                     })
-                    line.sale_order_line_id.with_context(bypass_freight_installation_check=True).sopf_done_amount += line.price_unit
+                    line.sale_order_line_id.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).sopf_done_amount += line.price_unit
 
-            self.order_id.so_state = 'split'
-            self.order_id.bci_stage = 'approved'
+            self.order_id.with_context(skip_corporate_check=True).so_state = 'split'
+            self.order_id.with_context(skip_corporate_check=True).bci_stage = 'approved'
 
-            self.order_id._compute_is_sopf_button_visible()
+            self.order_id.with_context(skip_corporate_check=True)._compute_is_sopf_button_visible()
         
             if not self.order_id.is_sopf_button_visible:
-                self.order_id.action_confirm()
+                self.order_id.with_context(skip_corporate_check=True).action_confirm()
         
         elif self.sopf_type == "Single SOPF":
-            self.order_id.with_context(bypass_freight_installation_check=True).write({
+            self.order_id.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).write({
                 # 'purchase_contact': self.purchase_contact.id,
                 # 'finance_contact': self.finance_contact.id,
                 # 'store_contact': self.store_contact.id,
@@ -242,14 +235,14 @@ class CreateSOPF(models.TransientModel):
                 'po_date': self.po_date,
             })
 
-            for line in self.order_id.with_context(bypass_freight_installation_check=True).order_line:
+            for line in self.order_id.with_context(bypass_freight_installation_check=True, skip_corporate_check=True).order_line:
                 if (line.product_id.product_tmpl_id.id != bci_freight_product and line.product_id.product_tmpl_id.id != bci_installation_product):
-                    line.sopf_done_quantity = line.product_uom_qty
+                    line.with_context(skip_corporate_check=True).sopf_done_quantity = line.product_uom_qty
 
                 elif (line.product_id.product_tmpl_id.id == bci_freight_product or line.product_id.product_tmpl_id.id == bci_installation_product):
-                    line.sopf_done_amount += line.price_unit
+                    line.with_context(skip_corporate_check=True).sopf_done_amount += line.price_unit
 
-            self.order_id.action_confirm()
+            self.order_id.with_context(skip_corporate_check=True).action_confirm()
             
 class CreateSOPFLine(models.TransientModel):
     _name = 'bci.create_sopf.line'
@@ -259,8 +252,6 @@ class CreateSOPFLine(models.TransientModel):
     product_id = fields.Many2one('product.product', 'Product', required=True)
     product_uom_qty = fields.Float('Quantity', required=True)
     price_unit = fields.Float('Unit Price')
-    special_price = fields.Float('Special Price')
-    special_price_locked = fields.Boolean('Special Price Locked')
     sale_order_line_id = fields.Many2one('sale.order.line', 'Sale Order Line')
 
     @api.onchange('product_id')

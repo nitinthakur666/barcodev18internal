@@ -48,7 +48,7 @@
         <field name="name">RMA Master</field>
         <field name="res_model">barcode_india.rma_masters</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
     </record>
 </odoo>

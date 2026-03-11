@@ -8,6 +8,21 @@
                 <xpath expr="//field[@name='priority']" position="after">
                     <field name="bci_severity"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="bci_project" optional = "hide"/>
+                    <field name="bci_problem_type" optional = "hide"/>
+                    <field name="ticket_type_id" optional = "hide" string="Problem Sub Type"/>
+                    <field name="bci_case_type" optional = "hide"/>
+                    <field name="bci_case_sub_type" optional = "hide"/>
+                    <field name="bci_resolution" optional = "hide"/>
+                    <field name="bci_resolution_type" optional = "hide"/>
+                    <field name="bci_warranty_status" optional = "hide"/>
+                    <field name="close_date" optional = "hide"/>
+                    <field name="closed_by_partner" optional = "hide"/>
+                    <field name="close_hours" optional = "hide"/>
+                    <field name="bci_time_to_resolve_ticket" optional = "hide"/>
+                    <field name="bci_total_no_of_days_open" optional = "hide"/>
+                </xpath>
             </field>
         </record>
         <record id="helpdesk_ticket_view_form_barcode" model="ir.ui.view">
@@ -16,14 +31,12 @@
             <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="action_create_sale_order" string="Create Quotation" type="object" class="oe_highlight" modifiers="{'invisible': [('bci_chargeable','=',False)]}"/>
-                    <button name="action_submit_for_approval" string="Submit For Approval" type="object" class="oe_highlight" modifiers="{'invisible': ['|','|',('bci_chargeable','=',False),('bci_approval_request_count','>',0),('bci_sale_order_count','>',0)]}"/>
-                    <!-- <button string="RMA" name="action_bci_rma_transfer" type="object" class="button btn-primary" modifiers="{'invisible': ['|','|','&amp;','|','&amp;',('bci_barcode_case_type_find','!=','hardware'),('bci_pickings_count','!=',0),('bci_rma','=',False),('bci_chargeable','=',True),('bci_approval_for','!=','Complete'),('bci_is_approved','=',False)]}"/> -->
-                    <button string="RMA" name="action_bci_rma_transfer" type="object" class="button btn-primary" modifiers="{'invisible': [('bci_show_rma','=',False)]}"/>
-                    <button string="Spares RMA" name="action_bci_spare_transfer" type="object" class="button btn-primary" modifiers="{'invisible': [('bci_show_spare_rma','=',False)]}"/>
-                    <button name="action_open_hold_wizard" type="object" string="Hold" class="oe_highlight" modifiers="{'invisible': ['|',('bci_hold_stage', '=', True),('bci_cancelled_stage', '=', True)]}" />
-                    <button name="action_open_cancel_wizard" type="object" string="Cancel" class="oe_highlight" modifiers="{'invisible': [('bci_cancelled_stage', '=', True)]}"/>
-
+                    <button name="action_create_sale_order" string="Create Quotation" type="object" class="btn btn-primary"/>
+                    <button name="action_submit_for_approval" string="Submit For Approval" type="object" class="btn btn-secondary" invisible="bci_chargeable == False or bci_approval_request_count > 0 or bci_sale_order_count > 0"/>
+                    <button name="action_bci_rma_transfer" string="RMA" type="object" class="btn btn-outline-primary" invisible="bci_show_rma == False"/>
+                    <button name="action_bci_spare_transfer" string="Spares RMA" type="object" class="btn btn-outline-primary" invisible="bci_show_spare_rma == False"/>
+                    <button name="action_open_hold_wizard" string="Hold" type="object" class="btn btn-warning" invisible="bci_hold_stage == True or bci_cancelled_stage == True"/>
+                    <button name="action_open_cancel_wizard" string="Cancel" type="object" class="btn btn-danger" invisible="bci_cancelled_stage == True"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button class="oe_stat_button" name="action_sale_order" icon="fa-usd" type="object">
@@ -35,58 +48,63 @@
                     <button name="action_view_spare_picking" type="object" class="oe_stat_buttons" icon="fa-truck" string="Spares Transfers">
                         <field name="bci_spare_pickings_count" string="Spares Transfers" widget="statinfo"  />
                     </button>
-                    <button class="oe_stat_button" name="action_approval_request" icon="fa-usd" type="object" modifiers="{'invisible': [('bci_approval_request_count','=',0)]}">
+                    <button class="oe_stat_button" name="action_approval_request" icon="fa-usd" type="object" invisible="bci_approval_request_count == 0">
                         <field name="bci_approval_request_count" string="Approval Request" widget="statinfo"/>
                     </button>
                 </xpath>
 
                 <xpath expr="//div[@name='button_box']" position="after">
-                    <widget name="web_ribbon" text="In Warranty" bg_color="bg-success" modifiers="{'invisible': [('bci_warranty_status','!=','In Warranty')]}"/>
-                    <widget name="web_ribbon" text="In Grace" bg_color="bg-warning" modifiers="{'invisible': [('bci_warranty_status','!=','In Grace')]}"/>
-                    <widget name="web_ribbon" text="Out of Warranty" bg_color="bg-danger" modifiers="{'invisible': [('bci_warranty_status','!=','Out of Warranty')]}"/>
+                    <widget name="web_ribbon" text="In Warranty" bg_color="bg-success" invisible="bci_warranty_status != 'In Warranty'"/>
+                    <widget name="web_ribbon" text="In Grace" bg_color="bg-warning" invisible="bci_warranty_status != 'In Grace'"/>
+                    <widget name="web_ribbon" text="Out of Warranty" bg_color="bg-danger" invisible="bci_warranty_status != 'Out of Warranty'"/>
                 </xpath>
-
-                <!-- <xpath expr="//group/field[@name='ticket_type_id']" position="attributes">
-                    <attribute name="string">Problem Sub Type</attribute>
-                    <attribute name="domain">[('bci_problem_type','=',bci_problem_type)]</attribute>
-                    <attribute name="modifiers">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
-                </xpath> -->
-                <xpath expr="//field[@name='tag_ids']" position="after">
+                <xpath expr="//field[@name='tag_ids']" position="before">
                     <field name="bci_severity"/>
                     <field name="bci_support_type" />
                     <field name="bci_case_type"/>
-                    <field name="bci_case_sub_type" domain="[('bci_case_type','=',bci_case_type)]" modifiers="{'required':[('bci_barcode_case_type_find','=','custom software')]}"/>
-                    <field name="bci_problem_type" modifiers="{'required':[('bci_barcode_case_type_find','=','custom software')]}"/>
+                    <field name="bci_case_sub_type" domain="[('bci_case_type','=',bci_case_type)]" required="bci_barcode_case_type_find == 'custom software'"/>
+                    <field name="bci_problem_type" required="bci_barcode_case_type_find == 'custom software'"/>
+                    <field name="ticket_type_id" domain="[('bci_problem_type','=',bci_problem_type)]" required="bci_barcode_case_type_find == 'custom software'"/>
                     <field name="bci_barcode_case_type_find" invisible="1"/>
                     <field name="bci_asset_ids" invisible="1"/>
                     <field name="bci_hold_stage" invisible="1"/>
                     <field name="bci_cancelled_stage" invisible="1"/>
+                </xpath>
+                <!-- <xpath expr="//field[@name='ticket_type_id']" position="attributes">
+                    <attribute name="string">Problem Sub Type</attribute>
+                    <attribute name="domain">[('bci_problem_type','=',bci_problem_type)]</attribute>
+                    <attribute name="attrs">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="bci_related_ticket"/>
                     <field name="source_id"/>
                     <field name="bci_bulk_task_id" invisible="1" />
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="before">
-                    <field name="bci_asset" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','hardware')]}"/>
-                    <field name="bci_plant" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','custom software')]}"  domain="[('bci_contact_type','=','Plant')]"/>
-                    <field name="bci_site" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','custom software')]}" domain="[('bci_contact_type','=','Site')]"/>
+                    <field name="bci_asset" invisible="bci_barcode_case_type_find != 'hardware'"/>
+                    <field name="bci_plant" invisible="bci_barcode_case_type_find != 'custom software'" domain="[('bci_contact_type','=','Plant')]"/>
+                    <field name="bci_site" invisible="bci_barcode_case_type_find != 'custom software'" domain="[('bci_contact_type','=','Site')]"/>
                 </xpath>
-                <!-- <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="bci_project" domain="[('partner_id','=',partner_id)]" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','custom software')],'required':[('bci_barcode_case_type_find','=','custom software')]}"/>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="bci_region"/>
+                    <field name="bci_project" domain="[('partner_id','=',partner_id)]" invisible="bci_barcode_case_type_find != 'custom software'" required="bci_barcode_case_type_find == 'custom software'"/>
                 </xpath>
                 <xpath expr="//field[@name='email_cc']" position="attributes">
                     <attribute name="groups"/>
-                </xpath> -->
-                <xpath expr="//field[@name='email_cc']" position="after">
+                </xpath>
+                <xpath expr="//field[@name='email_cc']" position="before">
                     <field name="bci_partner_tags" widget="many2many_tags"/>
-                    <field name="bci_site" domain="[('bci_contact_type','=','Site')]" context="{'res_partner_search_mode': 'customer', 'show_address': 0, 'show_vat': True}" options="{'always_reload': True}" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','hardware')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='email_cc']" position="after">
+                    <field name="bci_site" domain="[('bci_contact_type','=','Site')]" context="{'res_partner_search_mode': 'customer', 'show_address': 0, 'show_vat': True}" options="{'always_reload': True}" invisible="bci_barcode_case_type_find != 'hardware'"/>
                     <field name="bci_address"/>
-                    <field name="bci_site_phone" widget="phone" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','hardware')]}" readonly="0"/>
-                    <!-- <field name="bci_project" domain="[('partner_id','=',partner_id)]" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','hardware')],'required':[('bci_barcode_case_type_find','=','custom software')]}"/> -->
+                    <field name="bci_site_phone" widget="phone" invisible="bci_barcode_case_type_find != 'hardware'" readonly="0"/>
+                    <!-- <field name="bci_project" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('bci_barcode_case_type_find','!=','hardware')],'required':[('bci_barcode_case_type_find','=','custom software')]}"/> -->
                 </xpath>
                 <xpath expr="//sheet/group" position="inside">
-                    <group string="Asset Details" modifiers="{'invisible':[('bci_asset','=',False)]}">
+                    <group string="Asset Details" invisible="bci_asset == False">
                         <field name="bci_product"/>
-                        <!-- <field name="bci_service_product" modifiers="{'invisible':[('bci_service_product','=',False)]}"/> -->
+                        <!-- <field name="bci_service_product" attrs="{'invisible':[('bci_service_product','=',False)]}"/> -->
                         <field name="bci_oem_start_date"/>
                         <field name="bci_oem_end_date"/>
                         <field name="bci_delivery_type"/>
@@ -109,14 +127,14 @@
                         <field name="bci_reason_code"/>
                         <field name="bci_resolution"/>
                         <field name="bci_resolved_by"/>
-                        <field name="bci_approval_for" readonly="1" modifiers="{'invisible':['|',('bci_chargeable','=',False),('bci_sale_order_count','>',0)]}"/>
-                        <field name="bci_is_approved" readonly="1" modifiers="{'invisible':['|',('bci_chargeable','=',False),('bci_sale_order_count','>',0)]}"/>
+                        <field name="bci_approval_for" readonly="1" invisible="bci_chargeable == False or bci_sale_order_count > 0"/>
+                        <field name="bci_is_approved" readonly="1" invisible="bci_chargeable == False or bci_sale_order_count > 0"/>
                     </group>
-                    <group string="RMA Details" modifiers="{'invisible':[('bci_barcode_case_type_find','!=','hardware')]}">
-                        <field name="bci_rma" modifiers="{'readonly':[('bci_chargeable','!=',False),('bci_is_approved','=',False)]}"/>
-                        <field name="bci_complete_unit_rma" modifiers="{'invisible':[('bci_rma','=',False)]}"/>
-                        <field name="bci_pickup_type_id" modifiers="{'invisible':[('bci_rma','=',False)]}"/>
-                        <field name="bci_oem_rma_request_no" modifiers="{'invisible':[('bci_rma','=',False)]}" />
+                    <group string="RMA Details" invisible="bci_barcode_case_type_find != 'hardware'">
+                        <field name="bci_rma" readonly="bci_chargeable != False and bci_is_approved == False"/>
+                        <field name="bci_complete_unit_rma" invisible="bci_rma == False"/>
+                        <field name="bci_pickup_type_id" invisible="bci_rma == False"/>
+                        <field name="bci_oem_rma_request_no" invisible="bci_rma == False"/>
                     </group>
                     <group string="SLA Details">
                         <field name="bci_total_no_of_days_open" />
@@ -124,22 +142,22 @@
                         <field name="bci_time_to_resolve_ticket" />
                     </group>
                 </xpath>
-                <!-- <xpath expr="//field[@name='description']" position="attributes">
-                    <attribute name="modifiers">{"readonly": [('bci_chargeable','!=',False),('bci_is_approved','=',False)]}</attribute>
-                </xpath> -->
 
                 <xpath expr="//field[@name='partner_id']" position="attributes">
-                    <attribute name="modifiers">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
+                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
-                <!-- <xpath expr="//field[@name='partner_email']" position="attributes">
-                    <attribute name="modifiers">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
-                </xpath>
+
+<!--                <xpath expr="//field[@name='partner_email']" position="attributes">Need to discuss-->
+<!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
+<!--                </xpath>-->
+
                 <xpath expr="//field[@name='partner_phone']" position="attributes">
-                    <attribute name="modifiers">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
+                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>
                 </xpath>
-                <xpath expr="//field[@name='partner_name']" position="attributes">
-                    <attribute name="modifiers">{"required": [('bci_barcode_case_type_find','=','custom software')]}</attribute>
-                </xpath> -->
+
+<!--                <xpath expr="//field[@name='partner_name']" position="attributes"> Need to discuss-->
+<!--                    <attribute name="required">bci_barcode_case_type_find == 'custom software'</attribute>-->
+<!--                </xpath>-->
                 <xpath expr="//field[@name='description']" position="after">
                     <notebook>
                         <page string="Final Resolution">
@@ -223,7 +241,7 @@
 	        <field name="inherit_id" ref="helpdesk_fsm.helpdesk_ticket_view_form"/>
 	        <field name="arch" type="xml">
 	        	<xpath expr="//button[@name='action_generate_fsm_task']" position="replace">
-                    <button class="btn btn-secondary" name="action_generate_fsm_task" type="object" string="Create Task" groups="industry_fsm.group_fsm_user" modifiers="{'invisible': ['|',('use_fsm', '=', False),('bci_show_task','=',False)]}" data-hotkey="w"/>
+                    <button class="btn btn-secondary" name="action_generate_fsm_task" type="object" string="Create Task" groups="industry_fsm.group_fsm_user" invisible="use_fsm == False or bci_show_task == False" data-hotkey="w"/>
                 </xpath>
 	        </field>
 	    </record>
@@ -279,30 +297,6 @@
 				</xpath>
 			</field>
 		</record>
-
-        <record id="helpdesk_ticket_tags_view_tree_barcode" model="ir.ui.view">
-	        <field name="name">helpdesk.ticket.tags.tree.barcode</field>
-	        <field name="model">helpdesk.tag</field>
-	        <field name="inherit_id" ref="helpdesk.helpdesk_tag_view_tree"/>
-	        <field name="arch" type="xml">
-	        	<xpath expr="//field[@name='name']" position="after">
-                    <field name="active" invisible="1"/>
-                    <field name="bci_problem_type" />
-                </xpath>
-	        </field>
-	    </record>
-
-        <record id="barcode_india_problem_tags_search_view" model="ir.ui.view">
-            <field name="name">helpdesk.ticket.tags.search.view</field>
-            <field name="model">helpdesk.tag</field>
-            <field name="arch" type="xml">
-                <search string="Search Problem type">
-                    <field name="name" />
-                    <separator/>
-                    <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
-                </search>
-            </field>
-          </record>
 
         <record id ="helpdesk_sla_view_form_barcode" model="ir.ui.view">
 			<field name="name">helpdesk.sla.form.inherited</field>

@@ -1,0 +1,29 @@
+<odoo>
+  <record id="action_my_customers" model="ir.actions.act_window">
+    <field name="name">My Customers</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="view_partner_my_customers_tree"/>
+    <field name="search_view_id" ref="view_partner_my_customers_search"/>
+    <field name="domain">[('customer_rank','&gt;',0)]</field>
+    <field name="context" eval="{'restrict_to_hierarchy': True,'default_customer_rank': 1}"/>
+  </record>
+
+  <!-- Sales -> My Customers -->
+  <menuitem
+    id="menu_my_customers_sales"
+    name="My Customers"
+    parent="sale.sale_order_menu"
+    action="action_my_customers"
+    sequence="25"
+    groups="sales_team.group_sale_salesman"/>
+
+  <!-- CRM -> My Customers -->
+  <menuitem
+    id="menu_my_customers_crm"
+    name="My Customers"
+    parent="crm.crm_menu_sales"
+    action="action_my_customers"
+    sequence="25"
+    groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+</odoo>

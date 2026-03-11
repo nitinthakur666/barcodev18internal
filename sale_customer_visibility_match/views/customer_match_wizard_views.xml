@@ -1,0 +1,31 @@
+<odoo>
+  <record id="action_customer_match_wizard" model="ir.actions.act_window">
+    <field name="name">Match Customer</field>
+    <field name="res_model">customer.match.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <record id="view_customer_match_wizard_form" model="ir.ui.view">
+    <field name="name">customer.match.wizard.form</field>
+    <field name="model">customer.match.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Match Customer" create="0">
+        <group>
+          <field name="name"/>
+          <field name="phone"/>
+          <field name="vat" string="GST No"/>
+        </group>
+
+        <footer>
+          <button name="action_search" type="object" string="Search" class="btn-primary"/>
+          <button string="Close" special="cancel" class="btn-secondary"/>
+        </footer>
+
+        <separator string="Results"/>
+
+        <field name="results_html" widget="html" readonly="1" nolabel="1"/>
+      </form>
+    </field>
+  </record>
+</odoo>

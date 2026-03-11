@@ -22,11 +22,12 @@ from werkzeug import urls
 from xmlrpc import client as xmlrpclib
 from markupsafe import Markup
 
-from odoo import _, api, exceptions, fields, models, tools, registry, SUPERUSER_ID, Command
+from odoo import _, api, exceptions, fields, models, tools, SUPERUSER_ID, Command
 from odoo.exceptions import MissingError, AccessError
 from odoo.osv import expression
 from odoo.tools import is_html_empty
 from odoo.tools.misc import clean_context, split_every
+from odoo.modules.registry import Registry
 
 _logger = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ class MailThread(models.AbstractModel):
 
         email_layout_xmlid = msg_vals.get('email_layout_xmlid') if msg_vals else message.email_layout_xmlid
         template_xmlid = email_layout_xmlid if email_layout_xmlid else 'mail.mail_notification_layout'
-        base_mail_values = self._notify_by_email_get_base_mail_values(message, additional_values={'auto_delete': mail_auto_delete})
+        base_mail_values = self._notify_by_email_get_base_mail_values(message, recipients_data,additional_values={'auto_delete': mail_auto_delete})
 
         # Clean the context to get rid of residual default_* keys that could cause issues during
         # the mail.mail creation.
@@ -175,7 +176,7 @@ class MailThread(models.AbstractModel):
 
                 @self.env.cr.postcommit.add
                 def send_notifications():
-                    db_registry = registry(dbname)
+                    db_registry = Registry(dbname)
                     with db_registry.cursor() as cr:
                         env = api.Environment(cr, SUPERUSER_ID, _context)
                         env['mail.mail'].browse(email_ids).send()

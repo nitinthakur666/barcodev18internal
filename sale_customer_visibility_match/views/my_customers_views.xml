@@ -1,0 +1,40 @@
+<odoo>
+  <record id="view_partner_my_customers_tree" model="ir.ui.view">
+    <field name="name">res.partner.my_customers.tree</field>
+    <field name="model">res.partner</field>
+    <field name="arch" type="xml">
+      <list string="My Customers" js_class="my_customers_tree_button">
+        <field name="display_name" string="Name" />
+            <!-- <field name="translated_display_name" string="Name"/> -->
+          <field name="function" invisible="1"/>
+          <field name="phone" class="o_force_ltr" optional="show"/>
+          <field name="email" optional="show"/>
+          <field name="user_id" optional="show" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+          <field name="city" optional="show"/>
+          <field name="state_id" optional="hide" readonly="1"/>
+          <field name="country_id" optional="show" readonly="1"/>
+          <field name="vat" optional="hide" readonly="1"/>
+          <field name="category_id" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+          <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+          <field name="is_company" invisible="1"/>
+          <field name="parent_id" invisible="1" readonly="1"/>
+          <field name="active" invisible="1"/>
+      </list>
+    </field>
+  </record>
+
+  
+  <record id="view_partner_my_customers_search" model="ir.ui.view">
+    <field name="name">res.partner.my_customers.search</field>
+    <field name="model">res.partner</field>
+    <field name="arch" type="xml">
+      <search string="My Customers">
+        <field name="name"/>
+        <field name="vat" string="GST No"/>
+        <field name="phone"/>
+        <field name="user_id" string="Salesperson"/>
+        <field name="state_id" string="State"/>
+      </search>
+    </field>
+  </record>
+</odoo>

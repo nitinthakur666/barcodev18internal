@@ -1,23 +1,37 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="email_compose_message_wizard_form_inherited">
+        <record id="email_compose_message_wizard_form_inherited" model="ir.ui.view">
             <field name="name">mail.compose.message.form.inherited</field>
             <field name="model">mail.compose.message</field>
             <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='subject']" position="before">
-                    <label for="cc_partner_ids" string="CC" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
-                    <div groups="base.group_user" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
-                        <field name="cc_partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..."
-                            context="{'force_email':True, 'show_email':True}"/>
+                    
+                    <!-- CC Field -->
+                    <label for="cc_partner_ids" string="CC"
+                           invisible="message_type == 'comment' or composition_mode != 'comment'"/>
+                    <div groups="base.group_user"
+                         invisible="message_type == 'comment' or composition_mode != 'comment'">
+                        <field name="cc_partner_ids"
+                               widget="many2many_tags_email"
+                               placeholder="Add contacts to notify..."
+                               context="{'force_email': True, 'show_email': True}"
+                               options="{'no_create': True}"/>
                     </div>
-                
-                    <label for="bcc_partner_ids" string="BCC" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}"/>
-                    <div groups="base.group_user" modifiers="{'invisible': ['|', ('is_log', '=', True), ('composition_mode', '!=', 'comment')]}">
-                        <field name="bcc_partner_ids" widget="many2many_tags_email" placeholder="Add contacts to notify..."
-                            context="{'force_email':True, 'show_email':True}"/>
+
+                    <!-- BCC Field -->
+                    <label for="bcc_partner_ids" string="BCC"
+                           invisible="composition_mode != 'comment'"/>
+                    <div groups="base.group_user"
+                         invisible="message_type == 'comment' or composition_mode != 'comment'">
+                        <field name="bcc_partner_ids"
+                               widget="many2many_tags_email"
+                               placeholder="Add contacts to notify..."
+                               context="{'force_email': True, 'show_email': True}"
+                               options="{'no_create': True}"/>
                     </div>
+
                 </xpath>
             </field>
         </record>

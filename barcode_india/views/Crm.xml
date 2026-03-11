@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_sale_quotation']" position="attributes">
-                <attribute name="modifiers">{'invisible': [('type', '=', 'lead'),('quotation_count','=',0)]}</attribute>
+                <attribute name="invisible">type == 'lead' or quotation_count == 0</attribute>
             </xpath>
         </field>
     </record>

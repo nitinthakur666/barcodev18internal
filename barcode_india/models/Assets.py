@@ -151,19 +151,6 @@ class Assets(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.contracts',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('id', 'in', self.bci_contract_ids.ids)]
         }
-    
-    def name_get(self):
-        result = []
-        for asset in self:
-            name = asset.name or ''
-            if asset.bci_invoice_date:
-                invoice_date = asset.bci_invoice_date.strftime('%d/%m/%Y')
-                name += f' - {invoice_date}'
-            if asset.bci_end_date:
-                end_date = asset.bci_end_date.strftime('%d/%m/%Y')
-                name += f' - {end_date}'
-            result.append((asset.id, name))
-        return result

@@ -65,7 +65,7 @@
     <record id="action_sopf_items" model="ir.actions.act_window">
         <field name="name">Legacy SOPF Items</field>
         <field name="res_model">barcode_india.sopf_items</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_sopfitems_status_posted' : 1}</field>
     </record>
 </odoo>

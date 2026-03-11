@@ -27,23 +27,9 @@
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="bci_cr" string="CR"/>
-                    <field name="bci_parent_project" string="Parent Project" modifiers="{'invisible': [['bci_cr','=',False]]}"/>
+                    <field name="bci_parent_project" string="Parent Project" invisible="not bci_cr"/>
                     <field name="is_presales_project" />
                     <field name="bci_is_bug"/>
-                    <field name="software_project" />
-                    <field name="is_product" modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_type"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_platform"  widget="radio" modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_priority"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_severity"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_impact_module"  modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_cluster_type" modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="bug_environment"  widget="radio" modifiers="{'invisible': [('software_project', '=', False)]}"/>
-                    <field name="product_process_bifurcation" modifiers="{'invisible': [('is_product', '=', False)]}" />
-                    <field name="is_product_package_selected" modifiers="{'invisible': [('is_product', '=', False)]}" />
-                    <field name="product_package_selection" 
-                           modifiers="{'invisible': [('is_product_package_selected', '=', False)]}"
-                           />
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="bci_partner_ids" widget="many2many_tags"/>

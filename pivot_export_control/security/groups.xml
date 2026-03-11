@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="group_pivot_export_control_user" model="res.groups">
+            <field name="name">Hierarchy Helpdesk</field>
+        </record>
+    </data>
+</odoo>

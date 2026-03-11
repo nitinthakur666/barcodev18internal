@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="email_template_contract_renewal_notification" model="mail.template">
+            <field name="name">Contract Renewal Notification</field>
+            <field name="model_id" ref="barcode_india.model_barcode_india_contracts"/>
+            <field name="subject">Contract Renewal: {{ object.name }}</field>
+            <field name="email_from">{{ object.company_id.email if object.company_id else '' }}</field>
+            <field name="email_to">{{ object.env['ir.config_parameter'].sudo().get_param('contract.renewal.notification.email') }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Hello,</p>
+                    <p>
+                        The contract <strong><t t-esc="object.name or ''"/></strong>
+                        for customer <strong><t t-esc="object.bci_customer.name or ''"/></strong>
+                        is about to expire on <strong><t t-esc="object.bci_end or ''"/></strong>.
+                    </p>
+                    <p>Please initiate the renewal process.</p>
+                    <p>Contract link:
+                        <a t-att-href="env['ir.config_parameter'].sudo().get_param('web.base.url') 
+                                    + '/web#id=' + str(object.id) 
+                                    + '&amp;model=barcode_india.contracts&amp;view_type=form'">
+                            Open Contract
+                        </a>
+                    </p>
+                    <p>Regards,<br/><t t-esc="(object.company_id.name if object.company_id else '')"/></p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

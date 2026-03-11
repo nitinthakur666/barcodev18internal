@@ -22,11 +22,7 @@
                         </group>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="activity_ids" />
-                    <field name="message_ids" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>
@@ -42,8 +38,8 @@
                 <field name="name" />
                 <field name="product_uom_qty" optional="show" />
                 <field name="price_unit" optional="show" />
-                <field name="project_costs" widget="many2many_tags" invisible="1" />
-                <field name="cost_estimation" invisible="1" />
+                <field name="project_costs" widget="many2many_tags" column_invisible="1" />
+                <field name="cost_estimation" column_invisible="1" />
             </list>
         </field>
     </record>

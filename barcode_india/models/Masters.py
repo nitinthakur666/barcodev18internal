@@ -42,12 +42,13 @@ class Chargeable(models.Model):
     name = fields.Many2one('barcode_india.case_type', 'Case Type')
     bci_case_sub_type = fields.Many2one('barcode_india.case_sub_type', 'Case Sub Type')
     bci_problem_type = fields.Many2one('barcode_india.problem_type', 'Problem Type')
-    bci_problem_sub_type = fields.Many2one('helpdesk.tag', 'Problem Sub Type')
+    bci_problem_sub_type_id = fields.Many2one('helpdesk.ticket.type', 'Problem Sub Type') #Need to check
     bci_warranty_status = fields.Selection([('In Warranty','In Warranty'),('In Grace','In Grace'),('Out of Warranty','Out of Warranty')],'Warranty Status')
     bci_chargeable = fields.Boolean('Chargeable')
     
 class HelpdeskTicketTimespent(models.Model):
     _name = 'helpdesk.stage_timespent'
+    _description = 'Helpdesk Ticket Stage Timespent'
     _order = 'id desc'
     
     active = fields.Boolean('Active', default=True)
@@ -93,54 +94,70 @@ class Sparedata(models.Model):
     product_id = fields.Many2one('product.product',string="Product",domain="[('product_tmpl_id', '=', product_tmpl_id)]")
     product_tmpl_id = fields.Many2one('product.template',string="Product Template")
 
+
 class LeadType(models.Model):
-    _name = 'lead.type' 
+    _name = 'lead.type'
+    _description = 'Lead Type'
 
     name = fields.Char('Lead Type')
     active = fields.Boolean("Active", default=True)
 
+
 class Region(models.Model):
-    _name = 'barcode_india.region' 
+    _name = 'barcode_india.region'
+    _description = 'Region'
 
     name = fields.Char('Region')
     region_head = fields.Many2one('res.users', string='Region Head')
     active = fields.Boolean("Active", default=True)
+    regional_technical_head = fields.Many2one('res.users', string='Regional Technical Head')
 
 
 class Vertical(models.Model):
-    _name = 'barcode_india.vertical' 
+    _name = 'barcode_india.vertical'
+    _description = 'Vertical'
 
     name = fields.Char('Vertical', required="1")
     code = fields.Char(string="Code", required="1")
     vertical_head = fields.Many2one('res.users',string="Vertical Head")
     active = fields.Boolean("Active", default=True)
 
+
 class ApplicationType(models.Model):
-    _name = 'application.type' 
+    _name = 'application.type'
+    _description = 'Application Type'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Application Type')
 
+
 class Probability(models.Model):
-    _name = 'barcode_india.probability' 
+    _name = 'barcode_india.probability'
+    _description = 'Probability'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Probability')
 
+
 class Activities(models.Model):
-    _name = 'barcode_india.activities' 
+    _name = 'barcode_india.activities'
+    _description = 'Activities'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Activity Name')
 
+
 class Stages(models.Model):
-    _name = 'barcode_india.stages' 
+    _name = 'barcode_india.stages'
+    _description = 'Stages'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Stage Name')
 
+
 class Sites(models.Model):
-    _name = 'barcode_india.site' 
+    _name = 'barcode_india.site'
+    _description = 'Sites'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Many2one('res.partner','Site')
@@ -270,19 +287,19 @@ class QuotationType(models.Model):
     _order = 'sequence,id'
 
     active = fields.Boolean('Active', default=True)
-    name = fields.Char('Name', tracking='1')
-    sequence = fields.Integer("Sequence", default=1, tracking='1')
-    estimation = fields.Boolean(string='Estimation', tracking='1')
-    auto_approval = fields.Float("Auto Approval Margin(%)", tracking='1')
+    name = fields.Char('Name', tracking=1)
+    sequence = fields.Integer("Sequence", default=1, tracking=1)
+    estimation = fields.Boolean(string='Estimation', tracking=1)
+    auto_approval = fields.Float("Auto Approval Margin(%)", tracking=1)
     pt_margin_ids = fields.One2many('barcode_india.pt_matrix', 'quotations_type_id', string='PaymentTerms Matrix')
     margin_ids = fields.One2many('barcode_india.margin_matrix', 'quotation_type_id', string='Approval Matrix')
     payment_terms_ids = fields.One2many('barcode_india.pt_master', 'quote_type_id', string='Payment Terms IDs')
-    erp_category = fields.Many2many('barcode_india.erp_acc_category',string='ERP Category',tracking='1')
-    bci_bypass_quote = fields.Boolean(string='Pricing & Approvals not Required', tracking='1')
-    special_approval = fields.Many2one('res.users',string='Non Standard PT Approver', tracking='1')
-    bg_pbg_approval = fields.Many2one('res.users',string='BG/PBG Approver', tracking='1')
-    ld_clause_approval = fields.Many2one('res.users',string='LD Clause Approver', tracking='1')
-    apply_quotetype_limit = fields.Boolean(string='Apply QuoteType Limit', tracking='1')
+    erp_category = fields.Many2many('barcode_india.erp_acc_category',string='ERP Category',tracking=1)
+    bci_bypass_quote = fields.Boolean(string='Pricing & Approvals not Required', tracking=1)
+    special_approval = fields.Many2one('res.users',string='Non Standard PT Approver', tracking=1)
+    bg_pbg_approval = fields.Many2one('res.users',string='BG/PBG Approver', tracking=1)
+    ld_clause_approval = fields.Many2one('res.users',string='LD Clause Approver', tracking=1)
+    apply_quotetype_limit = fields.Boolean(string='Apply QuoteType Limit', tracking=1)
     quote_limit = fields.Float(string='Quote Limit', tracking=1)
     quotetype_after_limit = fields.Many2one('barcode_india.quotation_type', string='QuoteType After Limit', domain="[('id', '!=', id), ('id', '!=', False)]")
     
@@ -293,10 +310,13 @@ class QuotationType(models.Model):
                 if sum(record.payment_terms_ids.mapped('bci_percentage')) != 100:
                     raise ValidationError(_("Sum of Milestone line's percentage must be equal to 100"))
 
-    @api.model
-    def create(self, vals):
-        res = super(QuotationType, self).create(vals)
-        res.track_changes(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(QuotationType, self).create(vals_list)
+
+        for res, vals in zip(res, vals_list):
+            res.track_changes(vals)
+
         return res
     
     def write(self, vals):
@@ -305,18 +325,37 @@ class QuotationType(models.Model):
         return res
 
     def get_many2many_value(self, record, value, field):
-        result = self.env[record._fields[field].comodel_name].browse(value[0][2])
-        return result and result.mapped('name') or ''
+        ids = []
+
+        if isinstance(value, list):
+            for command in value:
+                if not isinstance(command, (list, tuple)):
+                    continue
+
+                if command[0] == 6:  # replace
+                    ids = command[2]
+                elif command[0] == 4:  # add
+                    ids.append(command[1])
+                elif command[0] == 3:  # remove
+                    if command[1] in ids:
+                        ids.remove(command[1])
+
+                elif command[0] == 0:
+                    rec = self.env[record._fields[field].comodel_name].create(command[2])
+                    ids.append(rec.id)
+
+        result = self.env[record._fields[field].comodel_name].browse(ids)
+        return result.mapped('name') if result else []
 
     def track_changes(self, values):
         msg = "<ul>"
-        for key in values.keys():
+        for key in values:
             if key in ['erp_category']:
                 string=self._fields[key].string
                 old_value = self[key] or ''
                 new_value = values[key] or ''
                 if self._fields[key].type == 'many2many':
-                    old_value = old_value and old_value.mapped('name') or ''
+                    old_value = ", ".join(self[key].mapped('name')) if self[key] else ''
                     new_value = self.get_many2many_value(self, new_value, key)
                 msg += "<li>" + _(
                     "%(string)s: %(old_value)s -> %(new_value)s",
@@ -361,7 +400,7 @@ class Approval(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char(string='Asset')
     approval_type = fields.Selection([('role','Role'),('user','User')],string='Approval Type')
-    approval_role = fields.Many2one('res.groups',string='Role',domain=lambda self: [('category_id', '=', self.env.ref('barcode_india.category_barcode_india').id)])
+    approval_role = fields.Many2one('res.groups',string='Role',domain=lambda self: [('privilege_id.category_id', '=', self.env.ref('barcode_india.category_barcode_india').id)])
     approval_user = fields.Many2one('res.users',string='User')
     pt_matrix = fields.Many2one('barcode_india.pt_matrix', string='PaymentTerms Matrix')
 
@@ -578,8 +617,10 @@ class RejectReason(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char(string="Name", required="1")
 
+
 class Status(models.Model):
-    _name = 'barcode_india.status' 
+    _name = 'barcode_india.status'
+    _description = 'Status'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Stage Name')
@@ -650,24 +691,30 @@ class StandbyEquipment(models.Model):
     name = fields.Char(string="Name", required="1")
     code = fields.Char(string="Code", required="1")
 
+
 class InstallationTypes(models.Model):
-    _name = 'barcode_india.installation_types' 
+    _name = 'barcode_india.installation_types'
+    _description = 'Installation Types'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Type')
     minimum_charge = fields.Float("Minimum Charge")
     percentage_of_Hardware = fields.Float("Percentage of Hardware(%)")
 
+
 class FreightTypes(models.Model):
-    _name = 'barcode_india.freight_types' 
+    _name = 'barcode_india.freight_types'
+    _description = 'Freight Types'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Type')
     minimumcharge = fields.Float("Minimum Charge")
     percentage_ofHardware = fields.Float("Percentage of Hardware(%)")
 
+
 class BanCRMt(models.Model):
-    _name = 'barcode_india.bant_crm' 
+    _name = 'barcode_india.bant_crm'
+    _description = 'BANT CRM'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name')
@@ -682,15 +729,19 @@ class BanCRMt(models.Model):
         for record in self:
             record.weightage_value = record.requirement_score * record.weightage
 
+
 class Bant(models.Model):
-    _name = 'barcode_india.bant' 
+    _name = 'barcode_india.bant'
+    _description = 'BANT'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name')
     weightage = fields.Float('Weightage(%)')
 
+
 class AssignReports(models.Model):
-    _name = 'barcode_india.assign_report' 
+    _name = 'barcode_india.assign_report'
+    _description = 'Assign Reports'
 
     active = fields.Boolean('Active', default=True)
     updated_by = fields.Many2one('res.users', string='Updated By')
@@ -698,7 +749,7 @@ class AssignReports(models.Model):
     previous_user = fields.Many2one('res.users', string='Previous User')
     updated_user = fields.Many2one('res.users', string='Engineer')
     ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket Ref.')
-    bci_support_type = fields.Selection([('remote_support', 'Remote support'), ('onsite_support', 'On-site support'), ('foc', 'FOC'), ('carry_in_support', 'Carry-in support'),('House Support','In-House Support'),('RMA Process','RMA Process')], 'Support Type')
+    bci_support_type = fields.Selection([('remote_support', 'Remote support'), ('onsite_support', 'On-site support'), ('foc', 'FOC'), ('carry_in_support', 'Carry-in support'),('House Support','In-House Support'),('RMA Process','RMA Process'),('Quotation','Quotation')], 'Support Type')
     resolved_on = fields.Datetime(string='Case Resolved On', related="ticket_id.close_date", store=True)
     engineer_update = fields.Char(string="Engineer Update")
     remark = fields.Char(string="Remark")
@@ -708,6 +759,28 @@ class AssignReports(models.Model):
     # def onchange_previous_user(self):
     #     for record in self:
     #         record.resolved_on = record.ticket_id.close_date
+
+    ticket_create_date = fields.Datetime(related="ticket_id.create_date", string="Created on", store=True)
+    ticket_customer = fields.Many2one(related="ticket_id.partner_id", string="Ticket Ref./Customer", store=True)
+    ticket_serial_no = fields.Many2one(related="ticket_id.bci_asset", string="Ticket Ref./Serial No.", store=True)
+    ticket_product = fields.Many2one(related="ticket_id.bci_product", string="Ticket Ref./Product", store=True)
+    ticket_warranty_status = fields.Selection(related="ticket_id.bci_warranty_status", string="Ticket Ref./Warranty Status", store=True)
+    ticket_case_type = fields.Many2one(related="ticket_id.bci_case_type", string="Ticket Ref./Case Type", store=True)
+    ticket_problem_type = fields.Many2one(related="ticket_id.bci_problem_type", string="Ticket Ref./Problem Type", store=True)
+    ticket_stage = fields.Many2one(related="ticket_id.stage_id", string="Ticket Ref./Stage", store=True)
+    ticket_resolution = fields.Char(related="ticket_id.bci_resolution", string="Ticket Ref./Resolution", store=True)
+    ticket_total_days_open = fields.Integer(related="ticket_id.bci_total_no_of_days_open", string="Ticket Ref./Total No of Days Open", store=True)
+    ticket_total_days_resolve = fields.Integer(related="ticket_id.bci_time_to_resolve_ticket", string="Ticket Ref./Total No of Days to resolve the ticket", store=True)
+    last_updated_on = fields.Datetime(related="ticket_id.write_date", string="Last Updated on", store=True)
+    
+    @api.model
+    def create(self, vals):
+        vals['updated_on'] = fields.Datetime.now()
+        return super().create(vals)
+    
+    def write(self, vals):
+        vals['updated_on'] = fields.Datetime.now()
+        return super().write(vals)
 
 class SOPFHeader(models.Model):
     _name = 'barcode_india.sopf_header'
@@ -729,6 +802,8 @@ class SOPFHeader(models.Model):
     sopf_billingaddress = fields.Text(string='Billing Address', size=200)
     sopf_shippingaddress = fields.Text(string='Shipping Address', size=200)
     item_ids = fields.One2many('barcode_india.sopf_items', 'sopf_id', string='SOPF Items')
+    file_name = fields.Char(string='File Name')
+    folder_path = fields.Char(string='Folder Path')
 
 class SOPFItems(models.Model):
     _name = 'barcode_india.sopf_items'

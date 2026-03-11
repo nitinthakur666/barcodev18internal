@@ -6,7 +6,7 @@
         <field name="priority" eval="55"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//form" position="inside">
+           <xpath expr="//form" position="inside">
                 <app data-string="BCIL" string="BCIL" name="barcode_india">
                     <h2>Integrations</h2>
                     <div class="row mt16 o_settings_container">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <h2>sales</h2>
+                    <h2>Sales</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="o_setting_right_pane">
                             <div class="row">
@@ -121,14 +121,14 @@
                         </div>
                     </div>
 
-                    <h2>Vendor Location</h2>
+                    <h2>Contract Renewal Email</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="o_setting_right_pane">
                             <div class="row">
                                 <div class="col-12 col-lg-6 o_setting_box">
                                     <div class="row mt16">
-                                        <label for="bci_location" class="col-lg-4 o_light_label"/>
-                                        <field name="bci_location" colspan="5"/>
+                                        <label for="contract_renewal_email" class="col-lg-4 o_light_label"/>
+                                        <field name="contract_renewal_email" colspan="5"/>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
-        <field name="target">inline</field>
+        <field name="target">current</field>
         <field name="context">{'module' : 'barcode_india'}</field>
     </record>
 </odoo>

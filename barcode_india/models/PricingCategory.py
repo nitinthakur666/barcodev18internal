@@ -4,7 +4,7 @@ from odoo import fields, models, api, _
 class PricingCategory(models.Model):
     _name = 'barcode_india.pricing_category'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _descripton = 'Model for defining pricing Category'
+    _description = 'Model for defining pricing Category'
     
     name = fields.Char('Category', tracking=1) 
     approver = fields.Many2one('res.users','Category Approver', tracking=1)

@@ -82,13 +82,16 @@ class Contract(models.Model):
     bci_amc_required = fields.Boolean('AMC Required', compute="_compute_amc_required", store=True)
     bci_opportunity_ids = fields.One2many('crm.lead', 'bci_contract_id', string='Opportunities')
     bci_opportunity_count = fields.Integer('Opportunity Count', compute='_compute_opportunity_count')
-    bci_contract_details_count = fields.Integer('Contract Detauls Count', compute='_compute_contract_details_count')
+    bci_contract_details_count = fields.Integer('Contract Details Count', compute='_compute_contract_details_count')
     bci_renewal_opportunity = fields.Many2one('crm.lead','Renewal Opportunity')
     bci_contract_type_find = fields.Selection(related='bci_type.type',string="Type of Contract", store=True)
     bci_stage_type = fields.Selection(related='bci_stage_id.stage_type',string="Stage Type")
     bci_opportunity = fields.Many2one('crm.lead','Opportunity')
     bci_service_product = fields.Many2one('product.product','Service Product')
     bci_contract_id = fields.Many2one('barcode_india.contracts',"Renew Contract")
+
+    mail_sent = fields.Boolean('Renewal Mail Sent', default=False)
+    company_id = fields.Many2one('res.company',default=lambda self: self.env.company,string='Company')
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -126,7 +129,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Sites',
             'res_model': 'barcode_india.site',
-            'view_mode': 'tree',
+            'view_mode': 'list',
             'domain': [('bci_contract_id', '=', self.id)],
             'context': {'default_bci_contract_id': self.id,'default_bci_customer': self.bci_customer and self.bci_customer.id}
         }
@@ -145,7 +148,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_id', '=', self.id)],
             'context': {'default_bci_customer': self.bci_customer.id,'default_bci_contract_id': self.id,'default_bci_site': self.bci_site.id}
         }
@@ -156,7 +159,7 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_ids', '=', self.id)]
         }
 
@@ -166,14 +169,30 @@ class Contract(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Previous Assets',
             'res_model': 'barcode_india.assets',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('bci_contract_id.bci_contract_id', '=', self.id)]
         }
     
+    # @api.depends('bci_ticket_ids')
+    # def _compute_ticket_count(self):
+    #     ticket_data = self.env['helpdesk.ticket']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
+    #     data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in ticket_data}
+    #     for contract in self:
+    #         contract.bci_ticket_count = data_map.get(contract.id, 0)
+
     @api.depends('bci_ticket_ids')
     def _compute_ticket_count(self):
-        ticket_data = self.env['helpdesk.ticket']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
-        data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in ticket_data}
+        # Use the modern read_group pattern in Odoo 18
+        ticket_data = self.env['helpdesk.ticket']._read_group(
+            domain=[('bci_contract_id', 'in', self.ids)],
+            groupby=['bci_contract_id'],
+            aggregates=['__count'],
+        )
+
+        # Build a map: {contract_id: count}
+        data_map = {contract.id: count for contract, count in ticket_data}
+
+        # Assign computed value
         for contract in self:
             contract.bci_ticket_count = data_map.get(contract.id, 0)
 
@@ -188,10 +207,24 @@ class Contract(models.Model):
             'domain': [('bci_contract_id', '=', self.id)],
         }
     
+    # @api.depends('bci_opportunity_ids')
+    # def _compute_opportunity_count(self):
+    #     opportunity_data = self.env['crm.lead']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
+    #     data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in opportunity_data}
+    #     for contract in self:
+    #         contract.bci_opportunity_count = data_map.get(contract.id, 0)
+
     @api.depends('bci_opportunity_ids')
     def _compute_opportunity_count(self):
-        opportunity_data = self.env['crm.lead']._read_group([('bci_contract_id', 'in', self.ids)], ['bci_contract_id'], ['bci_contract_id'])
-        data_map = {data['bci_contract_id'][0]: data['bci_contract_id_count']for data in opportunity_data}
+        opportunity_data = self.env['crm.lead']._read_group(
+            domain=[('bci_contract_id', 'in', self.ids)],
+            groupby=['bci_contract_id'],
+            aggregates=['__count'],  # count records per group
+        )
+
+        # Build a mapping: {contract_id: count}
+        data_map = {contract.id: count for contract, count in opportunity_data}
+
         for contract in self:
             contract.bci_opportunity_count = data_map.get(contract.id, 0)
 
@@ -238,6 +271,29 @@ class Contract(models.Model):
             'domain': [('bci_contracts', '=', self.id)],
         }
 
+    def _cron_renewal_mail(self, limit=False, days=60):
+        date = fields.Date.today() + timedelta(days=days)
+        contracts = self.sudo().search([('bci_end', '>', fields.Date.today()),('bci_end', '<', date),('mail_sent','=',False)], limit=limit)
+        template = self.env.ref('barcode_india.email_template_contract_renewal_notification')
+        # If template not found, abort
+        if not template:
+            return
+        if contracts:
+            for contract in contracts:
+                template.with_context(
+                    force_send=True,
+                    mail_notify_force_send=True,
+                    default_model='barcode_india.contracts',
+                    default_res_id=contract.id,
+                ).send_mail(contract.id, force_send=True)
+
+                contract.sudo().write({'mail_sent': True})
+
+                # STEP: Show log message in chatter
+                contract.message_post(
+                    body="📩 Renewal notification email has been sent."
+                )
+    
     def _cron_renew_opportunity_generation(self, limit=False, days=60):
         date = fields.Date.today() + timedelta(days=days)
         contracts = self.sudo().search([('bci_end', '=', date),('bci_renewal_opportunity','=',False)], limit=limit)

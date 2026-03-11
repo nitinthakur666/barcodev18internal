@@ -1,16 +1,16 @@
 <odoo>
-	<data>
-		<record id="view_users_form_barcode" model="ir.ui.view">
-            <field name="name">res.users.form.barcode</field>
-            <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form"/>
-            <field name="arch" type="xml">
-            	<xpath expr="//field[@name='share']" position="after">
-                    <field name="bci_salesperson"/>
-                    <field name="is_on_holiday" />
-                    <field name="alternateuser" modifiers="{'invisible': [('is_on_holiday', '!=', True)],'no_create': True, 'no_create_edit': True,'create':False}"/>
-            	</xpath>
-            </field>
-        </record>
-	</data>
+        <data>
+                <record id="view_users_form_barcode" model="ir.ui.view">
+                        <field name="name">res.users.form.barcode</field>
+                        <field name="model">res.users</field>
+                        <field name="inherit_id" ref="base.view_users_form" />
+                        <field name="arch" type="xml">
+                                <xpath expr="//group/field[@name='partner_id']" position="after">
+                                        <field name="bci_salesperson" />
+                                        <field name="is_on_holiday" />
+                                        <field name="alternateuser" invisible="not is_on_holiday" options="{'no_create': True, 'no_create_edit': True,'create':False}" />
+                                </xpath>
+                        </field>
+                </record>
+        </data>
 </odoo>

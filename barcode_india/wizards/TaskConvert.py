@@ -31,9 +31,9 @@ class HelpdeskTicketConvertWizard(models.TransientModel):
             }
         return {
             'name': _('Converted Tasks'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'project.task',
-            'views': [(self.env.ref('project.view_task_tree2').id, 'tree'), (self.env.ref('project.view_task_form2').id, 'form')],
+            'views': [(self.env.ref('project.view_task_tree2').id, 'list'), (self.env.ref('project.view_task_form2').id, 'form')],
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', created_tasks.ids)],
         }

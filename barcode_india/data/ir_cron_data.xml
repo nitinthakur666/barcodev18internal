@@ -6,7 +6,7 @@
         <field name="state">code</field>
         <field name="code">model._set_validity_expired(limit=False)</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
     <record id="ir_cron_check_exchange_diff" model="ir.cron">
         <field name="name">Sale: Check Exchange Diff</field>
@@ -14,7 +14,7 @@
         <field name="state">code</field>
         <field name="code">model._check_exchange_diff(limit=False)</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
     <record id="ir_cron_check_cost_diff" model="ir.cron">
         <field name="name">Sale: Check Purchase Cost Difference</field>
@@ -22,7 +22,7 @@
         <field name="state">code</field>
         <field name="code">model._check_cost_diff(limit=False)</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
     <record id="ir_cron_contract_amc" model="ir.cron">
         <field name="name">Contract: AMC Opportunity Generation</field>
@@ -31,7 +31,7 @@
         <field name="code">model._cron_renew_opportunity_generation(limit=False, days=60)</field>
         <field name='interval_number'>1</field>
         <field name='interval_type'>days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
 
     <record id="ir_cron_contract_activate" model="ir.cron">
@@ -41,7 +41,7 @@
         <field name="code">model.activate_contract(limit=False, days=1)</field>
         <field name='interval_number'>1</field>
         <field name='interval_type'>days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
 
     <record id="ir_cron_contract_expired" model="ir.cron">
@@ -51,7 +51,7 @@
         <field name="code">model.expired_contract(limit=False, days=1)</field>
         <field name='interval_number'>1</field>
         <field name='interval_type'>days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
 
     <record id="cron_contract_sync" model="ir.cron">
@@ -61,7 +61,7 @@
         <field name="code">model._cron_contract_sync()</field>
         <field name='interval_number'>5</field>
         <field name='interval_type'>hours</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
     </record>
 
     <record id="ir_cron_task_due_reminder" model="ir.cron">
@@ -72,7 +72,17 @@
         <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+<!--        <field name="numbercall">-1</field>-->
         <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_contract_renewal" model="ir.cron">
+        <field name="name">Contract Renewal Mail</field>
+        <field name="model_id" ref="model_barcode_india_contracts"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_renewal_mail()</field>
+        <field name="interval_type">days</field>
+        <field name="interval_number">1</field>
+        <!-- <field name="numbercall">-1</field> -->
     </record>
 </odoo>

@@ -19,9 +19,21 @@ class TrackMixin(models.AbstractModel):
         return result and result.mapped('name') or None
 
     def track_changes(self, parent, values):
+        if isinstance(values, list):
+            if values:
+                values = values[0]
+            else:
+                return
+
+        if not isinstance(values, dict):
+            return
+
         header = _("<span class='text-muted fw-bold'> %s </span><span class='fst-italic text-muted'> (%s) </span>", self._description, self.display_name)
         message = header + "<ul>"
         for key in values.keys():
+            if key not in self._fields:
+                continue
+
             if self._fields[key].comodel_name != parent._name:
                 string = self._fields[key].string
                 old_value = self[key] or None

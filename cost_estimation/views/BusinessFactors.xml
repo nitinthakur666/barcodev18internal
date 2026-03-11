@@ -10,7 +10,7 @@
                 <field name="description" optional="show" />
                 <field name="risk" required="1" options="{'no_create': True, 'no_open': True}" optional="show" />
                 <field name="general_hints" optional="show" />
-                <field name="cost_estimation" invisible="1" />
+                <field name="cost_estimation" column_invisible="1" />
             </list>
         </field>
     </record>

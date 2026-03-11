@@ -14,7 +14,7 @@
                 <field name="name">Customer Sync</field>
                 <field name="res_model">res.partner</field>
                 <field name="type">ir.actions.act_window</field>
-                <field name="view_mode">tree,form</field>
+                <field name="view_mode">list,form</field>
                 <field name="domain">[('is_company', '!=', False),('customer_state','in' ,['done'])]</field>
                 <field name="help" type="html">
                     <p class="o_view_nocontent_smiling_face">
@@ -27,7 +27,7 @@
             <field name="name">Customer Sync</field>
             <field name="res_model">res.partner</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain"></field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -40,7 +40,7 @@
             <field name="name">Customer</field>
             <field name="res_model">res.partner</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('is_company', '!=', False),('customer_state','in',['pending']),('bci_contact_type','=','Parent Company')]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -53,7 +53,7 @@
             <field name="name">Customer</field>
             <field name="res_model">res.partner</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('is_company', '!=', False),('customer_state','in',['done']),('bci_contact_type','=','Parent Company')]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -66,7 +66,7 @@
             <field name="name">Customer </field>
             <field name="res_model">res.partner</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('is_company', '!=', False),('customer_state','in',['fail']),('bci_contact_type','=','Parent Company')]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -81,7 +81,7 @@
         <field name="name">National Account Sync Logs</field>
         <field name="res_model">sage300_connector.customer_logs</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

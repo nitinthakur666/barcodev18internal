@@ -26,11 +26,7 @@
                         </group>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="activity_ids" />
-                    <field name="message_ids" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>
@@ -48,8 +44,8 @@
                 <field name="business_risk" sum="Total" optional="show" />
                 <field name="total_estimate" sum="Total" optional="show" />
                 <field name="risk_buffered" avg="Total" widget="percentage" optional="show" />
-                <field name="quotation_cost" invisible="1" />
-                <field name="cost_estimation" invisible="1" />
+                <field name="quotation_cost" column_invisible="1" />
+                <field name="cost_estimation" column_invisible="1" />
             </list>
         </field>
     </record>

@@ -4,6 +4,7 @@ from odoo import api, fields, models
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+from dateutil.relativedelta import relativedelta
 import traceback
 from itertools import groupby
 
@@ -29,8 +30,10 @@ class ContractSyncLogs(models.Model):
             'cs_sync_name':sync_name
         })
 
+
 class AssetsSync(models.Model):    
     _name = 'barcode_india.assets_sync'
+    _description = 'Assets Sync'
 
     cs_contract_sync = fields.Many2one("barcode_india.contract_sync","Contract Sync", ondelete='cascade')
     name = fields.Char("Name")
@@ -153,6 +156,7 @@ class ContractSync(models.Model):
                     "bci_invoice_number": rec.cs_invoice_number,
                     "bci_product": rec.cs_product.product_variant_id.id,
                     "bci_line_no": rec.cs_line_number,
+                    "bci_delivery_type": "Carepack" if cs_care_pack_line else "Standard Warranty",
                     "bci_service_product": cs_care_pack_line.cs_assets_ids.mapped('cs_service_product').product_variant_id.id if cs_care_pack_line else rec.cs_service_product.product_variant_id.id,
                     "bci_stage_id": assets_stage and assets_stage.id or 1
                     }))
@@ -231,8 +235,11 @@ class ContractSync(models.Model):
                             assets_line = self.env["barcode_india.assets"].sudo().search([('bci_contract_id.bci_sopf_number','=',rec.cs_sopf_ref),('bci_product','=',hw_lines[0].cs_product.product_variant_id.id)])
                             if len(assets_line) == rec.cs_quantity:
                                 hw_lines.write({'cs_care_pack_line': rec.cs_contract_sync.id})
-                                assets_line.write({"bci_service_product": rec.cs_service_product and rec.cs_service_product.product_variant_id.id})
-                                assets_line.onchange_bci_service_product()
+                                invoice_date = assets_line[0].bci_invoice_date
+                                oem_next_date = invoice_date + relativedelta(days=rec.cs_service_product.bci_coverage.no_of_days - 1)
+                                assets_line.write({"bci_service_product": rec.cs_service_product and rec.cs_service_product.product_variant_id.id, "bci_oem_start_date": invoice_date, "bci_oem_end_date": oem_next_date, "bci_delivery_type": "Carepack"})
+                                # assets_line.onchange_bci_service_product()
+                                assets_line.mapped('bci_contract_id').write({'bci_carepack': True})
                                 rec.cs_contract_sync.cs_state = 'done'
             except Exception as e:
                 records.write({'cs_state': 'fail'})

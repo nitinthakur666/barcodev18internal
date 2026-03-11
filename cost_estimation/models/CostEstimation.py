@@ -118,7 +118,7 @@ class CostEstimation(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Calculation',
             'res_model': 'cost_estimation.costing',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('cost_estimation', '=', self.id)]
         }
 
@@ -128,6 +128,6 @@ class CostEstimation(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Outcome',
             'res_model': 'cost_estimation.project_cost',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('cost_estimation', '=', self.id)]
         }

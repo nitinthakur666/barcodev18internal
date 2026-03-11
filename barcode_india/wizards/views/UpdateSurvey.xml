@@ -8,8 +8,8 @@
                 <form>
                     <group>
                         <field name="survey_id" required="1"/>
-                        <field name="mailing_contacts" widget="many2many_tags" modifiers="{'required': [('partner_ids', '=', False)]}"/>
-                        <field name="partner_ids" widget="many2many_tags" modifiers="{'required': [('partner_ids', '=', False)]}"/>
+                        <field name="mailing_contacts" widget="many2many_tags" required="not partner_ids"/>
+                        <field name="partner_ids" widget="many2many_tags" required="not partner_ids"/>
                     </group>
                     <footer>
                         <button string="Confirm" class="btn btn-primary" name="action_update_survey" type="object" />

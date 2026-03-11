@@ -4,7 +4,7 @@
         <field name="name">Cost Sheet View Master</field>
         <field name="res_model">barcode_india.view_master</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
         <field name="domain"></field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -19,7 +19,7 @@
             <list string="Readonly Master" editable="bottom">
                 <field name="bci_stage" />
                 <field name="bci_role" />
-                <field name="bci_view" domain="[('model','=','sale.order.line'),('type','=','tree')]"/>
+                <field name="bci_view" domain="[('model','=','sale.order.line'),('type','=','list')]"/>
             </list>
         </field>
     </record>

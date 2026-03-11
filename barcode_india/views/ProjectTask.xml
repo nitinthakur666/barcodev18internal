@@ -7,12 +7,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <field name="display_helpdesk_ticket_button" invisible="1" />
-                    <button string="Ticket" class="oe_stat_button" name="action_view_ticket" type="object" icon="fa-life-ring" modifiers="{'invisible': [('display_helpdesk_ticket_button', '=', False)]}" help="Ticket from this task"/>
-                    <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" modifiers="{'invisible': [('bci_bulk_import', '=', False)]}">
-                        <field name="bci_ticket_count" string="Bulk Tickets" widget="statinfo" />
+                    <button string="Ticket" class="oe_stat_button" name="action_view_ticket" type="object" icon="fa-life-ring" help="Ticket from this task" invisible="display_helpdesk_ticket_button == False"/>
+                    <button class="oe_stat_button" name="action_view_tickets" icon="fa-life-ring" type="object" invisible="not bci_bulk_import">
+                        <field name="bci_ticket_count" string="Bulk Tickets" widget="statinfo"/>
                     </button>
-                    <button class="oe_stat_button" string="Assets" name="action_pm_status" icon="fa-certificate" type="object" modifiers="{'invisible': [('bci_is_pm','=',False)]}"/>
-                    <button class="oe_stat_button" type="object" name="action_show_related_quotations" icon="fa-pencil-square-o" modifiers="{'invisible': [('bci_quotation_count', '=', 0)]}">
+                    <button class="oe_stat_button" string="Assets" name="action_pm_status" icon="fa-certificate" type="object" invisible="not bci_is_pm"/>
+                    <button class="oe_stat_button" type="object" name="action_show_related_quotations" icon="fa-pencil-square-o" invisible="bci_quotation_count == 0">
                         <field name="bci_quotation_count" widget="statinfo" string="Quotations"/>
                     </button>
                     <button name="action_show_bugs" string="Bugs" type="object" icon="fa-usd">
@@ -30,29 +30,25 @@
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="bci_is_bug" invisible="1"/>
-                    <field name="bci_reported_project" modifiers="{'invisible': [('bci_is_bug', '!=', True)]}"  domain="[('partner_id', '=', partner_id)]"/>
-                    <field name="bci_reported_task" modifiers="{'invisible': [('bci_is_bug', '!=', True)]}" domain="[('project_id', '=', bci_reported_project)]"/>
-                    <field name="task_category" widget="radio"/>
-                    <field name="is_tied_to_sprint"/>
-                    <field name="tied_to_sprint" modifiers="{'invisible': [('is_tied_to_sprint', '=', False)]}" />
+                    <field name="bci_reported_project" invisible="not bci_is_bug" domain="[('partner_id', '=', partner_id)]"/>
+                    <field name="bci_reported_task" invisible="not bci_is_bug" domain="[('project_id', '=', bci_reported_project)]"/>
                 </xpath>
+
                 <xpath expr="//field[@name='user_ids']" position="after">
-                    <field name="bci_issue_resolved" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_bulk_import" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_asset_id" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_product_id" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="bci_is_pm" invisible="1" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
-                    <field name="lead_id" modifiers="{'invisible': [('hide_fields', '=', True)]}"/>
+                    <field name="bci_issue_resolved" invisible="hide_fields"/>
+                    <field name="bci_bulk_import" invisible="hide_fields"/>
+                    <field name="bci_asset_id" invisible="hide_fields"/>
+                    <field name="bci_product_id" invisible="hide_fields"/>
+                    <field name="bci_is_pm" invisible="1"/>
+                    <field name="lead_id" invisible="hide_fields"/>
                     <field name="hide_fields" invisible="1"/>
-                <!-- </xpath>
-                <xpath expr="//field[@name='partner_phone']" position="after"> -->
                     <field name="bci_site_id" widget="res_partner_many2one" options="{'always_reload': True}" context="{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}"/>
                     <field name="bci_address"/>
-                    <field name="bci_site_phone" widget="phone" modifiers="{'invisible': [('bci_site_id', '=', False)]}"/>
-                    <field name="task_type" widget="radio"/>
+                    <field name="bci_site_phone" widget="phone" invisible="not bci_site_id"/>
                 </xpath>
+
                 <xpath expr="//page[@name='description_page']" position="after">
-                    <page string="Final Resolution" modifiers="{'invisible': [('is_fsm','=',False)]}">
+                    <page string="Final Resolution" invisible="not is_fsm">
                         <field name="bci_final_resolution">
                             <list editable="bottom">
                                 <field name="name" type="html"/>
@@ -62,19 +58,19 @@
                         </field>
                     </page>
                 </xpath>
-                <!-- <xpath expr="//div[@class='w-100']" position="replace">
-                </xpath> -->
-                <xpath expr="//field[@name='planned_date_begin']" position="replace">
-                    <label for="planned_date_begin" string="Planned Date" />
-                    <div class="w-100">
-                        <div class="o_row">
-                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" modifiers="{'required': [('planned_date_end', '!=', False)]}"/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
-                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" modifiers="{'required': [('planned_date_begin', '!=', False)]}"/>
-                    </div>
-                    </div>
-                </xpath>
+<!--                <xpath expr="//div[@class='w-100']" position="replace"> #Need to discuss-->
+<!--                </xpath>-->
+<!--                <xpath expr="//label[@for='planned_date_begin']" position="replace"> Need to discuss -->
+<!--                    <label for="planned_date_begin" string="Planned Date" />-->
+<!--                    <div class="w-100">-->
+<!--                        <div class="o_row">-->
+<!--                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>-->
+<!--                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>-->
+<!--                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>-->
+<!--                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                </xpath>-->
                 <xpath expr="//field[@name='project_id']" position="attributes">
                     <attribute name="required">1</attribute>
                 </xpath>
@@ -82,21 +78,21 @@
                     <label for="bci_actual_start_date" string="Actual Date" />
                     <div class="w-100" >
                         <div class="o_row">
-                            <field name="bci_actual_start_date" widget="daterange" options="{'related_end_date': 'bci_actual_end_date'}" modifiers="{'required': [('bci_actual_end_date', '!=', False)]}"/>
+                            <field name="bci_actual_start_date" widget="daterange" options="{'related_end_date': 'bci_actual_end_date'}" required="bci_actual_end_date"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                            <field name="bci_actual_end_date" widget="daterange" options="{'related_start_date': 'bci_actual_start_date'}" modifiers="{'required': [('bci_actual_start_date', '!=', False)]}"/>
+                            <field name="bci_actual_end_date" widget="daterange" options="{'related_start_date': 'bci_actual_start_date'}" required="bci_actual_start_date"/>
                         </div>
                     </div>
                 </xpath>
 
-                <xpath expr="//field[@name='child_ids']" position="attributes">
-                    <attribute name="context">{'search_view_ref' : 'project.view_task_search_form_extended','default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id, 'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'search_default_display_project_id': project_id }</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='child_ids']" position="attributes"> Need to discuss-->
+<!--                    <attribute name="context">{'search_view_ref' : 'project.view_task_search_form_extended','default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id, 'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'search_default_display_project_id': project_id }</attribute>-->
+<!--                </xpath>-->
 
                 <xpath expr="//field[@name='child_ids']/list/field[@name='activity_ids']" position="after">
                     <field name="planned_date_begin"/>
-                    <field name="planned_date_end"/>
+<!--                    <field name="planned_date_end"/> Need to discuss-->
                 </xpath>
 
             </field>
@@ -111,10 +107,10 @@
                     <label for="planned_date_begin" string="Planned Date"/>
                     <div class="w-100">
                         <div class="o_row">
-                            <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" modifiers="{'required': [('planned_date_end', '!=', False)]}"/>
+                            <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                             <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                            <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" modifiers="{'required': [('planned_date_begin', '!=', False)]}"/>
+                            <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
                         </div>
                     </div>
                 </xpath>

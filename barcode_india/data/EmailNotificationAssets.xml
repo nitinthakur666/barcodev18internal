@@ -4,7 +4,7 @@
             <field name="name">Expired Assets</field>
             <field name="model_id" ref="model_helpdesk_ticket"/>
             <field name="subject">Expired Email Notification</field>
-            <field name="email_from">{{ object.company.email }}</field>
+            <field name="email_from">{{ object.company_id.email }}</field>
             <field name="email_to">{{ object.partner_id.email }}</field>
             <field name="body_html" type="html">
                 <div>

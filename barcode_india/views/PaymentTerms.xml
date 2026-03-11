@@ -59,7 +59,7 @@
         <record model="ir.actions.act_window" id="barcode_india_payment_terms_action">
             <field name="name">Payment Term</field>
             <field name="res_model">barcode_india.payment_term</field>
-            <field name="view_mode">tree,form,search</field>
+            <field name="view_mode">list,form,search</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Payment Terms

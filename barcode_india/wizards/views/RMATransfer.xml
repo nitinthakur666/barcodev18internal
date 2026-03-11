@@ -18,11 +18,11 @@
                         <field name="bci_partner_id" required="1" invisible="1"/>
                     </group>
                     <group>
-                        <field name="bci_oem_location_id" domain="[('usage','=','supplier')]" invisible="1" modifiers="{'required':[('bci_oem_involved','!=',False)]}"/>
-                        <field name="bci_oem" modifiers="{'invisible':[('bci_oem_involved','=',False)], 'required':[('bci_oem_involved','!=',False)]}"/>
-                        <field name="bci_location_id" domain="[('usage','=','internal'),('bci_engineer_location','=',False),('bci_defective_location','=',False)]" modifiers="{'invisible':[('bci_receive_at_bci','=',False)], 'required':[('bci_receive_at_bci','!=',False)]}"/>
-                        <field name="bci_engineer_location"  domain="[('usage','=','internal'),('bci_engineer_location','=',True),('bci_defective_location','=',False)]" modifiers="{'invisible':[('bci_receive_at_engineer','=',False)], 'required':[('bci_receive_at_engineer','!=',False)]}"/>
-                        <field name="bci_defective_location"  domain="[('usage','=','internal'),('bci_defective_location','=',True)]" modifiers="{'invisible':[('bci_receive_at_defective','=',False)], 'required':[('bci_receive_at_defective','!=',False)]}"/>
+                        <field name="bci_oem_location_id" domain="[('usage','=','supplier')]" invisible="not bci_oem_involved" required="bci_oem_involved"/>
+                        <field name="bci_oem" invisible="not bci_oem_involved" required="bci_oem_involved"/>
+                        <field name="bci_location_id" domain="[('usage','=','internal'),('bci_engineer_location','=',False),('bci_defective_location','=',False)]" invisible="not bci_receive_at_bci" required="bci_receive_at_bci"/>
+                        <field name="bci_engineer_location"  domain="[('usage','=','internal'),('bci_engineer_location','=',True),('bci_defective_location','=',False)]" invisible="not bci_receive_at_engineer" required="bci_receive_at_engineer"/>
+                        <field name="bci_defective_location"  domain="[('usage','=','internal'),('bci_defective_location','=',True)]" invisible="not bci_receive_at_defective" required="bci_receive_at_defective"/>
                     </group>
                 </group>
                 <footer>

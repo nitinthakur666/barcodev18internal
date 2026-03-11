@@ -5,15 +5,28 @@
         <field name="model">barcode_india.assign_report</field>
         <field name="arch" type="xml">
             <list string="Assign Reports">
+                <field name="team_id"/>
+                <field name="updated_on" />
                 <field name="updated_user" />
                 <field name="bci_support_type"/>
-                <field name="team_id"/>
-                <field name="updated_by" invisible="1"/>
-                <field name="engineer_update"/>
-                <field name="updated_on" />
+                <field name="ticket_id"/>
+                <field name="ticket_customer"/>
+                <field name="updated_by" />
                 <field name="previous_user" invisible="1" />
-                <field name="ticket_id" invisible="1"/>
-                <field name="resolved_on" readonly="1" invisible="1"/>
+                <field name="engineer_update" optional="show"/>
+                <field name="remark" optional="show"/>
+                <field name="ticket_create_date" optional="show"/>
+                <field name="ticket_serial_no" optional="show"/>
+                <field name="ticket_product" optional="show"/>
+                <field name="ticket_warranty_status" optional="show"/>
+                <field name="ticket_case_type" optional="show"/>
+                <field name="ticket_problem_type" optional="show"/>
+                <field name="ticket_stage" optional="show"/>
+                <field name="ticket_resolution" optional="show"/>
+                <field name="resolved_on" readonly="1" optional="show"/>
+                <field name="ticket_total_days_open" optional="show"/>
+                <field name="ticket_total_days_resolve" optional="show"/>
+                <field name="last_updated_on" optional="show"/>
             </list>
         </field>
     </record>
@@ -25,18 +38,30 @@
             <form string="Assign Reports">
                 <group>
                     <group>
+                        <field name="team_id"/>
+                        <field name="updated_on" />
                         <field name="updated_user" />
                         <field name="bci_support_type"/>
                         <field name="updated_by" invisible="1"/>
                         <field name="engineer_update"/>
+                        <field name="remark"/>
                     </group>
                     <group>
-                        <field name="updated_on" />
-                        <field name="team_id"/>
                         <field name="previous_user" invisible="1" />
                         <field name="ticket_id"/>
-                        <field name="resolved_on" readonly="1" invisible="1"/>
-                        <field name="remark"/>
+                        <field name="resolved_on" readonly="1"/>
+                        <field name="ticket_create_date"/>
+                        <field name="ticket_customer"/>
+                        <field name="ticket_serial_no"/>
+                        <field name="ticket_product"/>
+                        <field name="ticket_warranty_status"/>
+                        <field name="ticket_case_type"/>
+                        <field name="ticket_problem_type"/>
+                        <field name="ticket_stage"/>
+                        <field name="ticket_resolution"/>
+                        <field name="ticket_total_days_open"/>
+                        <field name="ticket_total_days_resolve"/>
+                        <field name="last_updated_on"/>
                     </group>
                 </group>
             </form>
@@ -59,7 +84,7 @@
         <field name="name">Assign Reports</field>
         <field name="res_model">barcode_india.assign_report</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form,pivot</field>
+        <field name="view_mode">list,form,pivot</field>
         <field name="domain"></field>
         <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

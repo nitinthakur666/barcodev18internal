@@ -51,17 +51,6 @@ class SaleOrderLine(models.Model):
     sopf_done_quantity = fields.Float('SOPF Done Quantity', default=0.0)
     sopf_done_amount = fields.Float('SOPF Done Amount', default=0.0)
     bci_price_with_discount = fields.Float(string='Price With Apply Discount', related='product_template_id.bci_landed_cost')
-    bci_is_reference = fields.Boolean(related='order_id.is_reference',string='Is Reference?')
-    select_product = fields.Boolean(string="Select", default=False)
-    special_price = fields.Float(string='Special Buy Price')
-    special_price_applicable = fields.Boolean(related='product_template_id.special_price_applicable', store=True)
-    special_price_locked = fields.Boolean(string='Special Price Locked', default=False)
-
-    related_creation_date = fields.Date(string='SOPF Creation Date', related='order_id.creation_date')
-    related_sopf_sequence = fields.Char(string='SOPF Sequence', related='order_id.sopf_sequence')
-    related_po_number = fields.Char(string='PO Number', related='order_id.po_number')
-    related_order_untaxed_amount = fields.Monetary(string='Order Untaxed Amount', related='order_id.amount_untaxed')
-    related_order_total = fields.Monetary(string='Order Total', related='order_id.amount_total')
 
     def _compute_is_sales_person(self):
         for rec in self:
@@ -114,54 +103,135 @@ class SaleOrderLine(models.Model):
             else:
                 rec.is_line_pricing_provider = False
 
-
-    def action_reject(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Reject Order Line',
-            'res_model': 'reject.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'active_id': self.id},
-        }
+    # def write(self, vals):
+    #     is_duplicating = self.env.context.get('is_duplicating', False)
+    #     allowed_fields = [
+    #         'bci_section',
+    #         'bci_subsection',
+    #         'bci_is_optional',
+    #         'sequence'
+    #     ]
+    #     unauthorized_fields = [field for field in vals.keys() if field not in allowed_fields]
+    #
+    #     for record in self:
+    #         if not is_duplicating and record._check_freight_and_installation_product(record.order_id.id, record.id) and record.display_type == False:
+    #             if unauthorized_fields:
+    #                 raise ValidationError(_("Cannot modify lines when Freight and Installation product is present"))
+    #         # old_values = {field: getattr(record, field) for field in vals.keys() if field in record}
+    #
+    #         old_values = {}
+    #         for field in vals.keys():
+    #             if field in record:
+    #                 value = getattr(record, field)
+    #                 if isinstance(value, models.BaseModel):
+    #                     value = value.display_name
+    #                 old_values[field] = value
+    #
+    #         result = super(SaleOrderLine, self).write(vals)
+    #
+    #         # new_values = {field: getattr(record, field) for field in vals.keys() if field in record}
+    #
+    #         new_values = {}
+    #         for field in vals.keys():
+    #             if field in record:
+    #                 value = getattr(record, field)
+    #                 if isinstance(value, models.BaseModel):
+    #                     value = value.display_name
+    #                 new_values[field] = value
+    #
+    #         # changes = {key: {'old': old_values.get(key), 'new': new_values.get(key)} for key in vals.keys()}
+    #
+    #         changes = {}
+    #         for key in vals.keys():
+    #             old = old_values.get(key)
+    #             new = new_values.get(key)
+    #
+    #             if old != new:
+    #                 changes[key] = {'old': old, 'new': new}
+    #
+    #         if changes and not is_duplicating:
+    #             change_list = "\n".join([f"<li>{key}: From <b>{change['old']}</b> to <b>{change['new']}</b></li>" for key, change in changes.items()])
+    #             body = f"<ul>{change_list}</ul>"
+    #             record.order_id.message_post(
+    #                 body=f"Changes in Order Line {record.id}:{body}",
+    #             )
+    #         if not record.order_id.bypass_quote and not is_duplicating:
+    #             if result and 'bci_suggested_price_unit' in vals.keys() and vals['bci_suggested_price_unit'] < record.bci_list_price and record.display_type == False:
+    #                 record.bci_approval_stage = 'pending'
+    #         # if 'bci_discount' in vals:
+    #         #     if record.product_id.bci_discount_category.is_promocode == True:
+    #         #         raise ValidationError("You cannot apply discount on Promo Price!")
+    #     return result
 
     def write(self, vals):
-        if self.env.context.get('updating_approval_stage'):
-            return super(SaleOrderLine, self).write(vals)
         is_duplicating = self.env.context.get('is_duplicating', False)
+
         allowed_fields = [
-            'bci_section', 
-            'bci_subsection', 
+            'bci_section',
+            'bci_subsection',
             'bci_is_optional',
             'sequence'
         ]
+
         unauthorized_fields = [field for field in vals.keys() if field not in allowed_fields]
-        
+
+        # Validation check
         for record in self:
-            if not is_duplicating and record._check_freight_and_installation_product(record.order_id.id, record.id) and record.display_type == False:
+            if not is_duplicating and record._check_freight_and_installation_product(record.order_id.id,
+                                                                                     record.id) and not record.display_type:
                 if unauthorized_fields:
                     raise ValidationError(_("Cannot modify lines when Freight and Installation product is present"))
-            old_values = {field: getattr(record, field) for field in vals.keys() if field in record}          
-            if not record.order_id.bypass_quote and not is_duplicating and record.display_type == False:
-                if ('special_price' in vals and vals['special_price'] > 0 or record.special_price_applicable != False) and not record.special_price_locked:
-                    vals['bci_approval_stage'] = 'pending'
-                if 'bci_suggested_price_unit' in vals.keys() and vals['bci_suggested_price_unit'] < record.bci_list_price:
-                    vals['bci_approval_stage'] = 'pending'
-            result = super(SaleOrderLine, self).write(vals)
-            new_values = {field: getattr(record, field) for field in vals.keys() if field in record}
-            changes = {key: {'old': old_values.get(key), 'new': new_values.get(key)} for key in vals.keys()}
+
+        # Store OLD values before write
+        old_values = {}
+        for record in self:
+            old_values[record.id] = {}
+            for field in vals.keys():
+                if field in record._fields:
+                    value = record[field]
+                    if isinstance(value, models.BaseModel):
+                        value = value.display_name
+                    old_values[record.id][field] = value
+
+        # Actual write
+        result = super(SaleOrderLine, self).write(vals)
+
+        # Compare values AFTER write
+        for record in self:
+            changes = {}
+
+            for field in vals.keys():
+                if field in record._fields:
+                    old_val = old_values[record.id].get(field)
+                    new_val = record[field]
+
+                    if isinstance(new_val, models.BaseModel):
+                        new_val = new_val.display_name
+
+                    if old_val != new_val:
+                        changes[field] = {
+                            'old': old_val,
+                            'new': new_val
+                        }
+
+            # Post chatter
             if changes and not is_duplicating:
-                change_list = "\n".join([f"<li>{key}: From <b>{change['old']}</b> to <b>{change['new']}</b></li>" for key, change in changes.items()])
-                body = f"<ul>{change_list}</ul>"
+                change_list = "\n".join([
+                    f"{field}: {data['old']} to {data['new']}"
+                    for field, data in changes.items()
+                ])
+
                 record.order_id.message_post(
-                    body=f"Changes in Order Line {record.id}:\n{body}",
+                    body=f"Changes in Order Line {record.id}:\n{change_list}",
                 )
-           
-            # if 'bci_discount' in vals:
-            #     if record.product_id.bci_discount_category.is_promocode == True:
-            #         raise ValidationError("You cannot apply discount on Promo Price!")
-            return result
+
+            # Approval logic
+            if not record.order_id.bypass_quote and not is_duplicating:
+                if 'bci_suggested_price_unit' in vals and vals[
+                    'bci_suggested_price_unit'] < record.bci_list_price and not record.display_type:
+                    record.bci_approval_stage = 'pending'
+
+        return result
 
     def _check_freight_and_installation_product(self, order_id, line_id=None):
         if self.env.context.get('bypass_freight_installation_check'):
@@ -187,50 +257,26 @@ class SaleOrderLine(models.Model):
         return False
 
     def action_approve(self):
-        for rec in self:
-            if rec.special_price_applicable and rec.special_price <= 0:
-                raise UserError(_("Special price is required for this product. Please enter a special price."))
-            if rec.bci_suggested_price_unit <= 0.00:
+        for rec in self:            
+            if rec.bci_suggested_price_unit > 0.00:
+                rec.bci_approval_stage = 'approved'
+            else:
                 raise UserError(_("Please Enter Unit Price"))
-            vals = {
-                'bci_approval_stage': 'approved'
-            }
-            if rec.special_price > 0 or rec.special_price_applicable:
-                vals['special_price_locked'] = True
-            rec.with_context(updating_approval_stage=True).sudo().write(vals)
-            if rec.order_id.user_id:
-                template_id = self.env.ref('barcode_india.email_template_sale_line_approval').id
-                template = self.env['mail.template'].browse(template_id)
-                template.send_mail(rec.id, force_send=False)
-        return True
-
-        
+    
     @api.model_create_multi
     def create(self, vals_list):
-        processed_vals_list = []
         for vals in vals_list:
             if vals.get('order_id'):
                 if self._check_freight_and_installation_product(vals['order_id']) and vals.get('display_type', False) == False:
                     raise ValidationError(_("Cannot create new lines when Freight and Installation product is present"))
-            if vals.get('product_template_id'):
-                product = self.env['product.template'].browse(vals['product_template_id'])
-                if 'bci_approval_stage' not in vals:
-                    special_price = vals.get('special_price', 0)
-                    special_price_applicable = product.special_price_applicable if product else False
-                    suggested_price = vals.get('bci_suggested_price_unit', 0)
-                    display_type = vals.get('display_type', False)
-                    special_price_locked = vals.get('special_price_locked')
-                    if (special_price > 0 or special_price_applicable != False) and not special_price_locked:
-                        vals['bci_approval_stage'] = 'pending'
-                    elif suggested_price == 0.00 and display_type == False:
-                        vals['bci_approval_stage'] = 'pending'
-                    else:
-                        vals['bci_approval_stage'] = 'approved'
-                if product:
-                    vals['bci_discount'] = product.bci_discount
-            processed_vals_list.append(vals)
-        records = super(SaleOrderLine, self).create(processed_vals_list)
-        return records
+        
+        rec = super(SaleOrderLine, self).create(vals_list)
+        if rec:
+            for record in rec:
+                record.bci_approval_stage = 'pending' if record.bci_suggested_price_unit == 0.00 and record.display_type == False else 'approved'
+                # record.bci_approval_stage = 'pending' if record.price_unit == 0.00 and record.display_type == False else 'approved'
+                record.bci_discount = record.product_id.bci_discount
+        return rec
 
     def unlink(self):
         for record in self:
@@ -246,8 +292,9 @@ class SaleOrderLine(models.Model):
                 else:
                     exist_record.unlink()
         return super(SaleOrderLine, self).unlink()
+
     
-    @api.depends('product_id', 'product_uom', 'product_uom_qty')
+    @api.depends('product_id', 'product_uom_id', 'product_uom_qty')
     def _compute_price_unit(self):
         super(SaleOrderLine, self)._compute_price_unit()
         for line in self:

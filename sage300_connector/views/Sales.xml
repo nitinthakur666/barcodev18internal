@@ -23,7 +23,7 @@
             <field name="name">Sale Order Sync</field>
             <field name="res_model">sale.order</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('so_state','in',['done']),('state','in' ,['sale','done','SOPF'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -36,7 +36,7 @@
             <field name="name">Sales Order Sync</field>
             <field name="res_model">sale.order</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain"></field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -49,7 +49,7 @@
             <field name="name">Sale Orders</field>
             <field name="res_model">sale.order</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('so_state','in',['pending']),('state','in' ,['sale','done','SOPF'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -62,7 +62,7 @@
             <field name="name">Sale Orders</field>
             <field name="res_model">sale.order</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('so_state','in',['done']),('state','in' ,['sale','done','SOPF'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -75,7 +75,7 @@
             <field name="name">Sale Orders</field>
             <field name="res_model">sale.order</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('so_state','in',['fail']),('state','in' ,['sale','done','SOPF'])]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -90,7 +90,7 @@
         <field name="name">Sale Sync Logs</field>
         <field name="res_model">sage300_connector.sale_logs</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain"></field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

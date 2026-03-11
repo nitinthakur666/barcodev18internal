@@ -8,8 +8,7 @@ class ApprovalRequest(models.Model):
     bci_sale_partner_id = fields.Many2one(related='bci_sale_order_id.partner_id',string='Customer')
     bci_helpdesk_ticket = fields.Many2one('helpdesk.ticket','Helpdesk Ticket')
     bci_approval_for = fields.Selection([('Remote Support','Remote Support'),('Field Service and Remote Support','Field Service and Remote Support'),('Complete Process','Complete Process')],'Approval For')
-    bci_payment_terms = fields.One2many(related='bci_sale_order_id.bci_payment_terms', string='Payment Terms', readonly=True)
-    bci_deal_margin = fields.Float(related='bci_sale_order_id.bci_deal_margin', string='Deal Margin(%)', readonly=True)
+
     # recommender_request_id = fields.Many2one('approval.request', string='Recommender Request')
 
     # def can_approve(self):
@@ -56,80 +55,6 @@ class ApprovalRequest(models.Model):
             'target': 'current',
             'type': 'ir.actions.act_window'
         }
-
-    def action_approve(self, approver=None):
-        self._ensure_can_approve()
-        if not isinstance(approver, models.BaseModel):
-            approver = self.mapped('approver_ids').filtered(lambda a: a.user_id == self.env.user)
-        if approver:
-            approver.write({'status': 'approved'})
-            self.sudo()._update_next_approvers('pending', approver, only_next_approver=True)
-            self.sudo()._get_user_approval_activities(user=self.env.user).action_feedback()
-            approval_template = self.env.ref('barcode_india.bci_approved_template_', raise_if_not_found=False)
-            requester_email = self.request_owner_id.partner_id.email
-            if approval_template and requester_email:
-                approval_template.send_mail(self.id, email_values={'email_to': requester_email}, force_send=False)
-                self.message_post(body=f"Sent approval confirmation email to {self.request_owner_id.partner_id.name}")
-        return True
-
-    def action_refuse(self, approver=None):
-        if not isinstance(approver, models.BaseModel):
-            approver = self.mapped('approver_ids').filtered(lambda a: a.user_id == self.env.user)
-        if approver:
-            approver.write({'status': 'refused'})
-            self.sudo()._update_next_approvers('refused', approver, only_next_approver=False, cancel_activities=True)
-            self.sudo()._get_user_approval_activities(user=self.env.user).action_feedback()
-            refusal_template = self.env.ref('barcode_india.bci_approval_refuse_template', raise_if_not_found=False)
-            requester_email = self.request_owner_id.partner_id.email
-            if refusal_template and requester_email:
-                refusal_template.send_mail(self.id, email_values={'email_to': requester_email}, force_send=False)
-                self.message_post(
-                    body=f"Approval request refused by {self.env.user.name}. Notification sent to {self.request_owner_id.partner_id.name}"
-                )
-        return True
-
-
-    def action_cancel(self):
-        self.mapped('approver_ids').write({'status': 'cancel'})
-        self.sudo()._update_next_approvers('cancel', self.approver_ids, only_next_approver=False, cancel_activities=True)
-        activities = self.sudo()._get_user_approval_activities(user=self.env.user)
-        if activities:
-            activities.action_feedback()
-        cancel_template = self.env.ref('barcode_india.bci_approval_cancel_template', raise_if_not_found=False)
-        requester_email = self.request_owner_id.partner_id.email
-        if cancel_template and requester_email:
-            cancel_template.send_mail(self.id, email_values={'email_to': requester_email}, force_send=False)
-        self.message_post(body=f"Approval request cancelled by {self.env.user.name}")
-        purchases = getattr(self, 'product_line_ids', False) and self.product_line_ids.purchase_order_line_id.order_id
-        if purchases:
-            for purchase in purchases:
-                product_lines = self.product_line_ids.filtered(lambda line: line.purchase_order_line_id.order_id.id == purchase.id)
-                purchase._activity_schedule_with_view(
-                    'mail.mail_activity_data_warning',
-                    views_or_xmlid='barcode_india.exception_approval_request_canceled',
-                    user_id=self.env.user.id,
-                    render_context={'approval_requests': self, 'product_lines': product_lines}
-                )
-        return True
-        
-    def action_withdraw(self, approver=None):
-        if not isinstance(approver, models.BaseModel):
-            approver = self.mapped('approver_ids').filtered(lambda a: a.user_id == self.env.user)
-        if approver:
-            approver.write({'status': 'pending'})
-            self.sudo()._update_next_approvers('waiting', approver, only_next_approver=False, cancel_activities=True)
-            withdrawal_template = self.env.ref('barcode_india.bci_approval_withdraw_template', raise_if_not_found=False)
-            requester_email = self.request_owner_id.partner_id.email
-            if withdrawal_template and requester_email:
-                withdrawal_template.send_mail(self.id, email_values={'email_to': requester_email}, force_send=False)
-            self.message_post(body=f"Approval request withdrawn by {self.env.user.name}. Request has been reset to pending state.")
-            domain = [('res_model', '=', self._name), ('res_id', '=', self.id), ('activity_type_id', '=', self.env.ref('mail.mail_activity_data_todo').id)]
-            self.env['mail.activity'].search(domain).unlink()
-            next_approvers = self.approver_ids.filtered(lambda a: a.status == 'pending')
-            for approver in next_approvers:
-                if approver.user_id:
-                    self.activity_schedule('mail.mail_activity_data_todo', user_id=approver.user_id.id, note=_('Approval request requires your attention.'))
-        return True
 
 class ApprovalCategory(models.Model):
     _inherit = 'approval.category'

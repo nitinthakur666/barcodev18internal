@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Web Client Bootstrap -->
+        <template id="webclient_bootstrap_inherit"
+                  inherit_id="web.webclient_bootstrap"
+                  name="Pivot Export Control Bootstrap">
+
+            <xpath expr="//script[last()]" position="after">
+                <script type="text/javascript">
+                    odoo.session_info.has_export_permission =
+                    <!-- <t t-if="request.env.user.has_group('base.group_allow_export') 
+                             or request.env.user.has_group('pivot_export_control.group_pivot_export_control_user')">
+                        true
+                    </t> -->
+
+                    <t t-if="request.env.user.has_group('base.group_allow_export')">
+                        true
+                    </t>
+                    <t t-else="">
+                        false
+                    </t>;
+                </script>
+            </xpath>
+
+        </template>
+
+    </data>
+</odoo>

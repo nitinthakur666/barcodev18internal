@@ -34,6 +34,7 @@ class Crmleads(models.Model):
     company_id = fields.Many2one('res.company', store=True, copy=False,string="Company",default=lambda self: self.env.user.company_id.id)
     currency_id = fields.Many2one('res.currency', string="Currency",related='company_id.currency_id')
     bci_software = fields.Monetary(string='Software')
+    bci_hardware = fields.Monetary(string='Hardware')
     bci_stage = fields.Many2one('barcode_india.stages',string='Clickup Stage')
     bci_project_title = fields.Char(string='Project Title')
     bci_lead_state = fields.Selection([('lead','Lead'),('qualification','Qualification')],string='Lead State')
@@ -88,7 +89,7 @@ class Crmleads(models.Model):
     influencer_ids = fields.Many2many('res.partner',relation='bci_influencer_rel',string='Internal Influencers')
     influencer_ext_ids = fields.Many2many('res.partner',relation='bci_influencer_ext_rel',string='External Influencers')
     user_ids = fields.Many2many('res.partner',relation='bci_user_rel',string='Users')
-    expected_revenue = fields.Monetary('Expected Revenue', currency_field='company_currency',compute='_compute_expected_revenue', tracking=True)
+    expected_revenue = fields.Monetary('Expected Revenue', currency_field='company_currency',compute='_compute_expected_revenue', tracking=True,store=True)
     bci_hardware_pre_sales = fields.Many2one('res.users',string='Hardware Pre-Sales',readonly=True,tracking=True)
     bci_software_pre_sales = fields.Many2one('res.users',string='Software Pre-Sales',readonly=True,tracking=True)
     bci_bant_ids = fields.One2many('barcode_india.bant_crm', 'bci_lead_id', string='Bant')
@@ -108,7 +109,7 @@ class Crmleads(models.Model):
     bci_task_count = fields.Integer(compute='_compute_task_count', string="Number of task")
 
     bci_industry_id = fields.Many2one('res.partner.industry',string='Industry')
-    bci_requirement = fields.Selection([('Hardware','Hardware'),('Software','Software'),('Consumables','Consumables')],string="Requirement")
+    bci_requirement = fields.Selection([('Hardware','Hardware'),('Software','Software'),('Consumables','Consumables'),('MES','MES'),('WMS','WMS'),('Track and Trace','Track and Trace'),('Automation','Automation'),('IOT','IOT'),('AIP','AIP'),('MI','MI'),('SCCT','SCCT'),('II','II'),('BLE','BLE'),('Others','Others')],string="Requirement")
     bci_status_lead = fields.Selection([('Initial Discussion','Initial Discussion'),('On Hold','On Hold'),('Lost','Lost'),('Dropped','Dropped/Not Qualified'),('Won','Won')],string="Status")
     date_deadline = fields.Date('Expected Closing', help="Estimate of the date on which the opportunity will be won.",tracking=True)
 
